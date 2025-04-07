@@ -1,0 +1,120 @@
+@import "../settings.part.less";
+
+/* 파일 업로드 루트 */
+.cl-fileupload {
+	font: @default-font;
+	color: @default-text-color;
+	border: 1px solid @default-border-color;
+	background-color: #fff;
+
+	/* 파일 업로드 내 텍스트 */
+	.cl-text {
+	}
+
+	/* 헤더 */
+	.cl-fileupload-header {
+		border-bottom: 1px solid @default-border-color;
+
+		/* 헤더내 체크 박스 */
+		.cl-fileupload-checkheader {
+			border-right: 1px solid @default-border-color;
+		}
+		
+		/* 파일명 헤더 컬럼 */
+		.cl-fileupload-nameheader {
+		}
+
+		/* 파일 크기 헤더 컬럼 */
+		.cl-fileupload-sizeheader {
+			border-left: 1px solid @default-border-color;
+		}
+	}
+
+	/* 파일 업로드 디테일 영역 */
+	.cl-fileupload-detail {
+
+		/* emptyMessage */
+		.cl-emptymsg{
+			
+		}
+
+		/* 각 파일 행 */
+		.cl-fileupload-file,.cl-fileupload-uploadedfile {
+
+			/* 체크 박스 컬럼 */
+			.cl-fileupload-checkcolumn {
+			}
+
+			/* 파일 아이콘 */
+			.cl-fileupload-fileicon {
+				// background-image: url(icons/tree-file.png);
+			}
+
+			/* 피일 이름 */
+			.cl-fileupload-filename {
+			}
+
+			/* 파일 크기 */
+			.cl-fileupload-sizecolumn {
+			}
+			
+		}
+
+		/* 업로드된 파일 */
+		.cl-fileupload-uploadedfile {	
+
+			/* 파일 다운로드 버튼 */
+			.cl-fileupload-download {
+				// background-image: url(icons/download.png);
+			}
+		}
+	}
+
+	/* 푸터 */
+	.cl-fileupload-footer {
+		border-top:1px solid @default-border-color;
+
+		/* 푸터 텍스트 */
+		.cl-text{
+		}
+
+		/* 푸터 내 버튼 영역 */
+		.cl-fileupload-buttons {
+			
+			/* 푸터 내 버튼 */
+			.cl-fileupload-button {
+
+				&:focus{
+					// border: solid 1px @focus-border-color;
+				}
+			}
+		}
+	}
+
+	/* 파일 업로드 체크 박스 */
+	.cl-fileupload-checkbox {
+		// background-image: url(icons/checkbox.png);
+
+		/* 선택된 파일 업로드 체크 박스 */
+		&.cl-checked {
+			// background-image: url(icons/checkbox-selected.png);
+		}
+		&:focus{
+			// background-image: url(icons/checkbox-hover.png);
+			&.cl-checked {
+				// background-image: url(icons/checkbox-hover-selected.png);
+			}
+		}
+	}
+
+	&:not(.cl-disabled){
+
+		/* 파일 - 호버 상태 */
+		.cl-fileupload-file:hover,.cl-fileupload-uploadedfile:hover{
+		}
+		
+		/* 파일 업로드 버튼 - 호버 상태 */
+		.cl-fileupload-button:hover{
+		}
+	}
+}

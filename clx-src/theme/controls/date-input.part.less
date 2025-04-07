@@ -1,0 +1,84 @@
+@import "../settings.part.less";
+
+/* 데이트 인풋 */
+.cl-dateinput {
+	font: @default-font;
+	color: @default-text-color;
+	border: 1px solid @default-border-color;
+	text-align: left;
+
+	/* 텍스트 */
+	.cl-text {}
+
+	/* 버튼 */
+	.cl-dateinput-button {
+		// background-image: url(icons/calendar-button.png);
+	}
+
+	/* 클리어 버튼 */
+	.cl-dateinput-clear {
+		&:hover {}
+	}
+
+	/* 스핀 버튼 */
+	.cl-dateinput-spinbuttons {
+		border-left: solid 1px @default-border-color;
+		// width:16px;
+
+		/* 증가 버튼 */
+		.cl-dateinput-increase {
+			// background-image: url(icons/up-spin.png);
+			// background-repeat: no-repeat;
+			// background-size: 16px auto;
+			// background-position: center;
+			// cursor: pointer;
+		}
+
+		/* 감소 버튼 */
+		.cl-dateinput-decrease {
+			// background-image: url(icons/down-spin.png);
+			// background-repeat: no-repeat;
+			// background-size: 16px auto;
+			// background-position: center;
+			// cursor:pointer;
+		}
+	}
+
+	&:not(.cl-disabled) {
+		.cl-dateinput-increase:hover {
+			// background-image: url(icons/up-spin-hover.png);
+			// background-color: @tint-normal-color;
+		}
+
+		.cl-dateinput-increase:active {
+			// background-image: url(icons/up-spin-active.png);
+			// background-color: @tint-darker-color;
+		}
+
+		.cl-dateinput-decrease:hover {
+			// background-image: url(icons/down-spin-hover.png);
+			// background-color: @tint-normal-color;
+		}
+
+		.cl-dateinput-decrease:active {
+			// background-image: url(icons/down-spin-active.png);
+			// background-color: @tint-darker-color;
+		}
+	}
+
+	/* 비활성화 상태 */
+	&.cl-disabled {
+		color: @disabled-text-color;
+		background-color: @disabled-selection-background;
+		border-color: @disabled-border-color;
+
+		.cl-dateinput-button {
+			// background-image: url(icons/calendar-button-disabled.png);
+		}
+	}
+
+	/* 포커스 상태 */
+	&.cl-focus {
+		border-color: @focus-border-color;
+	}
+}

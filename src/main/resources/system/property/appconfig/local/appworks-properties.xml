@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd" >
+<properties>
+    <!-- Application URL Home //-->
+    <entry key="url.home">http://127.0.0.1:8080/</entry>
+    <!-- 어플리케이션 로케일(Locale) -->
+	<entry key="default.locale">KO</entry>
+	
+	<!-- 세션타임아웃(단위:초) -->
+	<entry key="session.timeout">10800</entry>
+	
+	<!-- 응답 데이터 뷰(View) 유형(available: JSON, TSV  - 디폴트는 JSON임) -->
+	<entry key="default.dataview.type">JSON</entry>
+	
+	<!-- Defualt Page AppID -->
+	<entry key="login.page.appid">app/com/inc/login</entry>
+	<entry key="main.page.appid">app/main/Main</entry>
+	<entry key="hybrid.page.appid">app/mobile/kakaoLoginForNative</entry>
+	
+	<!-- 서버 메시지 방법 (PRO : message.message-common_ko.properties, DB : Database) -->
+	<entry key="messageSource.kind">DB</entry>
+	
+	<!-- 최대 MDI창 갯수 -->
+	<entry key="mdi.window.maxcount">10</entry>
+	
+	<!-- 조회조건 변경시 데이터 Clear 사용여부(Y/N) -->
+	<entry key="use.searchbox.clear">N</entry>
+	
+	<!-- 그리드 컴포넌트 팝아웃(확대보기) 사용여부(Y/N) -->
+	<entry key="use.viewpart.popout">Y</entry>
+	
+	<!-- 업로드 가능한 최대 파일용량(단위: Mb) -->
+	<entry key="client.max.upload.filesize">20</entry>
+	
+	<!-- 이미지 업로드 가능한 최대 파일용량(단위: Mb) -->
+	<entry key="client.max.photo.filesize">10</entry>
+	
+	<!-- 클라이언트 language 파일생성 관련 변수 -->
+	<entry key="client.language.locale">ko,en,ch</entry>
+	
+	<!-- AES암호화키 -->
+	<entry key="crypt.aes256.key">/SM01dQ69b6xwIYgpR5vWIU40ugJZNRlGTrQgRjU454"></entry>
+	
+	<!-- 공통서브미션 호출URL -->
+	<entry key="common.egovbuilder.submit">/CommSubmit/egovXbuilder.do</entry>
+	
+	<!-- 어플리케이션 Export 파일 경로 -->
+	<entry key="app.export.filePath">/export</entry>
+	
+	<entry key="Globals.fileStorePath">C:\uploadfiles\</entry>
+	
+	<entry key="cmn.fileStorePath">cmn</entry>
+	
+	<entry key="utilProfilingStack">Y</entry>
+	
+</properties>

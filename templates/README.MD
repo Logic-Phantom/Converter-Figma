@@ -1,0 +1,1 @@
+Place template CLX files for $project$ here.

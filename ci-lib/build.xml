@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eXCFrame" default="deploy" basedir="./">
+	<!-- 로컬 
+	<property name="build-lib.dir" location="ci-lib/clx"></property>
+	-->
+	<property name="build-lib.dir" location="F:/jenkinsData/buildAnt/ci-lib"></property>
+	<property name="workspace.dir" location="../eXCFrame-v2-ui"></property>
+	<property name="target.dir" location="."></property>
+
+	<taskdef name="clxcompile"
+      classname="kr.co.tomatosystem.exbuilder.cikit.build.ant.Compile"
+      classpath="${build-lib.dir}/e6-compiler.jar"
+	/>
+
+	<target name="deploy">
+		
+		<!-- java -jar e6-compiler.jar 실행시 스크립트
+		<java dir="${build-lib.dir}/" jar="${build-lib.dir}/e6-compiler.jar" fork="true">
+	        <jvmarg value="-Djava.io.tmpdir=D:\Temp3"/>
+			<arg value="-s"/>
+			<arg value="${workspace.dir}"/>
+			<arg value="-o"/>
+			<arg value="${target.dir}/target/clx-build"/>
+			<arg value="-relativize-less-url"/>
+			<arg value="true"/>
+     	 </java>
+		-->
+		
+		<clxcompile
+			src="${workspace.dir}"
+			out="${target.dir}/target/clx-build"
+			minify="false"
+			single="false"
+			language="true"
+			main=""
+			relativizelessurl="true"
+		>
+		<exclude pattern="**/.svn/**" />
+		</clxcompile>
+		<!-- 
+		<copy todir="${workspace.dir}/exbuilder/runtime" overwrite="true">
+			<fileset dir="${build-lib.dir}/runtime">
+                <exclude name="**/.svn/**" />
+                <exclude name="**/.gitignore" />
+                <exclude name="/conf/**" />
+                <include name="**" />
+            </fileset>
+        </copy>
+        -->
+	</target>
+
+</project>

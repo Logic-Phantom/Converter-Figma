@@ -1,0 +1,109 @@
+@import "../settings.part.less";
+
+/* 링크드 리스트 박스 루트 */
+.cl-linkedlistbox {
+	font: @default-font;
+	color: @default-text-color;
+
+	/* 리스트 박스 */
+	.cl-linkedlistbox-listbox {
+
+		&.cl-focus {
+
+			/* 리스트 박스 리스트 - 포커스 상태 */
+			.cl-linkedlistbox-list {
+				border-color: @focus-border-color;
+			}
+		}
+
+		/* 리스트 박스 헤더 */
+		.cl-linkedlistbox-header {
+			border: 1px solid @default-border-color;
+		}
+
+
+		/* 리스트 박스 리스트 */
+		.cl-linkedlistbox-list {
+			border: 1px solid @default-border-color;
+			background-color: white;
+
+			/* 리스트 박스 리스트 아이템 */
+			.cl-linkedlistbox-item {
+
+				/* 아이템 드래그시 마우스가 아이템의 아래에 위치할때 표시 */
+				&.cl-dropbottom {
+					// box-shadow: inset 0 -2px 0 @default-border-color;
+				}
+
+				/* 아이템 드래그시 마우스가 아이템의 위에 위치할때 표시 */
+				&.cl-droptop {
+					// box-shadow: inset 0 2px 0 @default-border-color;
+				}
+
+				/* 리스트 박스의 리스트 아이템 아이콘 */
+				.cl-icon {}
+
+				/* 리스트 박스 리스트 아이템 텍스트 */
+				.cl-text {}
+
+				/* 리스트 박스 리스트 아이템 리프 아이콘 */
+				.cl-linkedlistbox-arrow.cl-leaf {}
+
+				/* 리스트 박스 리스트 아이템 드릴다운 아이콘 */
+				.cl-linkedlistbox-arrow.cl-folder {
+					// 	background-image: url(icons/drill-down.png);
+				}
+
+				/* 리스트 박스 리스트 아이템 - disabled 상태 */
+				&.cl-disabled {
+					color: @disabled-text-color;
+
+					/* 리스트 박스 리스트 아이템 - 선택됨, disabled 상태 */
+					&.cl-selected {
+						background-color: @disabled-selection-background;
+					}
+				}
+			}
+		}
+	}
+
+	/* 링크드리스트박스 disabled 상태 */
+	&.cl-disabled {
+		color: @disabled-text-color;
+
+		.cl-linkedlistbox-item {
+			&.cl-selected {
+				color: @disabled-selection-foreground;
+				background-color: @disabled-selection-background;
+			}
+		}
+	}
+}
+
+.cl-linkedlistbox:not(.cl-disabled) {
+	.cl-linkedlistbox-item:not(.cl-disabled) {
+		cursor: pointer;
+
+		/* 아이템 호버 스타일 */
+		&:hover,
+		&:focus {
+			color: @hover-foreground;
+			background-color: @hover-background;
+
+			.cl-linkedlistbox-arrow.cl-folder {
+				// background-image: url(icons/drill-down-hover.png)
+			}
+		}
+
+		/* 선택된 아이템 스타일 */
+		&.cl-selected {
+			color: @selection-foreground;
+			background-color: @selection-background;
+
+			/* 선택된 아이템 드릴 다운 아이콘 */
+			.cl-linkedlistbox-arrow.cl-folder {
+				// background-image: url(icons/drill-down-selected.png);
+			}
+		}
+	}
+}

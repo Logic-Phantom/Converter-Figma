@@ -1,0 +1,33 @@
+{
+  "deploy-path": [
+    "/ui"
+  ],
+  "deploy-config-base": [],
+  "default-page-title": "empty",
+  "cache-control": false,
+  "html-lang": "ko",
+  "page-loading-image": {
+    "src": "data:image/gif;base64,R0lGODlh+gCWAKIDAISEhMbGxv///wAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgADACwAAAAA+gCWAAAD/ii63P4wykmrvTjrzbv/YCiOZGmeaKqubOu+cCzPdG3feK7vfO//wKBwSCwaj8ikcslsOp/QqHRKrVqv2Kx2y+16v+CweEwum8/otHrNbrvf8Lh8Tq/b7/i8fs/v+/+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMGTAcTFxgvGyQHIysXMzcsK0MTC0tPPzdjK2sncx9XT0QLh3s7W0OXU4Nfn2e3b793x38Lk8+bj7Pno9+r1+vb2uRMIj6C8f/wM0gvIUF+whgkhDgz4EKDFiBcHVsTIZXFixoIbPXYsKBFktZMoU6pcybKly5cwY8qcSbOmzZs4c+rcybOnz59AgwodSrSo0aNIkypdyrSp06dQo0qdSrWq1atYs2rdyrWr169gw4odS7as2bNo06pdy7at27dw48qdKyABACH5BAUKAAMALF4ARQAKAAsAAAMKCLrc/jDKSattCQAh+QQFCgADACxeAEUAFwALAAADJRi6LA4wSkaDEzKD2p6O3HJ9YGh5pHli5GaOrQqnL/rJtoazZAIAIfkEBQoAAwAsawBFABcACwAAAyUYuiwOMEpGgxMyg9qejtxyfWBoeaR5YuRmjq0Kpy/6ybaGs2QCACH5BAUKAAMALHgARQAXAAsAAAMlGLosDjBKRoMTMoPano7ccn1gaHmkeWLkZo6tCqcv+sm2hrNkAgAh+QQFCgADACyFAEUAFwALAAADJRi6LA4wSkaDEzKD2p6O3HJ9YGh5pHli5GaOrQqnL/rJtoazZAIAOw==",
+    "width": 250.0,
+    "height": 150.0
+  },
+  "runtime-css": [
+    "/resource/css/cleopatra.css"
+  ],
+  "runtime-lib": [
+    "/resource/cleopatra.js",
+    "/resource/conf/defaults.js"
+  ],
+  "fileupload": {
+    "maxbodysize": -1.0,
+    "maxfilesize": -1.0,
+    "tempdirpath": "",
+    "thresholdsize": 10240.0,
+    "fileuploadhandler": null,
+    "fileconvertor": null
+  },
+  "data-compression": false,
+  "type-handler": {
+    "dateformat": "yyyyMMddHHmmss"
+  }
+}

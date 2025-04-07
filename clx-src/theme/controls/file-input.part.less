@@ -1,0 +1,33 @@
+@import "../settings.part.less";
+
+/* 파일 인풋 루트 */
+.cl-fileinput {
+	font: @default-font;
+	color: @default-text-color;
+	border: solid 1px @default-border-color;
+
+	// background-color: #fff;
+	/* autoSize 설정시 표시되는 기본크기 */
+	//min-width: 50px;
+	//min-height: 20px;
+	/* 파일 인풋 내 텍스트 */
+	.cl-text {}
+
+	/* 포커스 상태 */
+	&.cl-focus {
+		border-color: @focus-border-color;
+	}
+
+	/* 비활성화 상태 */
+	&.cl-disabled {
+		border-color: @disabled-border-color;
+		// background-image: none;
+		background-color: @disabled-selection-background;
+		color: @default-text-color;
+	}
+
+	/* 파일 인풋 - 클리어 버튼 */
+	.cl-fileinput-clear {
+		&:hover {}
+	}
+}

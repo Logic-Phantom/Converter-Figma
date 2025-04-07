@@ -1,0 +1,102 @@
+@import "../settings.part.less";
+
+/* 사이드 내비게이션 */
+.cl-sidenavigation {
+	border: 1px solid @default-border-color;
+	color: @default-text-color;
+
+	/* 포커스 */
+	&.cl-focus {
+		border-color: @focus-border-color;
+	}
+
+	/* 사이드 내비게이션 아이템 */
+	.cl-sidenavigation-item {
+		
+		/* 아이템 아이콘 */
+		.cl-icon {
+			// background-image: url(icons/tree-file.png);
+		}
+
+		/* 아이템 텍스트 */
+		.cl-text {
+		}
+
+		/* 아이템 뱃지 */
+		.cl-badge {
+		}
+
+		/* 펼침 아이콘 */
+		.cl-expand-icon {
+			
+		}
+
+		/* 폴더 아이템 */
+		&.cl-folder{
+			.cl-icon {
+				// background-image:url(icons/tree-folder.png);
+			}
+			&.cl-expanded .cl-expand-icon {
+				// background-image:url(icons/expanded.png);
+			}
+	
+			&.cl-collapsed .cl-expand-icon {
+				// background-image:url(icons/collapsed.png);
+			}
+			
+		}
+
+		/* 아이템 - 호버, 포커스 */
+		&:hover, &.cl-hover,&:focus{
+			background-color: @hover-background;
+			color: @hover-foreground;
+		}
+
+		/* 아이템 - 선택됨 */
+		&.cl-selected{
+			background-color: @selection-background;
+			color: @selection-foreground;
+
+			&.cl-folder{
+				&.cl-expanded .cl-expand-icon {
+					// background-image:url(icons/expanded-selected.png);
+				}
+		
+				&.cl-collapsed .cl-expand-icon {
+					// background-image:url(icons/collapsed-selected.png);
+				}
+			}
+		}
+
+		&.cl-disabled {
+			color: @disabled-text-color;
+
+			&:hover, &.cl-hover, &:focus{
+				// background-color: transparent;
+			}
+			&.cl-selected{
+				color: @disabled-selection-foreground;
+				background-color:  @disabled-selection-background;
+			}
+		}
+	
+	}
+
+	/* 비활성화 */
+	&.cl-disabled {
+		color : @disabled-text-color;
+		
+		.cl-sidenavigation-item  {
+
+			&:hover, &.cl-hover, &:focus{
+				// background-color: transparent;
+			}
+			&.cl-selected {
+				background-color: @disabled-selection-background;
+				color: @disabled-selection-foreground;
+			}
+				
+		}
+	}
+}
+

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="No-Cache">
+	<meta name="viewport" content="width=device-width">
+	
+	<style>
+		/* for HTML5 */
+		html, body {
+			margin: 0px;
+			padding: 0px;
+			height: 100%;
+		}
+		body{
+			box-sizing: content-box;
+			min-height: 100%;
+		}
+	</style>
+	
+	<script>
+		
+		//리소스 로드 쿼리스트링 키워드
+		//ex. Main.clx.js?v=20240910
+	    var msResLoaderQuery = "20240910";
+		// aCoreCacheList 적용시 version 
+		var msIdxQuery = "1.0.5243";
+	    
+		function pageLoadingImg(){
+			var pli = document.getElementById("pageLoadingImage");
+			if (pli) {
+				pli.parentNode.removeChild(pli);
+			}
+		}
+		
+		function setBaseHref(){
+			var base = document.createElement("base");
+			base.href = getContextPath() + "/ui/";
+			document.head.appendChild(base);
+		}
+		
+		// 스타일 로드
+        function loadLinks(links) {
+       	    var navigationStart = window.performance.timing.navigationStart;
+       	    var currentTime = navigationStart + "." + window.performance.now();
+       	    
+       	    for (var i = 0; i < links.length; i++) {
+       	        var link = document.createElement("link");
+       	        link.rel = "stylesheet";
+       	        link.type = "text/css";
+       	        
+       	        bCacheListPresence = false;
+       	        
+       	        for (var j = 0; j < aCoreCacheList.length; j++) {
+       	            sScriptUrl = aCoreCacheList[j].scriptUrl;
+       	            if ( sScriptUrl == links[i] ) {
+       	                sScriptVersion = aCoreCacheList[j].version;
+       	                bCacheListPresence = true;
+       	            }
+       	        }
+       	        
+       	        if (bCacheListPresence && bCacheUse){
+       	            link.href = links[i] + "?v=" + sScriptVersion;
+       	        } else {
+					link.href = links[i];   
+       	            // link.href = links[i] + "?p=" + currentTime;
+       	        }
+       	        document.head.appendChild(link);
+       	    }
+       	}
+	
+	
+		// 스크립트 로드
+        function loadScripts(scripts, index, callback) {
+            var navigationStart = window.performance.timing.navigationStart;
+            var currentTime = navigationStart + "." + window.performance.now();
+            var scriptsLen = scripts.length;
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.defer = true; 
+            if (scripts[index].indexOf("cleopatra.js") > -1) {
+                script.id = "eXbuilder6";
+            }
+            
+            bCacheListPresence = false;
+            
+            for (var j = 0; j < aCoreCacheList.length; j++) {
+                sScriptUrl = aCoreCacheList[j].scriptUrl;
+                if ( sScriptUrl == scripts[index] ) {
+                    sScriptVersion = aCoreCacheList[j].version;
+                    bCacheListPresence = true;
+                }
+            }
+            
+            if (bCacheListPresence && bCacheUse){
+                script.src = scripts[index] + "?v=" + sScriptVersion;
+            } else {
+                script.src = scripts[index];
+                // script.src = scripts[index] + "?p=" + currentTime;
+            }
+            
+            script.onload = function() {
+            	
+            	//defaults.js 로드시 리소스 로드 쿼리스트링 부여
+            	if(index == 1){
+            		cpr.core.ResourceLoader.setQueryProvider(function(originURL,allowsCache) {
+            			var qryParam = {};
+            			if (!allowsCache) {
+            				qryParam = {
+            					"v" :  msResLoaderQuery  //moment().format("YYYYMMDD")
+            				}
+            			}
+            			return qryParam;
+            		});
+            	}
+            	
+                if (scriptsLen == index + 1) {
+                    callback();
+                } else {
+                    loadScripts(scripts, ++index, callback);
+                }
+            };
+            document.head.appendChild(script);
+        }
+        
+        function loadMainPage(){
+        	
+        	pageLoadingImg();
+        	
+            cpr.core.App.load("app/main/Main", function(loadedApp) {
+    			loadedApp.createNewInstance().run();
+    		});
+            
+        }
+        
+        function getContextPath(){
+        	return top.location.pathname.substring(0, top.location.pathname.indexOf("/", 2));
+        }
+	</script>
+	</head>
+	
+	<img id="pageLoadingImage"
+	style="position: absolute; top: calc(50% - 75.0px); left: calc(50% - 125.0px); width: 250px; height: 150px"
+	src="data:image/gif;base64,R0lGODlh+gCWAKIDAISEhMbGxv///wAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgADACwAAAAA+gCWAAAD/ii63P4wykmrvTjrzbv/YCiOZGmeaKqubOu+cCzPdG3feK7vfO//wKBwSCwaj8ikcslsOp/QqHRKrVqv2Kx2y+16v+CweEwum8/otHrNbrvf8Lh8Tq/b7/i8fs/v+/+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMGTAcTFxgvGyQHIysXMzcsK0MTC0tPPzdjK2sncx9XT0QLh3s7W0OXU4Nfn2e3b793x38Lk8+bj7Pno9+r1+vb2uRMIj6C8f/wM0gvIUF+whgkhDgz4EKDFiBcHVsTIZXFixoIbPXYsKBFktZMoU6pcybKly5cwY8qcSbOmzZs4c+rcybOnz59AgwodSrSo0aNIkypdyrSp06dQo0qdSrWq1atYs2rdyrWr169gw4odS7as2bNo06pdy7at27dw48qdKyABACH5BAUKAAMALF4ARQAKAAsAAAMKCLrc/jDKSattCQAh+QQFCgADACxeAEUAFwALAAADJRi6LA4wSkaDEzKD2p6O3HJ9YGh5pHli5GaOrQqnL/rJtoazZAIAIfkEBQoAAwAsawBFABcACwAAAyUYuiwOMEpGgxMyg9qejtxyfWBoeaR5YuRmjq0Kpy/6ybaGs2QCACH5BAUKAAMALHgARQAXAAsAAAMlGLosDjBKRoMTMoPano7ccn1gaHmkeWLkZo6tCqcv+sm2hrNkAgAh+QQFCgADACyFAEUAFwALAAADJRi6LA4wSkaDEzKD2p6O3HJ9YGh5pHli5GaOrQqnL/rJtoazZAIAOw=="
+	alt="Loading Image" />
+	
+	<body onload="javascript:doload();">
+		<script type="text/javascript">
+			var bCacheUse  = true; //false:캐시 리스트 캐시 적용, true: 캐시 리스트 캐시 미적용
+			//선택적 캐시 적용
+			var aCoreCacheList = 
+				[
+				    {
+				          "name" : "cleopatra CSS"
+				        , "scriptUrl" : "../resource/css/cleopatra.css"
+				        , "version" : msIdxQuery
+				    }
+				    , {
+				          "name" : "cleopatra 엔진"
+				        , "scriptUrl" : "../resource/cleopatra.js"
+				        , "version" : msIdxQuery
+				    }
+				    , {
+				          "name" : "공통 모듈"
+				        , "scriptUrl" : "cpr-lib/user-modules.js"
+				        , "version" : msIdxQuery
+				    }
+				    , {
+				          "name" : "UDC"
+				        , "scriptUrl" : "cpr-lib/udc.js"
+				        , "version" : msIdxQuery
+				    }
+				    
+				];
+			
+	        var links = [
+	        	"../resource/css/cleopatra.css", 
+	        	"theme/cleopatra-theme.css", 
+	        	"theme/custom-theme.css", 
+	        	"theme/pb/exbps.css"
+	        	];
+	        
+	        var scripts = [
+	        	"../resource/cleopatra.js", 
+	        	"../resource/conf/defaults.js", 
+	            "cpr-lib/user-modules.js",
+	            "cpr-lib/udc.js",
+	            "cpr-lib/language.js"
+	            ];
+	        setBaseHref();    
+			loadLinks(links);
+            loadScripts(scripts, 0, function() {
+                window.addEventListener("load", function(e){
+                	loadMainPage();
+                });
+            });
+		</script>
+	</body>
+</html>

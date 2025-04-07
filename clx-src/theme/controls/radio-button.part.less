@@ -1,0 +1,225 @@
+@import "../settings.part.less";
+
+/* 라디오 버튼 */
+.cl-radiobutton {
+	// font: @default-font;
+	// color: @default-text-color;
+
+	/* 라디오 버튼 아이템 */
+	.cl-radiobutton-item {
+
+		/* 라디오 버튼 내부 아이템 요소 */
+		.cl-radiobutton-field {}
+
+		/* 아이콘 정렬을 설정 */
+		.cl-icon-wrapper {
+			// vertical-align: baseline;
+		}
+
+		/* 라디오 버튼 아이템 텍스트 */
+		.cl-text {
+			/* 말줄임 style 적용(한 줄) */
+			// overflow: hidden;
+			// text-overflow: ellipsis;
+			// white-space: nowrap;
+
+			/* 여러 줄 style 적용 */
+			// white-space: pre-wrap;
+			// word-break: break-all;
+		}
+
+		/* 라디오 아이템 아이콘 스타일 */
+		.cl-radiobutton-icon {
+			// background-image: url(icons/radio.png);
+		}
+
+		/* 라디오 아이템 hover시 아이콘 스타일 */
+		&:hover,
+		&.cl-hover {
+			.cl-radiobutton-icon {
+				// background-image:url(icons/radio-hover.png);
+			}
+		}
+
+		/* 선택된 라디오 아이템의 아이콘 스타일 */
+		&.cl-selected {
+			.cl-radiobutton-icon {
+				// background-image:url(icons/radio-selected.png);
+			}
+
+			/* 선택된 라디오 아이템 hover시 아이콘 스타일 */
+			&:hover,
+			&.cl-hover {
+				.cl-radiobutton-icon {
+					// background-image:url(icons/radio-hover-selected.png);
+				}
+			}
+		}
+
+		/* disabled 라디오 아이템 스타일 */
+		&.cl-disabled {
+
+			.cl-text {
+				// color: @disabled-text-color;
+			}
+
+			/* disabled 라디오 아이템 hover시 아이콘 스타일 */
+			&:hover,
+			&.cl-hover {
+				.cl-radiobutton-icon {
+					// background-image:url(icons/radio.png);
+				}
+			}
+
+			/* 선택된 disabled 라디오 아이템의 아이콘 스타일 */
+			&.cl-selected {
+				.cl-radiobutton-icon {
+					// background-image:url(icons/radio-disabled-selected.png);
+				}
+
+				/* 선택된 disabled 라디오아이템 hover시 아이콘 스타일 */
+				&:hover,
+				&.cl-hover {
+					.cl-radiobutton-icon {
+						// background-image:url(icons/radio-disabled-selected.png);
+					}
+				}
+			}
+		}
+
+		/* clickRegion="item" 설정시 스타일 */
+		&.cl-clickregion-item {}
+
+		/* clickRegion="textField" 설정시 스타일 */
+		&.cl-clickregion-textfield {}
+	}
+
+	/* 라디오버튼 focus 스타일 */
+	&:focus,
+	&.cl-focus {
+		.cl-radiobutton-item {
+			.cl-radiobutton-icon {
+
+				&:focus,
+				&.cl-focus {}
+			}
+		}
+	}
+
+	/* disabled 라디오버튼 스타일 */
+	&.cl-disabled {
+
+		.cl-radiobutton-item {
+
+			/* disabled 라디오 버튼 내 라디오 아이템 hover시 아이콘 스타일 */
+			&:hover,
+			&.cl-hover {
+				.cl-radiobutton-icon {
+					// background-image:url(icons/radio.png);
+				}
+			}
+
+			/* disabled 라디오 버튼의 선택된 라디오 아이템 아이콘 스타일 */
+			&.cl-selected {
+				.cl-radiobutton-icon {
+					// background-image:url(icons/radio-disabled-selected.png);
+				}
+
+				/* disabled 라디오 버튼의 선택된 라디오 아이템 hover시 아이콘 스타일 */
+				&:hover,
+				&.cl-hover {
+					.cl-radiobutton-icon {
+						// background-image:url(icons/radio-disabled-selected.png);
+					}
+				}
+			}
+		}
+	}
+
+	/* fixedWidth를 고정값으로 설정시 .cl-radiobutton-item의 width와 같은 값으로 설정 */
+	&.cl-fixedWidth {
+		.cl-radiobutton-item {
+			.cl-icon-wrapper {
+				// width: 18px;
+			}
+		}
+	}
+
+	/* iconAlign=right 스타일 */
+	&.cl-iconalign-right {
+		.cl-radiobutton-item {
+			.cl-radiobutton-icon {
+				// margin-left: 0px;
+				// margin-right: 2px;
+			}
+
+			.cl-text {
+				// padding-left: 0px;
+				// padding-right: 3px;
+			}
+
+		}
+	}
+
+	/* iconAlign=top 스타일 */
+	&.cl-iconalign-top {
+		.cl-radiobutton-item {
+			.cl-icon-wrapper {
+				// vertical-align: top;
+				// text-align: center;
+			}
+
+			.cl-radiobutton-icon {
+				// margin-left: 0px;
+				// height: 18px;
+			}
+
+			.cl-text {
+				// padding-left: 0px;
+				// padding-top: 3px;
+			}
+		}
+
+		&.cl-fixedWidth {
+			.cl-icon-wrapper {
+				// width: auto;
+			}
+		}
+	}
+
+	/* iconAlign=bottom 스타일 */
+	&.cl-iconalign-bottom {
+		.cl-radiobutton-item {
+			.cl-icon-wrapper {
+				// vertical-align: top;
+				// text-align: center;
+			}
+
+			.cl-radiobutton-icon {
+				// margin-left: 0px;
+				// height: 18px;
+			}
+
+			.cl-text {
+				// padding-left: 0px;
+				// padding-bottom: 3px;
+			}
+		}
+
+		&.cl-fixedWidth {
+			.cl-icon-wrapper {
+				// width: auto;
+			}
+		}
+	}
+
+	/* hideIcon=true 스타일 */
+	&.cl-iconalign-none {
+		.cl-radiobutton-item {
+			.cl-text {
+				// padding-left: 0px;
+			}
+		}
+	}
+
+}

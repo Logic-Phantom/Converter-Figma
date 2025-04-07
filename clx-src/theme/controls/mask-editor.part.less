@@ -1,0 +1,29 @@
+@import "../settings.part.less";
+
+/* 마스크 에디터 루트 */
+.cl-maskeditor {
+	font: @default-font;
+	border: 1px solid @default-border-color;
+	background-color: #fff;
+	color: @default-text-color;
+
+	/* 마스크 에디터 텍스트 */
+	.cl-text {}
+
+	/* 마스크 에디터 - 포커스 */
+	&.cl-focus {
+		border-color: @focus-border-color;
+	}
+
+	/* 마스크 에디터 - disabled */
+	&.cl-disabled {
+		border-color: @disabled-border-color;
+		background-color: @disabled-selection-background;
+		color: @disabled-text-color;
+	}
+
+	/* 마스크 에디터 - 클리어 버튼 */
+	.cl-maskeditor-clear {
+		&:hover {}
+	}
+}

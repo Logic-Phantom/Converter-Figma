@@ -1,0 +1,222 @@
+@import "../settings.part.less";
+
+
+/* 트리 */
+.cl-tree {
+	border: 1px solid @default-border-color;
+	font: @default-font;
+	color: @default-text-color;
+	background-color: #fff;
+
+	/* 트리 아이템 */
+	.cl-tree-item {
+		
+		/* 트리 아이템 체크박스 아이콘 */
+		.cl-checkbox {
+			// background-image: url(icons/checkbox.png);
+
+			&.cl-checked {
+				// background-image: url(icons/checkbox-selected.png);
+			}
+			&.cl-partialchecked {
+				// background-image: url(icons/checkbox-partial-selected.png);
+			}
+		}
+
+		/* 트리 셀렉션 체크박스 아이콘 */
+		.cl-tree-checkbox {
+			// background-image: url(icons/checkbox.png);
+		}
+
+		/* 트리 아이템 아이콘 영역 */
+		.cl-tree-itemicon{
+			// background-image: url(icons/tree-file.png);
+		}
+
+		/* 트리 아이템의 펼치고 접혀지는 아이콘 영역 */
+		.cl-tree-treeicon {
+		}
+
+		/* 트리 아이템 텍스트 */
+		.cl-text {
+		}
+
+		/* 텍스트 편집 상자 */
+		.cl-texteditor{
+
+		}
+
+		/* 트리 아이템 뱃지 스타일 */
+		.cl-badge{
+
+		}
+
+		&.cl-checked {
+
+			/* 트리 아이템 체크박스 아이콘 - 선택됨 */
+			> .cl-tree-checkbox {
+				// background-image: url(icons/checkbox-selected.png);
+			}
+		}
+
+		&.cl-partialchecked {
+
+			/* 트리 아이템 체크박스 아이콘 - 부분 선택됨 */
+			> .cl-tree-checkbox {
+				// background-image: url(icons/checkbox-partial-selected.png);
+			}
+		}
+
+		&.cl-folder {
+
+			/* 트리 아이템 폴더 아이콘 */
+			.cl-tree-itemicon {
+				// background-image:url(icons/tree-folder.png);
+			}
+
+			/* 트리 아이템 폴더 아이콘 - 펼쳐짐 */
+			&.cl-expanded > .cl-tree-treeicon {
+				// background-image:url(icons/expanded.png);
+			}
+
+			/* 트리 아이템 폴더 아이콘 - 접힘 */
+			&.cl-collapsed > .cl-tree-treeicon {
+				// background-image:url(icons/collapsed.png);
+			}
+		}
+
+		/* 트리 아이템 - 비활성화 */
+		&.cl-disabled{
+			color: @disabled-text-color;
+
+			/* 트리 아이템 - 비활성화, 선택됨 */
+			&.cl-selected {
+				color: @disabled-selection-foreground;
+				background-color:  @disabled-selection-background;
+			}
+		}
+
+		/* 트리 아이템 - 선택됨 */
+		&.cl-selected {
+			background-color: @selection-background;
+			color: @selection-foreground;
+
+			&.cl-folder {
+				
+				/* 트리 아이템 폴더 펼쳐짐 아이콘 - 선택됨 */
+				&.cl-expanded > .cl-tree-treeicon {
+					// background-image:url(icons/expanded-selected.png);
+				}
+	
+				/* 트리 아이템 폴더 점힘 아이콘 - 선택됨 */
+				&.cl-collapsed > .cl-tree-treeicon {
+					// background-image:url(icons/collapsed-selected.png);
+				}
+			}
+		}
+
+	}
+
+	/* 트리 - 포커스 */
+	&.cl-focus {
+		border-color: @focus-border-color;
+	}
+
+	/* 트리 다중 선택 */
+	&.cl-multi-select{
+		.cl-tree-item{
+			&.cl-checked{
+				
+				&.cl-selected.cl-hover{
+					background-color: @selection-background;
+					color: @selection-foreground;
+				}
+			}
+		}
+	}
+
+	/* 트리 아이템간 라인 */
+	&.cl-tree-lines{
+		
+		.cl-tree-item{
+			// padding: 0px 10px 0px 0px;
+			&.cl-expanded> .cl-tree-treeicon {
+				// background-image: url('icons/node-expanded-black.png');
+			}
+			&.cl-expanded.cl-selected> .cl-tree-treeicon {
+				// background-image: url('icons/node-expanded-white.png');
+			}
+			&.cl-collapsed> .cl-tree-treeicon {
+				// background-image: url('icons/node-collapsed-black.png');
+			}
+			&.cl-collapsed.cl-selected> .cl-tree-treeicon {
+				// background-image: url('icons/node-collapsed-white.png');
+			}
+			.cl-tree-line {
+				// background-image: url('icons/tree-line.png');
+			}
+			.cl-tree-iconline {
+				// background-image: url('icons/tree-line-child.png');
+			}
+			&.cl-last{
+				.cl-tree-iconline {
+					// background-image: url('icons/tree-line-child-last.png');
+				}
+			}
+			&.cl-first{
+				.cl-tree-iconline {
+					// background-image: url('icons/tree-line-first.png');
+				}
+			}
+			&.cl-first.cl-last{
+				.cl-tree-iconline{
+					// background-image: url('icons/tree-line-first-last.png');
+				}
+			}
+			.cl-text {
+				// padding: 3px 0px 3px 4px;
+			}
+			.cl-tree-line,.cl-tree-treeicon {
+				// padding: 3px 0px 3px 0px;
+			}
+		}//.cl-tree-item
+	}//&.cl-tree-lines
+
+}
+
+.cl-tree:not(.cl-disabled) {
+	.cl-tree-item:not(.cl-disabled){
+
+		/* 트리 아이템 - hover */
+		&:not(.cl-selected).cl-hover, &:not(.cl-selected):hover {
+			background-color: @hover-background;
+			color: @hover-foreground;
+		}
+
+		/* 드래그 아이템 위치에 따른 표시 - 아래 */
+		&.cl-dropbottom{
+			// box-shadow: inset 0 -2px 0 @default-border-color;
+		}
+
+		/* 드래그 아이템 위치에 따른 표시 - 중간 */
+		&.cl-dropmiddle, &:not(.cl-selected).cl-dropmiddle{
+			// background-color: @default-border-color;
+		}
+
+		/* 드래그 아이템 위치에 따른 표시 - 위 */
+		&.cl-droptop{
+			// box-shadow: inset 0 2px 0 @default-border-color;
+		}
+	}
+}
+
+/* 트리 - 비활성화 */
+.cl-tree.cl-disabled {
+	color: @disabled-text-color;
+	border-color: @disabled-border-color;
+
+	.cl-tree-item.cl-selected {
+		background-color: @disabled-selection-background;
+		color: @disabled-selection-foreground;
+	}
+}

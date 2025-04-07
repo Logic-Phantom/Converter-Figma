@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-81800733" version="1.0.5538">
+  <head std:sid="head-4d023612">
+    <screen std:sid="screen-1d4bfb5a" id="default" name="default" width="1024px" height="768px"/>
+    <screen std:sid="screen-50703558" id="tablet" name="tablet" width="500px" height="667px"/>
+    <screen std:sid="screen-dedab326" id="mobile" name="mobile" width="350px" height="525px"/>
+    <cl:model std:sid="model-19b996cf">
+      <cl:submission std:sid="submission-02cd9093" id="sms1" action="../design/convert.do" mediatype="multipart/form-data"/>
+      <cl:submission std:sid="submission-919db20b" id="sms2" action="../design/test.do"/>
+      <cl:submission std:sid="submission-09cc0cc1" id="sms3" method="get" action="../design/convert.do"/>
+    </cl:model>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-eb5be93a">
+    <cl:button std:sid="button-52d8805a" id="btn1" value="Button">
+      <cl:listener std:sid="listener-849137a6" name="click" handler="onBtn1Click"/>
+      <cl:xylayoutdata std:sid="xyl-data-3feca36a" top="188px" left="307px" width="322px" height="147px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:button>
+    <cl:button std:sid="button-4bf3dfeb" value="Button">
+      <cl:listener std:sid="listener-a15b58bd" name="click" handler="onButtonClick"/>
+      <cl:xylayoutdata std:sid="xyl-data-3603192b" top="419px" left="307px" width="312px" height="162px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:button>
+    <cl:radiobutton std:sid="r-button-07aac37b" id="rdb1">
+      <cl:xylayoutdata std:sid="xyl-data-2762f81e" top="349px" left="788px" width="10px" height="10px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:radiobutton>
+    <cl:xylayout std:sid="xylayout-3e0240ee"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

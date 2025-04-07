@@ -1,0 +1,1 @@
+java -jar C:\Users\WANI\Desktop\temp\ci\e6-compiler.jar -s D:\workspace\eXBuilder6\eXCFrame-v2-ui -o C:\Users\WANI\Desktop\temp\ui --relativize-less-url true -l true

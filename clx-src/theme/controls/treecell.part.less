@@ -1,0 +1,217 @@
+@import "../settings.part.less";
+
+
+/* 트리 셀 */
+.cl-treecell {
+	// background-color: #fff;
+	// text-align: left;
+	// color: @default-text-color;
+	// background-image: linear-gradient(#eee, white 3px);
+
+	/* 트리 셀 안에 트리 아이템 (트리 셀에서 트리 구조가 시작되는 영역) */
+	.cl-treecell-item {
+
+		/* 트리 아이템이 펼치고 접혀지는 아이콘 영역 */
+		.cl-treecell-treeicon {
+			// width: 16px;
+			// background-position: center;
+			// background-repeat: no-repeat;
+			// background-size: contain;
+		}
+
+		/* 트리 아이템 체크박스 */
+		.cl-checkbox {
+			// background-image: url(icons/checkbox.png);
+
+			/* 체크된 체크박스 */
+			&.cl-checked {
+				// background-image: url(icons/checkbox-selected.png);
+
+				/* 체크된 disabled 체크박스 */
+				&.cl-disabled {
+					// background-image: url(icons/checkbox-disabled-selected.png);
+				}
+			}
+
+			/* 부분 체크된 체크박스 */
+			&.cl-partialchecked {
+				// background-image: url(icons/checkbox-partial-selected.png);
+
+				/* disabled 상태의 부분 체크된 체크박스*/
+				&.cl-disabled {
+					// background-image: url(icons/checkbox-disabled-partial-selected.png);
+				}
+			}
+		}
+
+		/* 트리 아이템의 아이콘 영역 */
+		.cl-treecell-itemicon {
+			// width: 20px;
+			// background-image: url(icons/tree-file.png);
+			// background-size: 16px auto;
+			// background-position: center;
+			// background-repeat: no-repeat;
+		}
+
+		/* 트리 아이템의 텍스트 */
+		.cl-text {
+			// padding-left: 4px;
+			// white-space: nowrap;
+			// color: inherit;
+			// font: inherit;
+			// text-align: inherit;
+			// text-decoration: inherit;
+
+			/* 트리 아이템의 인풋 영역 */
+			input {
+				// display:block;
+				// width: 100%;
+				// height:100%;
+				// border: 0;
+				// padding:0;
+				// background-color: transparent;
+
+				// color: inherit;
+				// font: inherit;
+				// text-align: inherit;
+				// text-decoration: inherit;
+				// outline: none;
+			}
+		}
+
+		/* 폴더형 트리 아이템 */
+		&.cl-folder {
+
+			/* 폴더형 트리 아이템의 아이콘 영역 */
+			.cl-treecell-itemicon {
+				// background-image:url(icons/tree-folder.png);
+			}
+
+			/* 폴더형 트리 아이템이 펼쳐졌을 때 펼치고 접혀지는 아이콘 영역 */
+			&.cl-expanded>.cl-treecell-treeicon {
+				// background-image:url(icons/expanded.png);
+			}
+
+			/* 폴더형 트리 아이템이 접혀졌을 때 펼치고 접혀지는 아이콘 영역 */
+			&.cl-collapsed>.cl-treecell-treeicon {
+				// background-image:url(icons/collapsed.png);
+			}
+		}
+
+		/* 트리 아이템 - disabled */
+		&.cl-disabled {
+			// color: @disabled-text-color;
+		}
+	}
+
+	/* 트리셀 - focus */
+	&.cl-focus {
+		// border-color: @focus-border-color;
+	}
+
+	/* disabled 트리셀 */
+	&.cl-disabled {
+
+		/* disabled 트리셀의 체크박스 */
+		.cl-checkbox {
+
+			/* disabled 트리셀의 체크된 체크박스 */
+			&.cl-checked {
+				// background-image: url(icons/checkbox-disabled-selected.png);
+			}
+
+			/* disabled 트리셀의 부분 체크된 체크박스 */
+			&.cl-partialchecked {
+				// background-image: url(icons/checkbox-disabled-partial-selected.png);
+			}
+		}
+	}
+
+	/* 트리셀간 라인 */
+	&.cl-treecell-lines {
+
+		/* 트리 셀 라인 적용시 트리 셀 아이템 */
+		.cl-treecell-item {
+
+			/* 트리 라인의 확장/축소 아이콘 */
+			.cl-treecell-treeicon {
+				// background-size: auto;
+				// width:auto;
+			}
+
+			&.cl-expanded>.cl-treecell-treeicon {
+				// background-image: url('icons/node-expanded-black.png');
+			}
+
+			&.cl-expanded.cl-selected>.cl-treecell-treeicon {
+				// background-image: url('icons/node-expanded-white.png');
+			}
+
+			&.cl-collapsed>.cl-treecell-treeicon {
+				// background-image: url('icons/node-collapsed-black.png');
+			}
+
+			&.cl-collapsed.cl-selected>.cl-treecell-treeicon {
+				// background-image: url('icons/node-collapsed-white.png');
+			}
+
+			/* 형제 노드에 의해 라인만 있는 영역 */
+			.cl-treecell-line {
+				// background-image: url('icons/tree-line.png');
+				// background-position: center;
+			}
+
+			/* 현재 트리 셀의 라인 영역 */
+			.cl-treecell-iconline {
+				// background-image: url('icons/tree-line-child.png');
+				// background-position: center;
+			}
+
+			&.cl-last {
+				.cl-treecell-iconline {
+					// background-image: url('icons/tree-line-child-last.png');
+				}
+			}
+
+			&.cl-first {
+				.cl-treecell-iconline {
+					// background-image: url('icons/tree-line-first.png');
+				}
+			}
+
+			&.cl-first.cl-last {
+				.cl-treecell-iconline {
+					// background-image: url('icons/tree-line-first-last.png');
+				}
+			}
+
+			.cl-text {
+				// padding: 3px 0px 3px 4px;
+			}
+
+			.cl-treecell-line,
+			.cl-treecell-treeicon,
+			.cl-treecell-iconline {
+				// padding: 3px 0px 3px 0px;
+			}
+		}
+
+		//.cl-treecell-item
+	}
+
+	//&.cl-treecell-lines
+}
+
+/* 트리 셀이 enabled이고, 트리 아이템이 enabled일때 스타일 */
+.cl-treecell:not(.cl-disabled) {
+	.cl-treecell-item:not(.cl-disabled) {
+		// cursor: pointer;
+	}
+}
+
+/* 트리 셀 - disabled */
+.cl-treecell.cl-disabled {
+	// color: @disabled-text-color;
+	// border-color: @disabled-border-color;
+
+}

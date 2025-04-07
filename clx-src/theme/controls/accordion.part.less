@@ -1,0 +1,94 @@
+@import "../settings.part.less";
+
+/* 아코디언 */
+.cl-accordion {
+	border: 1px solid @default-border-color;
+	// background-color: #fff;
+	color: @default-text-color;
+	font: @default-font;
+
+	/* 아코디언의 각 헤더 */
+	.cl-accordion-header {
+		// background-color: #F2F4F5;
+		color: @default-text-color;
+		// border: solid 1px #B7B8BA;
+
+
+		/* 아코디언 펼침 버튼 */
+		.cl-accordion-expander {
+			// background-image: url(icons/expand.png);
+		}
+
+		/* 아코디언 헤더에 마우스가 호버되었을 떄의 스타일 */
+		&:hover:not(.cl-disabled){			
+			// background-color: #D7D7D9;			
+		}
+
+		/* 아코디언 헤더 비활성화 상태 */
+		&.cl-disabled {
+			cursor: auto;
+			background-color: @disabled-selection-background;
+			border-color: @disabled-selection-background;
+			color: @disabled-selection-foreground;
+		}
+
+		/* 아코디언 헤더를 클릭했을 때의 스타일 */
+		&.cl-activated {
+			background-color: @selection-background;
+			border-color: @selection-background;
+			color: @selection-foreground;
+			
+			/* 클릭된 헤더의 펼침 버튼 아이콘 */
+			.cl-accordion-expander{
+				// background-image: url(icons/collapse-selected.png);
+			}
+		}
+	}
+
+	/* 아코디언 컨텐츠를 감싸는 영역 */
+	.cl-accordion-section:not(.cl-accordion-placeholder) {
+
+		/* 아코디언 컨텐츠 */
+		.cl-accordion-content {
+			border: solid 1px @selection-background;
+		}
+	}
+
+	/* 아코디언 섹션 */
+	.cl-accordion-section+.cl-accordion-header{
+		// margin-top: 4px;
+
+		/* 아코디언 섹션간의 간격 */
+		&.cl-first{
+			// margin-top: 0px;
+		}
+	}	
+}
+ 
+/* Disabled 상태의 아코디언 */
+.cl-accordion.cl-disabled {
+
+	/* 선택된 헤더 */
+	.cl-accordion-header {
+
+		/* 아코디언 헤더가 선택된 경우 */
+		&.cl-activated{
+			background-color: @disabled-selection-background;
+			border-color: @disabled-selection-background;
+			color: @disabled-selection-foreground;
+		}
+
+		/* 아코디언 헤더에 마우스가 호버되었을 떄의 스타일 */
+		&:hover{
+			// background-color: #F2F4F5;
+		}
+	}
+
+	.cl-accordion-section:not(.cl-accordion-placeholder) {
+
+		/* 선택된 바디 */
+		.cl-accordion-content {
+			border-color: @disabled-selection-background;
+		}
+	}
+}

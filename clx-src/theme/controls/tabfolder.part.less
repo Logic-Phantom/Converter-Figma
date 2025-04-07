@@ -1,0 +1,78 @@
+@import "../settings.part.less";
+
+
+/* 탭 폴더 - disabled */
+.cl-tabfolder.cl-disabled {}
+
+/* 탭 폴더 */
+.cl-tabfolder {
+	color: @default-text-color;
+	font: @default-font;
+
+	/* 헤더 */
+	.cl-tabfolder-header {
+
+		/* 좌측 스크롤 버튼 */
+		.cl-tabfolder-prev {
+			border: solid 1px @default-border-color;
+			// background-image: url("icons/prev.png");
+
+			/* 비활성 상태 */
+			&.cl-disabled {
+				// background-image: url("icons/prev-selected.png");
+			}
+		}
+
+		/* 우측 스크롤 버튼 */
+		.cl-tabfolder-next {
+			border: solid 1px @default-border-color;
+			// background-image: url("icons/next.png");
+
+			/* 비활성 상태 */
+			&.cl-disabled {
+				// background-image: url("icons/next-selected.png");
+			}
+		}
+
+		/* 탭 아이템 */
+		.cl-tabfolder-item {
+			background-color: white;
+			border: solid 1px @default-border-color;
+
+			/* 탭 아이템 체크 박스 */
+			.cl-checkbox {}
+
+			/* 탭 아이템 닫기 버튼 */
+			.cl-tabfolder-button {
+				// background-image: url(icons/close.png);
+			}
+
+			/* 탭 아이템 - 선택됨 */
+			&.cl-selected {
+				background-color: @selection-background;
+				color: @selection-foreground;
+				border-color: @focus-border-color;
+
+				/* 선택된 탭 아이템 닫기 버튼 */
+				.cl-tabfolder-button {
+					// background-image: url(icons/close-selected.png);
+				}
+			}
+
+			/* 탭 아이템 - 호버 */
+			&:not(.cl-selected):hover {
+				background-color: @hover-background;
+			}
+
+			/* 비활성 탭 아이템 */
+			&.cl-disabled {}
+		}
+	}
+
+	/* 탭폴더 바디 */
+	.cl-tabfolder-body {
+		background-color: white;
+		color: @default-text-color;
+		border: solid 1px @default-border-color;
+	}
+}

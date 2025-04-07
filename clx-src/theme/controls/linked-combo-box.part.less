@@ -1,0 +1,130 @@
+@import "../settings.part.less";
+
+ /* 링크드 콤보 박스 루트 */
+.cl-linkedcombobox{
+	font: @default-font;
+	color: @default-text-color;
+
+	/* 콤보 박스 */
+	.cl-linkedcombobox-combo {
+		border: 1px solid @default-border-color;
+		background-color: #fff;
+		// width: 150px;
+
+		/* 선택된 아이템의 아이콘 */
+		.cl-icon {
+		}
+
+		/* 콤보 박스 인풋 텍스트 */
+		.cl-text{
+
+			/* preventInput속성일때 스타일 */
+			&.cl-preventinput{
+
+			}
+		}
+
+		/* 콤보 박스 펼침 버튼 */
+		.cl-linkedcombobox-button {
+			// background-image: url(icons/chevron.png);
+		}
+
+	}
+
+	/* 콤보 박스 - 포커스 상태 */
+	.cl-linkedcombobox-combo  {
+		&.cl-focus {
+			border-color: @focus-border-color;
+		}
+	}
+	
+	/* 콤보 박스 - disabled 상태 */
+	&.cl-disabled {
+		color: @disabled-text-color;
+		.cl-linkedcombobox-combo{
+			border-color: @disabled-border-color;
+			background-color: @disabled-selection-background;
+		}
+
+		/* 콤보 박스 펼침 버튼 - disabled 상태 */
+		.cl-linkedcombobox-button{
+
+		}
+	}
+}
+
+
+/* 콤보 박스 리스트 박스 */
+.cl-linkedcombobox-list {
+	font: @default-font;
+	color: @default-text-color;
+	border: 1px solid @focus-border-color;
+	background-color: white;
+	
+	/* 리스트박스의 쉐도우 */
+	&.cl-popup {
+		// box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, .3);
+	}
+	
+	/* 콤보박스 위에 표시될때 상태 */
+	&.cl-top {
+	}
+
+	/* 콤보박스 아래에 표시될때 상태 */
+	&.cl-bottom {
+	}
+
+	/* 콤보 박스 아이템 */
+	.cl-linkedcombobox-item {
+		
+		/* 콤보 박스 아이템 아이콘 */
+		.cl-icon {
+		}
+		
+		/* 콤보 박스 아이템 텍스트 */
+		.cl-text {
+		}
+
+		/* 콤보 박스 아이템 드릴다운 아이콘 */
+		.cl-linkedcombobox-arrow.cl-folder {
+			// background-image: url(icons/drill-down.png);
+		}
+		
+		/* 콤보 박스 아이템 리프 아이콘 */
+		.cl-linkedcombobox-arrow.cl-leaf {
+		}
+
+
+		/* 콤보 박스 아이템 - 선택됨 */
+		&.cl-selected { 
+			background-color: @selection-background;
+			color: @selection-foreground;
+
+			/* 콤보 박스 아이템 드릴 다운 아이콘 - 선택됨 */
+			.cl-linkedcombobox-arrow.cl-folder {
+				// background-image: url(icons/drill-down-selected.png);
+			}
+
+		}
+
+		/* 콤보 박스 아이템 - disabled 상태 */
+		&.cl-disabled {
+			color: @disabled-text-color;
+
+			/* 콤보 박스 아이템 - 선택됨, disabled 상태 */
+			&.cl-selected {
+				color: @disabled-selection-foreground;
+				background-color:  @disabled-selection-background;
+			}
+		}
+
+		&:not(.cl-disabled){
+			
+			/* 콤보 박스 아이템 - 호버 상태 */
+			&:not(.cl-selected):hover, &:not(.cl-selected).cl-hover {
+				color: @hover-foreground;
+				background-color: @hover-background;
+			}
+		}
+	}
+}

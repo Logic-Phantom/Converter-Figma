@@ -1,0 +1,135 @@
+@import "../settings.part.less";
+
+/* 메뉴 루트 */
+.cl-menu {
+	font: @default-font;
+
+	/* 메뉴 리스트 */
+	.cl-menu-list {
+		border: 1px solid @default-border-color;
+
+		/* 서브 메뉴 */
+		&.cl-sub {
+			border: 1px solid @default-border-color;
+		}
+
+		/* 스크롤 업 버튼 */
+		.cl-arrow-up {
+
+			// background-image: url(icons/up-spin.png);
+			&:hover {
+				// background-image: url(icons/up-spin-hover.png);
+			}
+
+			&.cl-disabled {
+				background-color: @disabled-selection-background;
+			}
+		}
+
+		/* 스크롤 다운 버튼 */
+		.cl-arrow-down {
+
+			// background-image: url(icons/down-spin.png);
+			&:hover {
+				// background-image: url(icons/down-spin-hover.png);
+			}
+
+			&.cl-disabled {
+				background-color: @disabled-selection-background;
+			}
+		}
+
+		/* 메뉴 아이템 */
+		.cl-menu-item {
+			color: @default-text-color;
+
+			/* 메뉴 아이템 아이콘 */
+			.cl-menu-icon {}
+
+			/* 메뉴 아이템 텍스트 */
+			.cl-text {}
+
+			/* 메뉴 아이템 단축키 */
+			.cl-menu-accesskey {}
+
+			/* 메뉴 아이템 드릴다운 아이콘 */
+			.cl-menu-arrow {}
+
+			/* 폴더 아이템 방향 이미지 */
+			&.cl-folder {
+
+				>.cl-menu-arrow,
+				>.cl-menu-arrow-wrapper .cl-menu-arrow {
+					// background-image: url(icons/drill-down.png);
+				}
+			}
+
+			&.cl-hover {
+				background-color: @hover-background;
+				color: @hover-foreground;
+			}
+
+			/* 메뉴 아이템 - disabled */
+			&.cl-disabled {
+				color: @disabled-text-color;
+
+				/* 메뉴 아이템 - 선택됨, disabled */
+				&.cl-selected {
+					color: @disabled-selection-foreground;
+					background-color: @disabled-selection-background;
+				}
+			}
+
+			&.cl-selected {
+				background-color: @selection-background;
+				color: @selection-foreground;
+
+				&.cl-folder {
+
+					>.cl-menu-arrow,
+					>.cl-menu-arrow-wrapper>.cl-menu-arrow {
+						// background-image: url(icons/drill-down-selected.png);
+					}
+				}
+
+			}
+		}
+	}
+
+	&:not(.cl-disabled){
+		/* 메뉴 아이템 - 호버 */
+		.cl-menu.item{
+			&:not(.cl-disabled) {
+				&:not(.cl-selected):hover,
+				&.cl-hover {
+					background-color: @hover-background;
+					color: @hover-foreground;
+				}
+			}
+		}
+	}
+	&.cl-focus {
+
+		/* 메뉴 리스트 - 포커스 */
+		.cl-menu-list {
+			border-color: @focus-border-color;
+		}
+	}
+
+	&.cl-disabled {
+
+		.cl-menu-item {
+			color: @disabled-text-color;
+
+			&.cl-selected {
+				background-color: @disabled-selection-background;
+				color: @disabled-selection-foreground;
+
+				>.cl-menu-arrow,
+				>.cl-menu-arrow-wrapper>.cl-menu-arrow {
+					// background-image: url(icons/drill-down.png);
+				}
+			}
+		}
+	}
+}

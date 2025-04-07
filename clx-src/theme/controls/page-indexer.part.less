@@ -1,0 +1,121 @@
+@import "../settings.part.less";
+
+/* 페이지 인덱서 */
+.cl-pageindexer {
+	font: @default-font;
+	color: @default-text-color;
+
+	/* 페이지 인덱서 버튼 공통 */
+	.cl-pageindexer-first,
+	.cl-pageindexer-last,
+	.cl-pageindexer-prev,
+	.cl-pageindexer-next,
+	.cl-pageindexer-index {
+		border: 1px solid @default-border-color;
+
+		&.cl-disabled {
+			background-color: @disabled-selection-background;
+		}
+	}
+
+	/* navigationType="text"으로 표현되는 페이지 정보 텍스트 */
+	.cl-pageindexer-text {}
+
+	/* 페이지 인덱서 처음으로 버튼 */
+	.cl-pageindexer-first {
+		// background-image: url("icons/first.png");
+	}
+
+	/* 페이지 인덱서 이전 버튼 */
+	.cl-pageindexer-prev {
+		// background-image: url("icons/prev.png");
+	}
+
+	/* 페이지 인덱서 다음 버튼 */
+	.cl-pageindexer-next {
+		// background-image: url("icons/next.png");
+	}
+
+	/* 페이지 인덱서 마지막으로 버튼 */
+	.cl-pageindexer-last {
+		// background-image: url("icons/last.png");
+	}
+
+	/* navigationType="button"으로 표현되는 페이지 인덱스 버튼 */
+	.cl-pageindexer-index {
+
+		/* 페이지 인덱서 선택된 페이지 */
+		&.cl-selected {
+			background-color: @selection-background;
+			color: @selection-foreground;
+			border-color: @focus-border-color;
+		}
+	}
+
+	/* 페이지 인덱서 - disabled */
+	&.cl-disabled {
+		color: @disabled-text-color;
+
+		/* 페이지 인덱서 버튼 공통 - disabled */
+		.cl-pageindexer-first,
+		.cl-pageindexer-last,
+		.cl-pageindexer-prev,
+		.cl-pageindexer-next,
+		.cl-pageindexer-index {}
+
+		/* 페이지 인덱서 버튼 공통 - disabled, selected */
+		.cl-pageindexer-index.cl-selected {
+			background-color: @disabled-selection-background;
+			color: @disabled-selection-foreground;
+		}
+	}
+
+}
+
+
+.cl-pageindexer:not(.cl-disabled) {
+
+	.cl-pageindexer-first,
+	.cl-pageindexer-last,
+	.cl-pageindexer-prev,
+	.cl-pageindexer-next,
+	.cl-pageindexer-index {
+
+		&:not(.cl-selected) {
+
+			&.cl-hover,
+			&:hover {
+				background-color: @hover-background;
+			}
+		}
+
+		&.cl-disabled {
+			cursor: default;
+
+			&.cl-hover,
+			&:hover {
+				background-color: @disabled-selection-background;
+			}
+		}
+	}
+
+	/* 페이지 인덱서 처음으로 버튼 - active */
+	.cl-pageindexer-first:active {
+		// background-image: url("icons/first-selected.png");
+	}
+
+	/* 페이지 인덱서 이전 버튼 - active */
+	.cl-pageindexer-prev:active {
+		// background-image: url("icons/prev-selected.png");
+	}
+
+	/* 페이지 인덱서 다음 버튼 - active */
+	.cl-pageindexer-next:active {
+		// background-image: url("icons/next-selected.png");
+	}
+
+	/* 페이지 인덱서 마지막으로 버튼 - active */
+	.cl-pageindexer-last:active {
+		// background-image: url("icons/last-selected.png");
+	}
+}

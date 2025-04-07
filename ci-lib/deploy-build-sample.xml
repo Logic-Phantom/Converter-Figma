@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+
+<project name="deploy" default="build" basedir=".">
+	<!--
+	<echo message="${cpr-version}" />
+	 -->
+	<!-- 1. Property Setting -->
+	<!-- Application Source Project Root Directory 
+	-->
+	<property name="workspace.dir"  value="E:/workspace/eXCFrame/eXCFrame" />
+	
+	<property name="ci.lib"  value="${basedir}/ci-lib" />
+	
+	<property name="defaults.js.path"  value="${workspace.dir}/exbuilder/runtime/conf" />
+	
+	
+	<!-- Web Application Project Directory -->
+  <property name="app.web.dir"  value="${workspace.dir}/src/main" />
+	
+	<!-- eXbuilder6 UI Project Directory -->
+	<property name="app.ui.dir"  value="E:/workspace/eXCFrame/eXCFrame-v2-ui" />
+	
+	<!-- Application Java Project Directory -->
+	<property name="app.src.dir"  value="${app.web.dir}/java" />
+	
+	<!-- Compiled & Aggregated Source/Resource Directory For Deploy -->
+  <property name="deploy.dir"  value="${workspace.dir}/target/eXCFrame/webapps" />
+	
+	<!-- WAS Server Directory -->
+	<property name="server.home" value="C:\IDE\tools\apache-tomcat-8.5.58" />
+	
+	<!-- Target WAS Web Application Deploy Directory war가 배포될 실제 소스가 디플로이 되는 톰켓 webapp 경로 -->
+	<property name="webapps.deploy.dir" value="${workspace.dir}/target" />
+	
+	<!-- Java Compile Temporary Directory -->
+	<property name="dest_compile_app"  value="${deploy.dir}/WEB-INF/classes" />
+	
+	<property name="source_java_ver" value="1.8"/>
+	<property name="target_java_ver" value="1.8"/>
+	
+	<!--	
+	<property name="deployer.lib" value="C:\app\tools\build\apache-tomcat-8.5.54-deployer\lib" />
+	<path id="deployer.classpath">
+	  <fileset dir="${deployer.lib}">
+	   <include name="*.jar"/>
+	  </fileset>
+	 </path>
+	 	<taskdef resource="org/apache/catalina/ant/catalina.tasks"
+     classpathref="deployer.classpath"/>
+	 -->
+	<tstamp prefix="build-info"> 
+		<format property="current-date" pattern="yyyy-MM-dd" locale="en" /> 
+		<format property="current-time" pattern="hh:mm:ss a z" locale="en" /> 
+	</tstamp> 
+
+	<!-- eXbuilder6 Compile Task Definition  -->
+	<taskdef name="clxcompile"
+	      classname="kr.co.tomatosystem.exbuilder.cikit.build.ant.Compile"
+	      classpath="${ci.lib}/clx/e6-compiler.jar"/>
+		  
+	<!-- 2. Application Libarary -->
+	<path id="appLibs">
+		<fileset dir="${app.web.dir}/webapp/WEB-INF/lib">
+			<include name="*.jar"/>
+		</fileset>		
+	</path>
+	
+	<path id="WebLibs">
+		<fileset dir="${server.home}/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="buildLibs">
+		<fileset dir="${ci.lib}/clx">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	
+	<!-- 3. Clean -->
+	<target name="clean">
+    <echo message="## delete Deploy Resources ##" />
+    <delete dir="${deploy.dir}" />
+    <mkdir dir="${deploy.dir}" />
+	<mkdir dir="${deploy.dir}/ui" />
+	<mkdir dir="${deploy.dir}/resource" />
+    <mkdir dir="${deploy.dir}/WEB-INF/lib" />
+    </target>
+	
+	<!-- 4-1. eXbuilder6 UI Source Compile 
+	<target name="ui-compile">
+	    <clxcompile
+	            src="${app.web.dir}"
+	            out="${deploy.dir}/ui"
+	            minify="true"
+	            single="false"
+	            language="true"
+	            main=""
+	        />
+	</target>
+	-->
+	
+	<target name="ui-compile">
+	    <clxcompile src="${app.ui.dir}" out="${deploy.dir}/ui" minify="true" single="false" language="true" main="">
+		</clxcompile>
+	</target>
+	
+	<!-- 4-3. Application Source Compile -->
+	<target name="app-compile">
+		<echo message="## App Source Compile ##" />
+		<mkdir dir="${dest_compile_app}"/>
+		<javac source="${source_java_ver}" target="${target_java_ver}" encoding="utf-8" includeantruntime="false" srcdir="${app.src.dir}" destdir="${dest_compile_app}">
+			<classpath refid="appLibs"></classpath>
+			<classpath refid="WebLibs"></classpath>
+			<classpath refid="buildLibs"></classpath>
+		</javac>
+		<copy todir="${dest_compile_app}" overwrite="true">
+            <fileset dir="${app.src.dir}">
+                <include name="**/**/*.xml" />
+            </fileset>
+        </copy>
+	</target>
+
+	
+	<!-- 5. Source Merge -->
+	<target name="aggregate">
+    	<echo message="## Aggregate Application resource ##" />
+		<delete dir="${deploy.dir}/temp_source" />
+        <copy todir="${deploy.dir}" overwrite="true">
+            <fileset dir="${app.web.dir}/webapp">
+              <exclude name="**/.svn/**" />
+            	<exclude name="**/.git/**" />
+            	<exclude name="**/.gitignore" />
+        		<exclude name="**/src/**" />
+            	<exclude name="WEB-INF/lib" />
+              <include name="**" />
+            </fileset>
+        </copy>
+		
+		<copy todir="${deploy.dir}/WEB-INF/classes" overwrite="true">
+			<fileset dir="${app.web.dir}/resources">
+                <exclude name="**/.svn/**" />
+                <exclude name="**/.gitignore" />
+                <include name="**" />
+            </fileset>
+			<fileset dir="${workspace.dir}/exbuilder/config">
+                <exclude name="**/.svn/**" />
+                <include name="**" />
+            </fileset>
+        </copy>
+				
+		<copy todir="${deploy.dir}/resource" overwrite="true">
+			<fileset dir="${ci.lib}/clx/runtime">
+                <exclude name="**/.svn/**" />
+                <exclude name="**/.gitignore" />
+                <include name="**" />
+            </fileset>
+        </copy>
+		
+		<copy file="${defaults.js.path}/defaults.js" 
+    		  tofile="${deploy.dir}/resource/conf/defaults.js" overwrite="true" >
+    	</copy>
+		
+		
+    </target>
+	
+		
+	<!--  6. Source Deploy -->
+	<target name="deploy">
+		<echo message="## Copy Application resource to server deploy path ##" />
+		<!--
+		<delete dir="${webapps.deploy.dir}" />
+		<mkdir dir="${webapps.deploy.dir}"/>
+		<copy todir="${webapps.deploy.dir}" overwrite="true">
+			<fileset dir="${deploy.dir}">
+				<include name="**" />
+				<exclude name="**/.svn/**" />
+				<exclude name="**/.git/**" />
+				<exclude name="**/.gitignore/**" />
+			</fileset>
+		</copy>
+		-->
+	</target>
+
+	<target name="war-clean" description="project folder remove">
+		<delete file="${deploy.dir}/eXCFrame-pkg.war" />
+	</target>
+	
+	<target name="war-make" depends="war-clean" description="export war">
+		<war destfile="${webapps.deploy.dir}/eXCFrame-pkg.war" webxml="${deploy.dir}/WEB-INF/web.xml">
+			<fileset dir="${deploy.dir}">
+    				<exclude name="WEB-INF/web.xml"/>
+    	  	</fileset>
+			<manifest>
+    	    		<attribute name="Built-By" value="TomatoSystem co., ltd"/>
+    	   	</manifest>
+		</war>
+	</target>
+	
+	<target name="upload_prod">
+		<ftp server="xxx" port="21" remotedir="tools/servers/tomcat8-auto-test/webapps"
+			userid="FTP_USER" password="xxx" 
+	 		passive="yes" binary="yes"  depends="yes" verbose="yes" >
+			<fileset dir="${deploy.dir}">
+				<include name="eXCFrame-pkg.war"/>
+			</fileset>
+		</ftp>
+	</target>
+	
+	<target name="manage.restart" depends="manage.stop,manage.start" />
+	 <target name="manage.start">
+        <start url="http://xxx:8088/manager/text"
+               username="admin"
+               password="admin"
+               path="/eXCFrame-pkg" />
+    </target>
+
+    <target name="manage.stop">
+        <stop url="http://xxx:8088/manager/text"
+              username="admin"
+              password="admin"
+              path="/eXCFrame-pkg"
+              />
+    </target>
+	
+	 <target name="manage.start.prod">
+        <start url="http://xxx:8088/manager/text"
+               username="admin"
+               password="admin"
+               path="/eXCFrame-pkg" />
+    </target>
+
+    <target name="manage.stop.prod">
+        <stop url="http://xxx:8088/manager/text"
+              username="admin"
+              password="admin"
+              path="/eXCFrame-pkg"
+              />
+    </target>
+	
+	<target name="build" depends="">
+	</target>
+</project>

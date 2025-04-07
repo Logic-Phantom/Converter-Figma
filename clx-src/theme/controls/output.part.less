@@ -1,0 +1,44 @@
+@import "../settings.part.less";
+
+/* 아웃풋 */
+.cl-output {
+	font: @default-font;
+	color: @default-text-color;
+
+	&.cl-disabled {
+		color: @disabled-text-color;
+	}
+}
+
+.cl-output {
+
+	/* outputType="h1" 설정 시 스타일 */
+	&.cl-output-h1 {}
+
+	/* outputType="h2" 설정 시 스타일 */
+	&.cl-output-h2 {}
+
+	/* outputType="h3" 설정 시 스타일 */
+	&.cl-output-h3 {}
+
+	/* outputType="h4" 설정 시 스타일 */
+	&.cl-output-h4 {}
+
+	/* outputType="h5" 설정 시 스타일 */
+	&.cl-output-h5 {}
+
+	/* outputType="h6" 설정 시 스타일 */
+	&.cl-output-h6 {}
+
+	/* dataType="number"와 format 설정 시 스타일 */
+	&.cl-number-format {}
+
+	/* dataType="date"와 format 설정 시 스타일 */
+	&.cl-date-format {}
+
+	/* dataType="string"과 format 설정 시 스타일 */
+	&.cl-string-format {}
+
+	/* dataType="text"와 format 설정 시 스타일 */
+	&.cl-text-format {}
+}

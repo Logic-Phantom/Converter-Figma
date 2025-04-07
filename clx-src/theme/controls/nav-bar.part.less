@@ -1,0 +1,232 @@
+@import "../settings.part.less";
+
+/* 내비게이션 바 */
+.cl-navigationbar {
+	font: @default-font;
+	// background-color: #fff;
+	border: solid 1px @default-border-color;
+	color: @default-text-color;
+
+	/* 스크롤 왼쪽 버튼 */
+	.cl-navigationbar-prev {
+		// background-image: url("icons/prev.png");
+
+		&.cl-position-both {
+			border-right: solid 1px @default-border-color;
+		}
+
+		&.cl-position-left {
+			border-right: solid 1px @default-border-color;
+		}
+
+		&.cl-position-right {
+			border-left: solid 1px @default-border-color;
+		}
+
+		&.cl-disabled {
+			// background-image: url("icons/prev-selected.png");
+		}
+	}
+
+	/* 스크롤 오른쪽 버튼 */
+	.cl-navigationbar-next {
+		// background-image: url("icons/next.png");
+
+		&.cl-position-both {
+			border-left: solid 1px @default-border-color;
+		}
+
+		&.cl-position-left {
+			border-right: solid 1px @default-border-color;
+		}
+
+		&.cl-position-right {
+			border-left: solid 1px @default-border-color;
+		}
+
+		&.cl-disabled {
+			// background-image: url("icons/next-selected.png");
+		}
+	}
+
+	/* 상단 바 */
+	.cl-navigationbar-bar {
+
+		/* 내비게이션 바 아이템 */
+		.cl-navigationbar-item {
+
+			/* 내비게이션 바 아이템 아이콘 */
+			.cl-navigationbar-icon {}
+
+			/* 내비게이션 바 아이템 텍스트 */
+			.cl-text {}
+
+			/* 내비게이션 바 아이템 단축키 */
+			.cl-navigationbar-accesskey {}
+
+			/* 내비게이션 바 아이템 드랍다운 아이콘 */
+			.cl-navigationbar-arrow {
+				// background-image: url(icons/expand.png);
+			}
+
+			/* 내비게이션 바 아이템 - 호버 */
+			&.cl-hover {
+				background-color: @hover-background;
+				color: @hover-foreground;
+			}
+
+			/* 내비게이션 바 아이템 - 활성화 */
+			&:not(.cl-disabled) {
+
+				&:not(.cl-selected):hover,
+				&.cl-hover {
+					background-color: @hover-background;
+					color: @hover-foreground;
+				}
+			}
+
+			/* 내비게이션 바 아이템 - 비활성화 */
+			&.cl-disabled {
+				color: @disabled-text-color;
+
+				/* 내비게이션 바 아이템 - 선택됨, 비활성화 */
+				&.cl-selected {
+					color: @disabled-selection-foreground;
+					background-color: @disabled-selection-background;
+				}
+			}
+
+			/* 내비게이션 바 아이템 - 선택됨 */
+			&.cl-selected {
+				background-color: @selection-background;
+				color: @selection-foreground;
+			}
+		}
+	}
+
+	/* 내비게이션 바 - 포커스 */
+	&.cl-focus {
+		border-color: @focus-border-color;
+	}
+
+	/* barItemWidths 속성이 true인 경우 */
+	&.cl-equalwidths {
+		// text-align: center;
+	}
+}
+
+/* 내비게이션 바 드랍다운 메뉴 */
+.cl-navigationbar-list {
+	border: solid 1px @default-border-color;
+	font: @default-font;
+
+	/* megamenu 타입의 카테고리 */
+	.cl-navigationbar-category {
+
+		/* 카테고리의 아이템 영역 */
+		.sub-items {
+
+			/* 카테고리의 목록 아이템 */
+			.cl-navigationbar-listitem {}
+		}
+
+	}
+
+	/* submenu의 up스크롤 버튼*/
+	.cl-arrow-up {
+
+		// background-image: url(icons/up-spin.png);
+		&:hover {
+			// background-image: url(icons/up-spin-hover.png);
+		}
+
+		&.cl-disabled {
+			background-color: @disabled-selection-background;
+		}
+	}
+
+	/* submenu의 down스크롤 버튼*/
+	.cl-arrow-down {
+
+		// background-image: url(icons/down-spin.png);
+		&:hover {
+			// background-image: url(icons/down-spin-hover.png);
+		}
+
+		&.cl-disabled {
+			background-color: @disabled-selection-background;
+		}
+	}
+
+	/* 내비게이션 바 드랍다운 메뉴 아이템 */
+	.cl-navigationbar-listitem {
+		color: @default-text-color;
+
+		.cl-navigationbar-icon-wrapper {
+
+			/* 내비게이션 바 드랍다운 메뉴 아이템 아이콘 */
+			.cl-navigationbar-icon {}
+		}
+
+		.cl-navigationbar-arrow-wrapper {
+			.cl-navigationbar-arrow {}
+		}
+
+		/* 내비게이션 바 드랍다운 메뉴 아이템 텍스트 */
+		.cl-text {}
+
+		.cl-navigationbar-accesskey-wrapper {
+
+			/* 내비게이션 바 드랍다운 메뉴 아이템 단축키 */
+			.cl-navigationbar-accesskey {}
+		}
+
+		/* 내비게이션 드랍다운 메뉴 아이템 - 활성화 */
+		&:not(.cl-disabled) {
+
+			/* 내비게이션 드랍다운 메뉴 아이템 - 호버 */
+			&:not(.cl-selected):hover,
+			&.cl-hover {
+				background-color: @hover-background;
+				color: @hover-foreground;
+			}
+		}
+
+		&.cl-hover {
+			background-color: @hover-background;
+			color: @hover-foreground;
+		}
+
+		/* 내비게이션 바 드랍다운 메뉴 아이템 - 비활성화 */
+		&.cl-disabled {
+			color: @disabled-text-color;
+
+			/* 내비게이션 바 드랍다운 메뉴 아이템 - 비활성화, 선택됨 */
+			&.cl-selected {
+				color: @disabled-selection-foreground;
+				background-color: @disabled-selection-background;
+			}
+		}
+
+		/* 내비게이션 바 드랍다운 메뉴 아이템 - 선택됨 */
+		&.cl-selected {
+			background-color: @selection-background;
+			color: @selection-foreground;
+		}
+	}
+}
+
+/* fullmenu 타입 서브메뉴 */
+.cl-navigationbar-fullmenu {
+
+	/* 서브메뉴에서 나누어진 그룹 영역 */
+	.cl-navigationbar-group {
+
+		.cl-navigationbar-category {
+
+			.sub-items {
+				.cl-navigationbar-listitem {}
+			}
+		}
+	}
+}

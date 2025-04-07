@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+    
+     <!-- 로컬 환경 -->
+<!--     <beans profile="local">
+        커넥션 정보 
+		 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="#{dsProperties['local.jdbc.driverClassName']}"/>
+			<property name="url" value="#{dsProperties['local.jdbc.url']}" />
+			<property name="username" value="#{dsProperties['local.jdbc.username']}" />
+			<property name="password" value="#{dsProperties['local.jdbc.password']}" />
+		</bean>
+		
+		 <jdbc:embedded-database id="dataSource" type="HSQL">
+			<jdbc:script location= "classpath:/db/sampledb.sql"/>
+		</jdbc:embedded-database>
+    </beans>
+        
+    개발 환경
+    <beans profile="dev">
+          
+           <jee:jndi-lookup id="dataSource" jndi-name="#{dsProperties['dev.jdbc.jndiName']}" />
+          
+		 <jdbc:embedded-database id="dataSource" type="HSQL">
+			<jdbc:script location= "classpath:/db/sampledb.sql"/>
+		</jdbc:embedded-database>
+    </beans> -->
+</beans>

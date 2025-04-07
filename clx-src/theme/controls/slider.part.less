@@ -1,0 +1,113 @@
+@import "../settings.part.less";
+
+ /* 슬라이더 */
+.cl-slider {
+
+	&.cl-horizontal{
+		// min-width: 40px;
+		// min-height: 20px;
+	}
+	&.cl-vertical{
+		// min-width: 20px;
+		// min-height: 40px;
+	}
+
+	/* 슬라이더 바 */
+	.cl-slider-bar {
+		// background-color:#fff;
+		border:1px solid @default-border-color;
+
+		/* 슬라이더 가로 바 */
+		&.cl-horizontal{
+			// background-image: linear-gradient(#ddd, white 3px);
+		}
+
+		/* 슬라이더 세로 바 */
+		&.cl-vertical {
+			// background-image: linear-gradient(to right, #ddd, white 3px);
+		}
+
+
+		/* 슬라이더 핸들 */
+		.cl-slider-handle {
+			// background-image: url("icons/slider-thumb.png");
+
+			/* 슬라이더 가로바 핸들 */
+			&.cl-horizontal {
+
+				/* 슬라이더 핸들에 표시되는 label */
+				.cl-slider-label {
+
+					/* 슬라이더 labelAlign속성값이 leading인 경우 label 스타일 */
+					&.cl-leading{
+						
+					}
+
+					/* 슬라이더 labelAlign속성값이 trailing인 경우 label 스타일 */
+					&.cl-trailing{
+						
+					}
+				}
+			}
+
+			/* 슬라이더 세로바 핸들 */
+			&.cl-vertical {
+
+				.cl-slider-label {
+					&.cl-leading{
+						
+					}
+
+					&.cl-trailing{
+						
+					}
+				}
+			}
+
+			/* 슬라이더 핸들에 표시되는 label */
+			.cl-slider-label{
+
+			}
+
+		}
+
+		/* 슬라이더 선택 영역 표시 바 */
+		.cl-slider-range {
+			background-color: lighten(@selection-background, 20%);
+		}
+	}
+
+	&.cl-focus{
+		
+		/* 슬라이더 바 - focus */
+		.cl-slider-bar {
+			border-color: @focus-border-color;
+		}
+	}
+
+	&.cl-disabled {
+
+		/* 슬라이더 바 핸들 - 비활성화 */
+		.cl-slider-handle {
+			// background-image: url("icons/slider-thumb-disabled.png");
+		}
+
+		/* 슬라이더 바 선택 영역 - 비활성화 */
+		.cl-slider-range {
+			background-color: @disabled-selection-background;
+		}
+	}
+}
+
+.cl-slider:not(.cl-disabled){
+	.cl-slider-bar {
+		.cl-slider-handle{
+			
+			/* 슬라이더 바 핸들 - hover */
+			&:hover, &.cl-hover {
+				// background-image: url("icons/slider-thumb-hover.png");
+			}
+		}
+	}
+}
+

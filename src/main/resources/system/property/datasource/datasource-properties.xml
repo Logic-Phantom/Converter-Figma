@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+    <entry key="local.jdbc.driverClassName">net.sf.log4jdbc.DriverSpy</entry>
+    <entry key="local.jdbc.url">jdbc:log4jdbc:mariadb://xxx.xxx.xxx.xxx:3306/xxx</entry>
+    <entry key="local.jdbc.username">xxxx</entry>
+    <entry key="local.jdbc.password">xxxxx</entry>
+    <entry key="dev.jdbc.jndiName">jdbc/...</entry>
+    <entry key="prd.jdbc.jndiName">jdbc/...</entry>
+</properties>

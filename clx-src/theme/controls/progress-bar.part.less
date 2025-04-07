@@ -1,0 +1,30 @@
+@import "../settings.part.less";
+
+/* 프로그레스 바 루트 */
+.cl-progress {
+	
+	// background-image: linear-gradient(#aaa, #E6E7E9 4px);
+	border: 1px solid @default-border-color;
+
+	// min-width:50px;
+
+	/* 진행 바 */
+	.cl-progress-bar {
+		// background-image: linear-gradient(#99D1F1, #1C6DA0, #3397D4);
+		// min-height:20px;
+	}
+
+	/* 진행 바에 표시되는 텍스트 */
+	.cl-text {
+	}
+}
+
+/* 프로그레스 바 - 비활성화 */
+.cl-progress.cl-disabled {
+	border-color: @disabled-border-color;
+	// background-image: linear-gradient(#ccc, #eee 4px);
+
+	.cl-progress-bar {
+		// background-image: linear-gradient(#eee, #aaa, #ddd);
+	}
+}
