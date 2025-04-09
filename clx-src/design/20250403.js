@@ -11,7 +11,7 @@
  */
 function onBtn1Click(e){
 	var btn1 = e.control;
-	app.lookup("sms3").send();
+	app.lookup("sms4").send();
 }
 
 /*
@@ -20,5 +20,6 @@ function onBtn1Click(e){
  */
 function onButtonClick(e){
 	var button = e.control;
-	app.lookup("sms2").send();
+	//app.lookup("sms3").send();
+	window.location.href = "/oauth/login.do";
 }

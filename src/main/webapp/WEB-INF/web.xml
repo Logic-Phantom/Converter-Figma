@@ -89,16 +89,21 @@
     <url-pattern>*.clx</url-pattern>
   </servlet-mapping>
  
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>action</servlet-name>
     <url-pattern>*.do</url-pattern>
     <url-pattern>*.csv</url-pattern>
     <url-pattern>*.xls</url-pattern>
     <url-pattern>*.xlsx</url-pattern>
-    <!-- 
+    
     <url-pattern>*.pdf</url-pattern>
-     -->
-  </servlet-mapping>
+    
+  </servlet-mapping> -->
+  <servlet-mapping>
+  <servlet-name>action</servlet-name>
+  <url-pattern>/*</url-pattern> <!-- 혹은 /* -->
+</servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.do</welcome-file>
     <welcome-file>/WEB-INF/views/index.jsp</welcome-file>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-a8515953" version="1.0.5538">
+  <head std:sid="head-5fabda34">
+    <screen std:sid="screen-e7a311df" id="default" name="default" width="1924px" height="768px"/>
+    <cl:model std:sid="model-a8ca5466"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-a8d8a1b2">
+            <cl:output std:sid="output-d815008b" id="output_3f3db304" value="Start here
+↓" style="">
+                <cl:xylayoutdata top="-210.0px" left="303.0px" width="341.0px" height="174.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:group std:sid="group-7c7a18a7" id="group_afd35f8d" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="238.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:group std:sid="group-7ffed055" id="group_e20be372" style="">
+                    <cl:xylayoutdata top="145.0px" left="375.0px" width="278.0px" height="202.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-e9e677d4" id="output_f37baf64" value="Build your own team library" style="">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="276.0px" height="88.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:output std:sid="output-11694cb8" id="output_b01f2b3b" value="Don’t reinvent the wheel with every design. Team libraries let you share styles and components across files, with everyone on your team." style="">
+                        <cl:xylayoutdata top="106.0px" left="0.0px" width="278.0px" height="96.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+            </cl:group>
+            <cl:group std:sid="group-d9922f20" id="group_6b109647" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="973.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-21a35974" id="output_4dca3d75" value="We’re published already!
+Edit us to be your team’s colors." style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="101.0px" left="439.0px" width="207.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-e68928b9" id="output_df151ff2" value="Edit team color styles" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="338.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-33fa5234" id="output_ac8d134e" value="Published styles are shared with everyone on the team—they can be used by all team members in any of their files. Changing these styles will update them everywhere they're used.
+
+Change these default colors to your team’s colors by selecting a color layer and clicking on       in the Design panel to the right." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="96.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:group std:sid="group-3550842a" id="group_f6c71477" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="1708.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-868189e9" id="output_320bb565" value="Create color styles" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="179.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-9030b217" id="output_de39d590" value="To create new styles, select a layer and fill it with the color you want as a style. Then click on       in the color styles menu." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:group std:sid="group-48393313" id="group_a5dd84bd" style="">
+                    <cl:xylayoutdata top="416.0px" left="44.0px" width="16.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:output std:sid="output-4112d3e8" id="output_986d0afd" value="Tip: You can group styles together using the naming convention Group/Color. For example: Fuschia/100" style="">
+                    <cl:xylayoutdata top="416.0px" left="72.0px" width="285.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-bba41be9" id="output_bb0d6889" value="Color and create some more styles out of us!" style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="102.0px" left="455.0px" width="175.0px" height="30.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:group std:sid="group-c9c4210a" id="group_87cf3b95" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="2443.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-81bff0ab" id="output_bfa068e3" value="Color me with a style" style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="117.0px" left="462.0px" width="162.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-1b6eee07" id="output_051be325" value="Use color styles" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="152.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-2354a38e" id="output_cdd281b3" value="Select a layer, then click on       next to the Fill property in the panel to the right." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:output std:sid="output-872a69ce" id="output_7595fc51" value="Button" style="">
+                <cl:xylayoutdata top="232.0px" left="2966.0px" width="39.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:group std:sid="group-c177669e" id="group_436c57b1" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="3178.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-ee2acbf2" id="output_a2a4e5d6" value="Edit text styles" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="141.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-924616c5" id="output_558c8b99" value="Just like published color styles, published text styles are shared across your team. Change text styles by selecting a text layer with the style and clicking on       in the panel to the right." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="48.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-f7b7c0b3" id="output_f544682c" value="We’re published already!
+Edit us to be your team’s text styles" style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="101.0px" left="447.0px" width="192.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:output std:sid="output-95b453ec" id="output_49a8a2fb" value="Header 1" style="">
+                <cl:xylayoutdata top="219.0px" left="3650.0px" width="142.0px" height="41.673912048339844px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:output std:sid="output-cdebee19" id="output_bce8b07f" value="Header 2" style="">
+                <cl:xylayoutdata top="292.0px" left="3675.0px" width="92.60869598388672px" height="26.239131927490234px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:output std:sid="output-645b0cd3" id="output_733fdc73" value="Body" style="">
+                <cl:xylayoutdata top="349.0px" left="3705.0px" width="32.41304397583008px" height="15.434782981872559px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:group std:sid="group-1579c4c0" id="group_187a98ad" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="3913.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-86c1590a" id="output_7c61cebf" value="Create text styles" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="168.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-18fc4910" id="output_aeef3998" value="To create new text styles, first select a text layer and format it with the type you want as a style. Then, click on      in the text styles menu." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="48.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-9cbb3b99" id="output_438d4afb" value="Edit us to be your team’s text styles and create some more styles" style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="101.0px" left="443.0px" width="201.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:output std:sid="output-c768a66f" id="output_2fd66599" value="Body small" style="">
+                <cl:xylayoutdata top="227.0px" left="4423.0px" width="70.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:output std:sid="output-55817455" id="output_c71cd1a5" value="Button text" style="">
+                <cl:xylayoutdata top="263.0px" left="4422.0px" width="71.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:output std:sid="output-4d414236" id="output_82079798" value="Link text" style="">
+                <cl:xylayoutdata top="299.0px" left="4431.0px" width="54.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:group std:sid="group-f4a0082c" id="group_d66e3846" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="4648.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-017a4afe" id="output_6735042d" value="Use text styles" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="141.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-c06fef9c" id="output_9acf448b" value="Give me a text style" style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="101.0px" left="458.0px" width="160.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-f760b35f" id="output_6d71a590" value="Select a text layer and click on      next to the Text property to use text styles." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:output std:sid="output-a21ce9d2" id="output_f7fb1875" value="I’m a title" style="">
+                <cl:xylayoutdata top="210.0px" left="5157.0px" width="59.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+            <cl:group std:sid="group-11906196" id="group_5536294f" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="5383.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-1fafd43d" id="output_d57e8ca2" value="Tip: The keyboard shortcut to create a component is Ctrl Alt K on Windows, or ⌘⌥K on a Mac." style="">
+                    <cl:xylayoutdata top="416.0px" left="68.0px" width="289.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-b6e6840f" id="output_ddf4a3e5" value="Create components" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="188.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-70d1a7ce" id="output_2825d0df" value="Create components out of commonly used objects such as buttons and icons to reuse them across your designs.
+
+Select an element and click Create Component in the top bar or the right-click menu." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="80.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-37ef750c" id="output_6d616e45" value="Make us into components to show hover states across your designs" style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="109.0px" left="440.0px" width="210.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:group std:sid="group-444ccb15" id="group_a452fcd4" style="">
+                <cl:xylayoutdata top="231.0px" left="5948.0px" width="32.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-637e716c" id="group_d070e459" style="">
+                <cl:xylayoutdata top="231.0px" left="5872.0px" width="32.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-cb9495b9" id="group_0ae71702" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="6118.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-10b8164a" id="output_a5b52932" value="Drag the correct cursor component over these buttons to show default and hover states" style="opacity: 0.800000011920929; ">
+                    <cl:xylayoutdata top="124.0px" left="419.0px" width="252.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-78684098" id="output_aadb4629" value="Use components" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="161.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-ae787361" id="output_f75bae61" value="Drag and drop components onto your canvas from the Assets panel. If you’re on an Education, Professional, or Organization  team, you can publish them for team members to use across their own files." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="337.0px" height="64.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-dd0421c1" id="output_0ed7745b" value="Default" style="">
+                    <cl:xylayoutdata top="231.0px" left="471.0px" width="42.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-3375457b" id="output_80220faf" value="Hover" style="">
+                    <cl:xylayoutdata top="231.0px" left="583.0px" width="35.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:group std:sid="group-b9f1ad3b" id="group_278f70eb" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="6853.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-6f483fed" id="output_5c89c4dd" value="Publish your Team Library" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="246.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:group std:sid="group-427b9e59" id="group_e91a3012" style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="620.0px" height="324.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-c8a557e6" id="output_0168c3d6" value="Then, click on Publish next to the current file. You’ll have a chance to review your components, styles, and to add a description for your updates. " style="opacity: 0.800000011920929; ">
+                        <cl:xylayoutdata top="0.0px" left="322.0px" width="298.0px" height="48.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:output std:sid="output-58af415f" id="output_a4abf2c6" value="To share the new styles and components you created in this file with team members, you need to publish this file. Click on         in the Assets panel to the top left." style="opacity: 0.800000011920929; ">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="298.0px" height="48.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:group std:sid="group-4fb04246" id="group_7ac74136" style="">
+                    <cl:xylayoutdata top="420.0px" left="32.0px" width="621.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-7b27d384" id="output_fdaeba3a" value="Only Education, Professional, or Organization teams can publish components." style="">
+                        <cl:xylayoutdata top="12.0px" left="34.0px" width="482.0px" height="16.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+            </cl:group>
+            <cl:group std:sid="group-5cd51286" id="group_8b1202bd" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata top="17.0px" left="7588.0px" width="685.0px" height="492.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:output std:sid="output-7d181875" id="output_9c4a4aab" value="Using your Team Library" style="">
+                    <cl:xylayoutdata top="32.0px" left="32.0px" width="230.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-63857701" id="output_5a098788" value="To use styles and components from Team Libraries, click on         in the Assets panel in any of your files. Toggle on the ones you want to use in your design." style="">
+                    <cl:xylayoutdata top="72.0px" left="32.0px" width="621.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+    <cl:xylayout std:sid="xylayout-2eabc102"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

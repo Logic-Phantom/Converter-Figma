@@ -7,7 +7,8 @@
     <cl:model std:sid="model-19b996cf">
       <cl:submission std:sid="submission-02cd9093" id="sms1" action="../design/convert.do" mediatype="multipart/form-data"/>
       <cl:submission std:sid="submission-919db20b" id="sms2" action="../design/test.do"/>
-      <cl:submission std:sid="submission-09cc0cc1" id="sms3" method="get" action="../design/convert.do"/>
+      <cl:submission std:sid="submission-09cc0cc1" id="sms3" method="get" action="../oauth/login.do"/>
+      <cl:submission std:sid="submission-8e9486dd" id="sms4" method="get" action="../design/convert.do"/>
     </cl:model>
     <cl:appspec/>
   </head>
