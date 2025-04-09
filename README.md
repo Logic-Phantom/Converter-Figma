@@ -33,5 +33,40 @@ Converter-Figma/
 
 ## ▶️ 사용 방법
 
-1. **Figma API Token 발급**
-   - https://www.figma.com/developers/api#access-tokens 참고
+### 1. Figma API Token 수동 발급
+
+- https://www.figma.com/developers/api#access-tokens 참고
+- 발급된 Token은 컨트롤러에서 직접 사용하거나 `.properties`, `.env` 파일로 관리할 수 있습니다.
+
+### 2. OAuth 인증 방식 (자동 토큰 발급 지원)
+
+본 프로젝트는 **Figma OAuth2 인증**을 지원합니다.  
+사용자는 로그인 후 자동으로 Access Token을 발급받고 `.clx` 변환 프로세스를 시작할 수 있습니다.
+
+#### 🔑 OAuth 연동 흐름
+
+```
+사용자 → Figma 로그인 → Redirect (code) → Access Token 발급 → JSON 변환 → .clx 생성
+```
+
+#### 🔗 예시 URL 호출
+
+```
+https://www.figma.com/oauth?client_id=YOUR_CLIENT_ID &redirect_uri=YOUR_REDIRECT_URI &scope=file_read &state=STATE &response_type=code
+```
+
+#### ⚙️ 설정 예시 (.env 또는 config.properties 등)
+
+```properties
+figma.clientId=YOUR_CLIENT_ID
+figma.clientSecret=YOUR_CLIENT_SECRET
+figma.redirectUri=http://localhost:8080/oauth/callback.do
+
+```
+🔄 Callback 처리
+
+/oauth/callback.do 엔드포인트에서 access_token을 발급받아 .clx 변환 흐름에 자동 연동됩니다.
+
+변환된 결과는 clx-src/ 디렉토리 하위에 .clx 및 .js 파일로 저장됩니다.
+
+```
