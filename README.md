@@ -13,19 +13,12 @@ Figma 디자인 파일을 `.clx` 확장자를 가진 XML 포맷으로 변환하�
 
 - Figma API를 통해 디자인 요소(JSON) 가져오기
 - Figma JSON → `.clx` XML 구조로 변환
-- `.clx` 내 구성 요소: `<cl:button>`, `<cl:inputbox>`, `<cl:grid>`, `<cl:radiobutton>`, `<cl:model>` 등 지원
+- `.clx` 내 구성 요소: `<cl:button>`, `<cl:inputbox>`, `<cl:grid>`, `<cl:radiobutton>`, `<cl:group>` 등 지원
 - 변환 시 위치, 크기, 스타일 속성 자동 적용
 - `.js` 스크립트 파일도 함께 생성
 
 ## 📂 프로젝트 구조
-Converter-Figma/
-    ├── src/ # 핵심 로직 │ 
-    ├── controller/ # 변환 요청을 처리하는 컨트롤러 │
-    ├── service/ # JSON → CLX 변환 로직 │ 
-    ├── util/ # 공통 유틸리티 
-    ├── resources/ # 예제 JSON, 결과물 저장 경로 
-    ├── .gitignore  
-    └── README.md
+Converter-Figma/ ├── src/ # 핵심 로직 │ ├── controller/ # 변환 요청을 처리하는 컨트롤러 │ ├── service/ # JSON → CLX 변환 로직 │ ├── util/ # 공통 유틸리티 ├── resources/ # 예제 JSON, 결과물 저장 경로 ├── .gitignore └── README.md
 
 ## ▶️ 사용 방법
 
