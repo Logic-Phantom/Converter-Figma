@@ -160,7 +160,7 @@ public class FigmaToHtmlService {
 	        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	        
 	        //String outputDir = "C:\\eb6-work\\workspace\\convertTestXml\\clx-src\\" + today;
-	        String outputDir = "C:\\eclipse-jee-2023-12-R-win32-x86_64\\work\\eXCoverter-Figma\\clx-src\\" + today;
+	        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\" + today;
 	        Files.createDirectories(Paths.get(outputDir));
 
 	        int randomNumber = 10000 + new Random().nextInt(90000);

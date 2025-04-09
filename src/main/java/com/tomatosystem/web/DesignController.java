@@ -87,29 +87,30 @@ public class DesignController {
 //    }
     
     
-    @GetMapping("/convert.do")
-    public ResponseEntity<String> convertAndSaveClx() {
-        String url = "https://api.figma.com/v1/files/OQlnNJhTFmJhozlEVQshyl";
-        String token = "사용자 토큰";
-
-        try {
-            Map<String, Object> rawData = fetchFigmaData(url, token);
-            if (rawData == null) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch Figma data.");
-            }
-
-            File clxFile = figmaToHtmlService.convertToClx(rawData);
-            if (clxFile == null || !clxFile.exists()) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CLX file creation failed.");
-            }
-
-            return ResponseEntity.ok("CLX file saved successfully at: " + clxFile.getAbsolutePath());
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");
-        }
-    }
-    
+//    @GetMapping("/convert.do")
+//    public ResponseEntity<String> convertAndSaveClx() {
+//        String url = "https://api.figma.com/v1/files/3PRYK752FpfAXu5Ypp9QWL";
+//        //사용자 토큰
+//        String token = "사용자 토큰";
+//
+//        try {
+//            Map<String, Object> rawData = fetchFigmaData(url, token);
+//            if (rawData == null) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch Figma data.");
+//            }
+//
+//            File clxFile = figmaToHtmlService.convertToClx(rawData);
+//            if (clxFile == null || !clxFile.exists()) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CLX file creation failed.");
+//            }
+//
+//            return ResponseEntity.ok("CLX file saved successfully at: " + clxFile.getAbsolutePath());
+//
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");
+//        }
+//    }
+//    
     private Map<String, Object> fetchFigmaData(String url, String token) {
         HttpGet getRequest = new HttpGet(url);
         getRequest.addHeader("X-Figma-Token", token);
@@ -132,57 +133,93 @@ public class DesignController {
     }
 
 
+// 자동 확인
+    @GetMapping("/convert.do")
+    public ResponseEntity<String> convertAndSaveClx() {
+        String teamId = "1420657369280493518"; // 팀 ID
+        String token = "사용자 토큰";//사용자 토큰
+
+        try {
+            // 1. 팀 → 프로젝트 목록 요청
+            String projectId = fetchFirstProjectIdFromTeam(teamId, token);
+            if (projectId == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No project found in team.");
+            }
+
+            // 2. 프로젝트 → 파일 목록 요청
+            String fileKey = fetchFirstFileKeyFromProject(projectId, token);
+            if (fileKey == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No files found in project.");
+            }
+            System.out.println("projectId ==" + projectId);
+            System.out.println("fileKey ==" + fileKey );
+
+            // 3. 파일 → 실제 데이터 요청
+            String fileUrl = "https://api.figma.com/v1/files/" + fileKey;
+            Map<String, Object> rawData = fetchFigmaData(fileUrl, token);
+
+            if (rawData == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch Figma data.");
+            }
+
+            File clxFile = figmaToHtmlService.convertToClx(rawData);
+            if (clxFile == null || !clxFile.exists()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CLX file creation failed.");
+            }
+
+            return ResponseEntity.ok("CLX file saved successfully at: " + clxFile.getAbsolutePath());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");
+        }
+    }
     
-//    //2번쨰 
-//    @RequestMapping("/convert.do")
-//    public ResponseEntity<InputStreamResource> downloadClx() throws Exception {
-//
-//  String url = "https://api.figma.com/v1/files/OQlnNJhTFmJhozlEVQshyl";
-//  String token = "사용자 토큰";
+    private String fetchFirstProjectIdFromTeam(String teamId, String token) {
+        String url = "https://api.figma.com/v1/teams/" + teamId + "/projects";
+        try {
+            String body = sendFigmaGetRequest(url, token);
+            Map<String, Object> map = new ObjectMapper().readValue(body, Map.class);
+            List<Map<String, Object>> projects = (List<Map<String, Object>>) map.get("projects");
+            if (projects != null && !projects.isEmpty()) {
+                return String.valueOf(projects.get(0).get("id")); // 첫 번째 프로젝트 ID
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String fetchFirstFileKeyFromProject(String projectId, String token) {
+        String url = "https://api.figma.com/v1/projects/" + projectId + "/files";
+        try {
+            String body = sendFigmaGetRequest(url, token);
+            Map<String, Object> map = new ObjectMapper().readValue(body, Map.class);
+            List<Map<String, Object>> files = (List<Map<String, Object>>) map.get("files");
+            if (files != null && !files.isEmpty()) {
+                return String.valueOf(files.get(0).get("key")); // 첫 번째 파일 key
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
-//        // 🔹 Figma 데이터 가져오기
-//        Map<String, Object> rawData = fetchFigmaData(url, token);
-//        if (rawData == null) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//
-//        // 🔹 .clx 변환 및 저장
-//        File clxFile = figmaToHtmlService.convertToClx(rawData);
-//
-//        // 🔹 HTTP 응답으로 .clx 파일 다운로드
-//        try (FileInputStream fileInputStream = new FileInputStream(clxFile)) {
-//            InputStreamResource resource = new InputStreamResource(fileInputStream);
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + clxFile.getName() + "\"")
-//                    .contentType(MediaType.APPLICATION_OCTET_STREAM)  // 바이너리 파일이므로 'application/octet-stream' 사용
-//                    .body(resource);  // InputStreamResource를 body로 직접 설정
-//        } catch (IOException e) {
-//            // 파일 읽기 오류 처리
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
-//
-//    private Map<String, Object> fetchFigmaData(String url, String token) throws Exception {
-//        HttpGet getRequest = new HttpGet(url);
-//        getRequest.addHeader("X-Figma-Token", token);
-//
-//        try (CloseableHttpClient client = HttpClients.createDefault();
-//             CloseableHttpResponse response = client.execute(getRequest)) {
-//
-//            if (response.getStatusLine().getStatusCode() == 200) {
-//                String body = EntityUtils.toString(response.getEntity());
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                return objectMapper.readValue(body, Map.class);
-//            } else {
-//                // Figma API 오류 처리
-//                throw new Exception("Failed to fetch data from Figma API. Status code: " +
-//                                     response.getStatusLine().getStatusCode());
-//            }
-//        } catch (IOException e) {
-//            // 예외 처리 및 로깅
-//            throw new Exception("Error while fetching Figma data", e);
-//        }
-//    }
+    private String sendFigmaGetRequest(String url, String token) throws IOException {
+        HttpGet request = new HttpGet(url);
+        request.addHeader("X-Figma-Token", token);
+
+        try (CloseableHttpClient client = HttpClients.createDefault();
+             CloseableHttpResponse response = client.execute(request)) {
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return EntityUtils.toString(response.getEntity());
+            } else {
+                throw new RuntimeException("Figma API 호출 실패: " + response.getStatusLine());
+            }
+        }
+    }
+    
     
 	@RequestMapping("/test.do")
 	public View saveDtl3(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) throws Exception {
