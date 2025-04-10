@@ -43,8 +43,8 @@ Figma 디자인 파일을 `.clx` 확장자를 가진 XML 포맷으로 변환하�
 
 ```
 Converter-Figma/
-├── src/ # 핵심 로직 │
-├── controller/ # 변환 요청을 처리하는 컨트롤러
+├── src/ # 핵심 로직
+│    ├── controller/ # 변환 요청을 처리하는 컨트롤러
 │    ├── service/ # JSON → CLX 변환 로직
 │    ├── web/ # JSON → CLX 변환 로직
 ├── resources/ # 예제
