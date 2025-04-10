@@ -55,6 +55,9 @@ Converter-Figma/
 본 프로젝트는 **Figma OAuth2 인증**을 지원합니다.  
 사용자는 로그인 후 자동으로 Access Token을 발급받고 `.clx` 변환 프로세스를 시작할 수 있습니다.
 
+- https://www.figma.com/developers/apps 참고
+- 직접 앱을 등록하여 clientID, clientSecret 설정
+
 #### 🔑 OAuth 연동 흐름
 
 ```
