@@ -5,7 +5,7 @@
     <screen std:sid="screen-773e46d8" id="tablet" name="tablet" width="500px" height="667px"/>
     <screen std:sid="screen-97e79924" id="mobile" name="mobile" width="350px" height="525px"/>
     <cl:model std:sid="model-480bf35c">
-      <cl:submission std:sid="submission-c833ccef" id="subFigma" method="get" action="../design/convert.do"/>
+      <cl:submission std:sid="submission-c833ccef" id="subFigma" method="get" action="../design/convertDirect.do"/>
     </cl:model>
     <cl:appspec/>
   </head>
