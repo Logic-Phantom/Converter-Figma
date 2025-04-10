@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class DesignController {
     // 기존 파일 및 토큰 직접 수동입력방식
     @GetMapping("/convertDirect.do")
     public ResponseEntity<String> convertAndSaveClxDirect() {
-        String url = "https://api.figma.com/v1/files/3PRYK752FpfAXu5Ypp9QWL";
+        String url = "https://api.figma.com/v1/files/fQBCA3keP3CpCM9W2meqEo";
         //사용자 토큰
         String token = "사용자 토큰";
 
@@ -172,8 +173,12 @@ public class DesignController {
     // 자동 토큰 및 프로젝트
     @RequestMapping("/convert.do")
     public ResponseEntity<String> convertAndSaveClx(DataRequest dataRequest) {
+    	
+    	//Figma의 공식 REST API에서는 다음과 같은 이유로 토큰만으로 팀 ID를 가져오는 기능을 제공하지 않음
+    	//GET /v1/teams 같은 유저의 팀 리스트를 가져오는 API가 존재하지 않음
+    	//토큰은 리소스에 대한 접근 권한만 제공할 뿐, 유저 소속 팀 전체 목록은 제공하지 않음
+        //보안 및 개인정보 보호 차원에서 제한
         String teamId = "1420657369280493518"; // 팀 ID
-        //String token = "사용자토큰";//사용자 토큰
         
         ParameterGroup dm = dataRequest.getParameterGroup("dmParam");
         String token = dm.getValue("token");
@@ -261,6 +266,100 @@ public class DesignController {
     }
     
     
+    @RequestMapping("/convertAll.do")
+    public ResponseEntity<String> convertAndSaveClxAll(DataRequest dataRequest) {
+    	//   Figma의 공식 REST API에서는 다음과 같은 이유로 토큰만으로 팀 ID를 가져오는 기능을 제공하지 않음
+    	//    GET /v1/teams 같은 유저의 팀 리스트를 가져오는 API가 존재하지 않음
+    	//    토큰은 리소스에 대한 접근 권한만 제공할 뿐, 유저 소속 팀 전체 목록은 제공하지 않음
+    	//    보안 및 개인정보 보호 차원에서 제한
+
+
+        String teamId = "1420657369280493518"; // 팀 ID
+
+        ParameterGroup dm = dataRequest.getParameterGroup("dmParam");
+        String token = dm.getValue("token");
+
+        StringBuilder resultLog = new StringBuilder();
+
+        try {
+            // ✅ [수정] 전체 프로젝트 목록 가져오기
+            List<Map<String, Object>> projects = fetchAllProjectsFromTeam(teamId, token);
+            if (projects == null || projects.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No projects found in team.");
+            }
+
+            for (Map<String, Object> project : projects) {
+                String projectId = String.valueOf(project.get("id"));
+                resultLog.append("Project ID: ").append(projectId).append("\n");
+
+                // ✅ [수정] 해당 프로젝트의 모든 파일 가져오기
+                List<Map<String, Object>> files = fetchAllFilesFromProject(projectId, token);
+                if (files == null || files.isEmpty()) {
+                    resultLog.append("  No files found in project.\n");
+                    continue;
+                }
+
+                for (Map<String, Object> file : files) {
+                    String fileKey = String.valueOf(file.get("key"));
+                    String fileName = String.valueOf(file.get("name"));
+                    String fileUrl = "https://api.figma.com/v1/files/" + fileKey;
+
+                    resultLog.append("  File: ").append(fileName).append(" (").append(fileKey).append(")\n");
+
+                    try {
+                        Map<String, Object> rawData = fetchFigmaData(fileUrl, token);
+                        if (rawData == null) {
+                            resultLog.append("    ❌ Failed to fetch data\n");
+                            continue;
+                        }
+
+                        File clxFile = figmaToHtmlService.convertToClx(rawData);
+                        if (clxFile == null || !clxFile.exists()) {
+                            resultLog.append("    ❌ CLX file creation failed.\n");
+                            continue;
+                        }
+
+                        resultLog.append("    ✅ Saved: ").append(clxFile.getAbsolutePath()).append("\n");
+
+                    } catch (Exception e) {
+                        resultLog.append("    ❌ Exception while processing file: ").append(e.getMessage()).append("\n");
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            return ResponseEntity.ok(resultLog.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing request.");
+        }
+    }    
+ // ✅ [수정] 팀의 전체 프로젝트 가져오기
+    private List<Map<String, Object>> fetchAllProjectsFromTeam(String teamId, String token) {
+        String url = "https://api.figma.com/v1/teams/" + teamId + "/projects";
+        try {
+            String body = sendFigmaGetRequest(url, token);
+            Map<String, Object> map = new ObjectMapper().readValue(body, Map.class);
+            return (List<Map<String, Object>>) map.get("projects");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    // ✅ [수정] 프로젝트의 전체 파일 가져오기
+    private List<Map<String, Object>> fetchAllFilesFromProject(String projectId, String token) {
+        String url = "https://api.figma.com/v1/projects/" + projectId + "/files";
+        try {
+            String body = sendFigmaGetRequest(url, token);
+            Map<String, Object> map = new ObjectMapper().readValue(body, Map.class);
+            return (List<Map<String, Object>>) map.get("files");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 	@RequestMapping("/test.do")
 	public View saveDtl3(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) throws Exception {
 		BigDecimal bd = new BigDecimal("9999999999999999");

@@ -13,14 +13,21 @@
       <cl:submission std:sid="submission-8e9486dd" id="subFigma" method="post" action="../design/convert.do">
         <cl:requestdata dataid="dmParam"/>
       </cl:submission>
+      <cl:submission std:sid="submission-b91a341e" id="subFigmaAll" action="../design/convertAll.do">
+        <cl:requestdata dataid="dmParam"/>
+      </cl:submission>
     </cl:model>
     <cl:appspec/>
   </head>
   <body std:sid="body-eb5be93a">
     <cl:listener std:sid="listener-77f058b7" name="load" handler="onBodyLoad"/>
-    <cl:button std:sid="button-52d8805a" id="btn1" value="clx 변환">
+    <cl:button std:sid="button-52d8805a" id="btn1" value="clx 변환(1개)">
       <cl:listener std:sid="listener-849137a6" name="click" handler="onBtn1Click"/>
-      <cl:xylayoutdata std:sid="xyl-data-3feca36a" top="280px" left="312px" width="322px" height="147px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+      <cl:xylayoutdata std:sid="xyl-data-3feca36a" top="285px" left="152px" width="322px" height="147px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:button>
+    <cl:button std:sid="button-0c08475e" id="btn2" value="clx 변환(all)">
+      <cl:listener std:sid="listener-43ff7ab7" name="click" handler="onBtn2Click"/>
+      <cl:xylayoutdata std:sid="xyl-data-ad793349" top="285px" left="571px" width="322px" height="147px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
     </cl:button>
     <cl:xylayout std:sid="xylayout-3e0240ee"/>
   </body>
