@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-8cdebb64" version="1.0.5542">
+  <head std:sid="head-5adc1745">
+    <screen std:sid="screen-e877e478" id="default" name="default" width="1024px" height="768px"/>
+    <screen std:sid="screen-d49bf30b" id="tablet" name="tablet" width="500px" height="667px"/>
+    <screen std:sid="screen-abee9d7e" id="mobile" name="mobile" width="350px" height="525px"/>
+    <cl:model std:sid="model-48ebfe71"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-322a75a8">
+    <cl:button std:sid="button-4bddfb00" value="피그마 로그인">
+      <cl:listener std:sid="listener-beb44c5a" name="click" handler="onButtonClick"/>
+      <cl:xylayoutdata std:sid="xyl-data-bcdee884" top="217px" left="205px" width="583px" height="222px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:button>
+    <cl:xylayout std:sid="xylayout-fba0a927"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

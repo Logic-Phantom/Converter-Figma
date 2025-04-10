@@ -24,30 +24,36 @@ public class IndexController {
 	public View index(HttpServletRequest request, HttpServletResponse response, 
 			DataRequest reqData) throws Exception {
 		
-		List<String> pathList = XBConfig.getInstance().getDeployPath(); //eXbuilder6 deploy path
-		
-		String deployPath = pathList.get(0);
-		
-		String mainPageUrl = deployPath+"/";   //메인 페이지 URL
-		
+	     return new UIView("/ui/design/index.clx");
 	
-		UIView uiView = new UIView(mainPageUrl);
-		
-		Device device = DeviceUtils.getCurrentDevice(request); 
-		PageConfig config = uiView.getPageConfig();
-		
-		if(device.isMobile()) {
-			//config.setMetaTag("viewport", "width=600");
-			//<meta name="viewport" content="width=device-width,initial-scale=1.0">
-		}
-		config.setTitle("eXCFrame-eXBuilder6 기능 예제");
-		config.setMetaTag("description", "eXBuilder6, 엑스빌더6, 각종 기능 예제, 유형별 화면 템플릿, 공통모듈 예제 데모를 확인 할 수 있습니다.");
-		config.setMetaTag("og:title", "eXCFrame");
-		config.setMetaTag("og:url", "http://edu.tomatosystem.co.kr");
-		config.setMetaTag("og:image", "http://edu.tomatosystem.co.kr/theme/images/com/exb6-logo-og-image.png");
-		config.setMetaTag("og:description", "eXBuilder6 각종 기능 예제, 유형별 화면 템플릿, 공통모듈 예제 데모를 확인 할 수 있습니다.");
-		return uiView; 
 	}
+//	public View index(HttpServletRequest request, HttpServletResponse response, 
+//			DataRequest reqData) throws Exception {
+//		
+//		List<String> pathList = XBConfig.getInstance().getDeployPath(); //eXbuilder6 deploy path
+//		
+//		String deployPath = pathList.get(0);
+//		
+//		String mainPageUrl = deployPath+"/";   //메인 페이지 URL
+//		
+//	
+//		UIView uiView = new UIView(mainPageUrl);
+//		
+//		Device device = DeviceUtils.getCurrentDevice(request); 
+//		PageConfig config = uiView.getPageConfig();
+//		
+//		if(device.isMobile()) {
+//			//config.setMetaTag("viewport", "width=600");
+//			//<meta name="viewport" content="width=device-width,initial-scale=1.0">
+//		}
+//		config.setTitle("eXCFrame-eXBuilder6 기능 예제");
+//		config.setMetaTag("description", "eXBuilder6, 엑스빌더6, 각종 기능 예제, 유형별 화면 템플릿, 공통모듈 예제 데모를 확인 할 수 있습니다.");
+//		config.setMetaTag("og:title", "eXCFrame");
+//		config.setMetaTag("og:url", "http://edu.tomatosystem.co.kr");
+//		config.setMetaTag("og:image", "http://edu.tomatosystem.co.kr/theme/images/com/exb6-logo-og-image.png");
+//		config.setMetaTag("og:description", "eXBuilder6 각종 기능 예제, 유형별 화면 템플릿, 공통모듈 예제 데모를 확인 할 수 있습니다.");
+//		return uiView; 
+//	}
 	
 //	@RequestMapping("/index.do")
 //	public ModelAndView index(HttpServletRequest request, HttpServletResponse response, 

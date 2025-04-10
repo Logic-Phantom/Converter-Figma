@@ -151,6 +151,6 @@ public class OAuthController {
         }
 
         // ✅ .clx 뷰 페이지로 이동하면서 token 전달
-        return new UIView("/ui/design/20250403.clx", initParam);
+        return new UIView("/ui/design/converterStart.clx", initParam);
     }
 }
