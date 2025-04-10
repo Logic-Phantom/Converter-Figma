@@ -112,9 +112,43 @@ public class DesignController {
 //        }
 //    }
 //    
+//    private Map<String, Object> fetchFigmaData(String url, String token) {
+//        HttpGet getRequest = new HttpGet(url);
+//        getRequest.addHeader("X-Figma-Token", token);
+//
+//        try (CloseableHttpClient client = HttpClients.createDefault();
+//             CloseableHttpResponse response = client.execute(getRequest)) {
+//
+//            if (response.getStatusLine().getStatusCode() == 200) {
+//                String body = EntityUtils.toString(response.getEntity());
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                return objectMapper.readValue(body, Map.class);
+//            } else {
+//                // 응답 코드가 200이 아니면 오류 처리
+//                throw new RuntimeException("Figma API 호출 실패: " + response.getStatusLine());
+//            }
+//        } catch (Exception e) {
+//            // 예외 발생 시 처리
+//            throw new RuntimeException("Figma 데이터 가져오기 실패", e);
+//        }
+//    }
+//    private String sendFigmaGetRequest(String url, String token) throws IOException {
+//        HttpGet request = new HttpGet(url);
+//        request.addHeader("X-Figma-Token", token);
+//
+//        try (CloseableHttpClient client = HttpClients.createDefault();
+//             CloseableHttpResponse response = client.execute(request)) {
+//
+//            if (response.getStatusLine().getStatusCode() == 200) {
+//                return EntityUtils.toString(response.getEntity());
+//            } else {
+//                throw new RuntimeException("Figma API 호출 실패: " + response.getStatusLine());
+//            }
+//        }
+//    }
+    
     private Map<String, Object> fetchFigmaData(String url, String token) {
         HttpGet getRequest = new HttpGet(url);
-        //getRequest.addHeader("X-Figma-Token", token);
         getRequest.addHeader("Authorization", "Bearer " + token); // ✅ 변경된 부분
 
         try (CloseableHttpClient client = HttpClients.createDefault();
@@ -135,8 +169,7 @@ public class DesignController {
     }
 
 
-// 자동 토큰 및 프로젝트
-    //@GetMapping("/convert.do")
+    // 자동 토큰 및 프로젝트
     @RequestMapping("/convert.do")
     public ResponseEntity<String> convertAndSaveClx(DataRequest dataRequest) {
         String teamId = "1420657369280493518"; // 팀 ID
@@ -214,7 +247,6 @@ public class DesignController {
     
     private String sendFigmaGetRequest(String url, String token) throws IOException {
         HttpGet request = new HttpGet(url);
-        //request.addHeader("X-Figma-Token", token);
         request.addHeader("Authorization", "Bearer " + token); // ✅ 변경된 부분
 
         try (CloseableHttpClient client = HttpClients.createDefault();
