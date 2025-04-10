@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-1bfcceb2" version="1.0.5186">
+  <head std:sid="head-c44bf217">
+    <screen std:sid="screen-ca44f655" id="EXB-FULL" name="EXB-FULL" width="1580px" height="768px" useCustomWidth="false" useCustomHeight="false" customHeight="600" customWidth="800" active="true"/>
+    <screen std:sid="screen-370dedc0" id="EXB-DIV" name="EXB-DIV" width="1128px" height="768px" useCustomWidth="false" useCustomHeight="false" customHeight="600" customWidth="800"/>
+    <screen std:sid="screen-0987e1f5" id="EXB-PART" name="EXB-PART" width="672px" height="768px" useCustomWidth="false" useCustomHeight="false" customHeight="600" customWidth="800"/>
+    <cl:model std:sid="model-f47cf99e"/>
+    <cl:appspec dev-description="앱 헤더">
+      <cl:property name="title" type="string" default="타이틀을 입력하세요" bindable="true" std:desc="[String] 앱타이틀"/>
+      <cl:property name="searchBoxId" type="string" default="grpSearch" bindable="true" std:desc="[String] 조회조건 그룹 ID (default: grpSearch)&#xD;&#xA;&#xD;&#xA;콤마(,)로 연결하여 여러 개의 조회조건 그룹을 작성 할 수 있으며, 작성되어 있는 그룹ID 를 통해 조회조건 초기화 기능이 수행됩니다.&#xD;&#xA;&#xD;&#xA;&lt;조회조건 초기화 기능>&#xD;&#xA;1. 조회영역내 조회조건 컨트롤의 selection-change, value-change시 작업영역(groupBoxIds 속성에 설정한 그룹ID) disable 처리&#xD;&#xA;2. 조회영역 내에 인풋 컨트롤(인풋박스,넘버에디터) 의 사용자 속성에 autoKeydownSearch = &quot;Y&quot; 지정시 keydown 이벤트 등록(조회버튼 클릭)"/>
+      <cl:property name="groupBoxIds" type="string" default="grpData" bindable="true" std:desc="[String] 작업영역 그룹/탭 ID (default: grpData)&#xD;&#xA;&#xD;&#xA;콤마(,)로 연결하여 여러 개의 작업영역 컨트롤 ID를 작성 할 수 있습니다.&#xD;&#xA;비활성 처리는 isGrpDataDisable=true 일 경우에만 동작합니다.&#xD;&#xA;"/>
+      <cl:property name="isGrpDataDisable" type="boolean" default="false" bindable="true" std:desc="[Boolean] 앱로드시 작업영역(groupBoxIds) 비활성화 여부 (default: false), 조회영역에 구성된 조회 버튼 클릭시 자동 활성화 처리"/>
+      <cl:property name="isGridInit" type="boolean" default="true" std:desc="[Boolean] 앱로드시 그리드 초기화 여부 (default: true)&#xD;&#xA;&#xD;&#xA;화면에 배치되어 있는 모든 그리드를 대상으로 초기화 작업을 진행합니다.&#xD;&#xA;&#xD;&#xA;&lt;그리드 초기화 기능>&#xD;&#xA;1. 상태 컬럼 스타일 설정&#xD;&#xA;2. 인덱스 컬럼 text 및 css 지정&#xD;&#xA;3. 소트 컬럼 자동지정&#xD;&#xA;4. 그리드, 프리폼 PK컬럼 enable 설정&#xD;&#xA;5. 그리드의 마지막 작업행을 찾기위한 이벤트 추가&#xD;&#xA;6. 그리드 타이틀(udcComGridTitle) 의 조회 건수 업데이트&#xD;&#xA;7. 그리드 selection-dispose 이벤트 추가 (행추가 후 삭제로 인해 선택행이 없는 경우 이전 행 자동 선택)"/>
+      <cl:property name="ignoreGridIds" type="string" std:desc="[String] 그리드 초기화 시, 제외할 그리드 ID&#xD;&#xA;&#xD;&#xA;콤마(,)로 연결하여 여러 개의 그리드를 작성 할 수 있으며, 작성한 그리드 ID는 앱 로드시 그리드 초기화에서 제외됩니다."/>
+      <cl:property name="isFreeformInit" type="boolean" default="true" std:desc="[Boolean] 앱로드시 프리폼 초기화 여부 (default: true)&#xD;&#xA;&#xD;&#xA;화면에 배치되어 있는 모든 프리폼을 대상으로 초기화 작업을 진행합니다.&#xD;&#xA;&#xD;&#xA;&lt;프리폼 초기화 기능>&#xD;&#xA;1. 데이터 존재 여부에 따른 프리폼 비활성화 처리&#xD;&#xA;2. 프리폼 내부 넘버에디터 컨트롤의 포맷에 따른 css, max 속성 처리"/>
+      <cl:property name="ignoreFreeFormIds" type="string" std:desc="[String] 프리폼 초기화 시, 제외할 프리폼 ID&#xD;&#xA;&#xD;&#xA;콤마(,)로 연결하여 여러 개의 프리폼을 작성 할 수 있으며, 작성한 프리폼 ID는 앱 로드시 프리폼 초기화에서 제외됩니다."/>
+      <cl:property name="isTreeInit" type="boolean" default="true" std:desc="[Boolean] 앱로드시 트리 초기화 여부 (default: true)&#xD;&#xA;&#xD;&#xA;화면에 배치되어 있는 모든 트리를 대상으로 초기화 작업을 진행합니다.&#xD;&#xA;&#xD;&#xA;&lt;트리 초기화 기능>&#xD;&#xA;1. 트리의 선택행 컨텍스트 바인딩 한 프리폼 PK컬럼 enable 설정&#xD;&#xA;2. 트리의 마지막 작업행을 찾기위한 이벤트 추가"/>
+      <cl:property name="ignoreTreeIds" type="string" std:desc="[String] 트리 초기화 시, 제외할 트리 ID&#xD;&#xA;&#xD;&#xA;콤마(,)로 연결하여 여러 개의 트리를 작성 할 수 있으며, 작성한 트리 ID는 앱 로드시 트리 초기화에서 제외됩니다."/>
+    </cl:appspec>
+  </head>
+  <body std:sid="body-264c4ad9" style="top:0px; left:0px; width:900px; height:25px;" class="app-header">
+    <cl:listener std:sid="listener-e2975343" name="load" handler="onBodyLoad"/>
+    <cl:listener std:sid="listener-f0c29aac" name="screen-change" handler="onBodyScreenChange"/>
+    <cl:group std:sid="group-7e58aaf9">
+      <cl:formdata std:sid="f-data-51beda29" row="0" col="0"/>
+      <cl:output std:sid="output-202fc71c" id="optTit" class="tit h4">
+        <cl:listener std:sid="listener-b5fbb49d" name="dblclick" handler="onOutputDblclick"/>
+        <cl:apppropbind property="value" category="PROPERTY" app-property="title"/>
+        <cl:flowlayoutdata std:sid="f-data-d9958977" width="calc(100% - 24px - 8px)" height="100%" autosize="both"/>
+      </cl:output>
+      <cl:checkbox std:sid="c-box-2f2d4e9e" id="cbxFav" class="fav" text="">
+        <cl:listener std:sid="listener-7d54ffa1" name="value-change" handler="onCheckBoxValueChange"/>
+        <cl:flowlayoutdata std:sid="f-data-abf1e969" width="24px" height="24px"/>
+      </cl:checkbox>
+      <cl:flowlayout std:sid="f-layout-80582431" scrollable="false" vspacing="0" linewrap="false"/>
+    </cl:group>
+    <cl:group std:sid="group-7bb5f80a">
+      <cl:formdata std:sid="f-data-468b9c77" row="0" col="1"/>
+      <cl:group std:sid="group-75eeb22e" id="grpBc" class="breadcrumbs">
+        <cl:formdata std:sid="f-data-07aa172b" row="0" col="1" rowspan="1" colspan="1"/>
+        <cl:output std:sid="output-d5368849" id="optMenuPath" class="breadcrumb-item">
+          <cl:flowlayoutdata std:sid="f-data-e136406b" width="199px" height="100%" autosize="width"/>
+        </cl:output>
+        <cl:flowlayout std:sid="f-layout-94b1e8f7" scrollable="false" hspacing="0" vspacing="0" linewrap="false"/>
+      </cl:group>
+      <cl:img std:sid="image-7da3b07e" src="../../theme/images/com/main/ic_mdi_home.svg">
+        <cl:formdata std:sid="f-data-e013710c" valign="CENTER" height="11" topSpacing="0" bottomSpacing="0" row="0" col="0"/>
+      </cl:img>
+      <cl:formlayout std:sid="f-layout-cb98c3d0" scrollable="false" top-margin="1fr" right-margin="0px" bottom-margin="1fr" left-margin="0px">
+        <cl:rows length="24" unit="PIXEL" shadetype="NONE" shadecolor="transparent"/>
+        <cl:columns length="13" unit="PIXEL"/>
+        <cl:columns length="1" unit="FRACTION"/>
+      </cl:formlayout>
+    </cl:group>
+    <cl:formlayout std:sid="f-layout-ce0da0fb" scrollable="false" hspace="0px" vspace="0px" top-margin="0px" right-margin="0px" bottom-margin="0px" left-margin="0px">
+      <cl:rows length="1" unit="FRACTION"/>
+      <cl:columns length="1" unit="FRACTION" shadetype="NONE" shadecolor="transparent"/>
+      <cl:columns length="200" unit="PIXEL" autoSizing="true" syncminlength="false"/>
+    </cl:formlayout>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

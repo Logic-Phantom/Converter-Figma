@@ -236,7 +236,9 @@ public class FigmaToHtmlService {
 		 // 🔹 그룹 및 프레임 처리
 		    if ("FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) {
 		        boolean isTable = "table".equalsIgnoreCase(name);
-
+                //title
+		        boolean isTitleFrame = name.toLowerCase().contains("title"); // 🔹 title 포함 여부
+		        
 		        if (isTable) {
 		            // ✅ `table`을 `<cl:grid>`로 변환
 		            String gridId = "grd" + generateId();
@@ -268,6 +270,17 @@ public class FigmaToHtmlService {
 		            return;
 		        }
 
+		        // ✅ title이 포함된 FRAME의 경우 UDC 생성
+		        if (isTitleFrame && "FRAME".equalsIgnoreCase(type)) {
+		            String udcId = "ud-control-" + generateId();
+		            String layoutId = "xyl-data-" + generateId();
+
+		            writer.write(indent + "<cl:udc std:sid=\"" + udcId + "\" type=\"udc.udcComAppHeader\">\n");
+		            writer.write(indent + "  <cl:xylayoutdata std:sid=\"" + layoutId + "\" top=\"" + (int)(y - parentY) + "px\" left=\"" + (int)(x - parentX) + "px\" width=\"" + (int)width + "px\" height=\"" + (int)height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
+		            writer.write(indent + "</cl:udc>\n");
+		            return;
+		        }
+		        
 		        // ✅ 일반 <cl:group> 처리
 		        String groupId = "group_" + generateId();
 		        writer.write(indent + "<cl:group std:sid=\"group-" + generateId() + "\" id=\"" + groupId + "\" style=\"" + escapeXml(style) + "\">\n");
