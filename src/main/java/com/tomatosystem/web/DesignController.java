@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.View;
 
 import com.cleopatra.protocol.data.DataRequest;
+import com.cleopatra.protocol.data.ParameterGroup;
 import com.cleopatra.spring.JSONDataView;
 import com.tomatosystem.service.FigmaToHtmlService;
 
@@ -86,7 +87,7 @@ public class DesignController {
 //        return null;
 //    }
     
-    
+    // 기존 파일 및 토큰 직접 수동입력방식
 //    @GetMapping("/convert.do")
 //    public ResponseEntity<String> convertAndSaveClx() {
 //        String url = "https://api.figma.com/v1/files/3PRYK752FpfAXu5Ypp9QWL";
@@ -113,7 +114,8 @@ public class DesignController {
 //    
     private Map<String, Object> fetchFigmaData(String url, String token) {
         HttpGet getRequest = new HttpGet(url);
-        getRequest.addHeader("X-Figma-Token", token);
+        //getRequest.addHeader("X-Figma-Token", token);
+        getRequest.addHeader("Authorization", "Bearer " + token); // ✅ 변경된 부분
 
         try (CloseableHttpClient client = HttpClients.createDefault();
              CloseableHttpResponse response = client.execute(getRequest)) {
@@ -133,11 +135,16 @@ public class DesignController {
     }
 
 
-// 자동 확인
-    @GetMapping("/convert.do")
-    public ResponseEntity<String> convertAndSaveClx() {
+// 자동 토큰 및 프로젝트
+    //@GetMapping("/convert.do")
+    @RequestMapping("/convert.do")
+    public ResponseEntity<String> convertAndSaveClx(DataRequest dataRequest) {
         String teamId = "1420657369280493518"; // 팀 ID
-        String token = "사용자 토큰";//사용자 토큰
+        //String token = "사용자토큰";//사용자 토큰
+        
+        ParameterGroup dm = dataRequest.getParameterGroup("dmParam");
+        String token = dm.getValue("token");
+        
 
         try {
             // 1. 팀 → 프로젝트 목록 요청
@@ -207,7 +214,8 @@ public class DesignController {
     
     private String sendFigmaGetRequest(String url, String token) throws IOException {
         HttpGet request = new HttpGet(url);
-        request.addHeader("X-Figma-Token", token);
+        //request.addHeader("X-Figma-Token", token);
+        request.addHeader("Authorization", "Bearer " + token); // ✅ 변경된 부분
 
         try (CloseableHttpClient client = HttpClients.createDefault();
              CloseableHttpResponse response = client.execute(request)) {
