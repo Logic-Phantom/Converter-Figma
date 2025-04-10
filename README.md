@@ -77,8 +77,8 @@ figma.redirectUri=http://localhost:8080/oauth/callback.do
 ```
 🔄 Callback 처리
 
+```
 /oauth/callback.do 엔드포인트에서 access_token을 발급받아 .clx 변환 흐름에 자동 연동됩니다.
 
 변환된 결과는 clx-src/ 디렉토리 하위에 .clx 및 .js 파일로 저장됩니다.
-
 ```
