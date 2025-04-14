@@ -19,6 +19,39 @@ Figma 디자인 파일을 `.clx` 확장자를 가진 XML 포맷으로 변환하�
 | **Photoshop**| ⚠️ 제한적        | ⚠️ JavaScript 기반 추출 가능 | PSD 내부에 계층 정보는 존재하나, 외부 추출 구조가 복잡하고 자동화에 어려움 |
 | **Zeplin**   | ❌ 불가능        | ✅ 일부 정보 추출 가능         | 계층 구조는 지원되지 않으며, 화면 기반 단일 요소 정보만 추출 가능 |
 
+---
+
+## 🧑‍💻 개발 언어
+
+| 영역       | 사용 언어       |
+|------------|-----------------|
+| 서버 사이드 | Java (JDK 8 이상) |
+| 빌드 설정  | XML (Maven `pom.xml`) |
+| 데이터 처리 | JSON (Figma API 응답) |
+| 뷰 템플릿  | XML 기반 `.clx` (eXBuilder6 전용) |
+| 스크립트   | JavaScript (자동 생성 `.js`) |
+
+
+## 🧰 기술 스택
+
+| 범주           | 사용 기술                                                                 |
+|----------------|---------------------------------------------------------------------------|
+| **백엔드**     | Java 8+, Spring MVC, Servlet API                                          |
+| **빌드/환경**  | Tomcat 9                                                                  |
+| **API 연동**   | [Figma REST API](https://www.figma.com/developers/api), Apache HttpClient |
+| **데이터 처리**| Jackson (`ObjectMapper`)                                                  |
+| **파일 시스템**| Java NIO (`java.nio.file.Files`, `Paths`)                                 |
+| **문서 생성**  | Custom `.clx` 구조 및 자바스크립트 템플릿 자동 생성                          |
+| **OAuth 인증** | Figma OAuth2 기반 토큰 처리                                                |
+| **프론트 연동**| eXBuilder6 (CLX 연동)                                                     |
+| **개발 도구**  | Git, Eclipse 등                                                           |
+| **AI 활용**    | ✅ **ChatGPT 기반 코드 생성 및 리팩토링으로 서버 로직 구현**              |
+
+> 본 프로젝트의 핵심 서버 로직은 **OpenAI의 ChatGPT를 활용하여** 개발되었으며,  
+> 복잡한 로직을 빠르게 구현하고 반복 작업을 자동화하는 데에 큰 도움이 되었습니다.
+
+---
+
 ## 🛠 주요 기능
 
 - ✅ **Figma API 연동**
