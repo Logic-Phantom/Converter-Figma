@@ -5,12 +5,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,7 +106,10 @@ public class DesignController {
             if (rawData == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch Figma data.");
             }
+            //JSON 작성
+            saveJsonToFile(rawData);
 
+            
             File clxFile = figmaToHtmlService.convertToClx(rawData);
             if (clxFile == null || !clxFile.exists()) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CLX file creation failed.");
@@ -206,6 +215,8 @@ public class DesignController {
             if (rawData == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch Figma data.");
             }
+            //JSON 작성
+            saveJsonToFile(rawData);
 
             File clxFile = figmaToHtmlService.convertToClx(rawData);
             if (clxFile == null || !clxFile.exists()) {
@@ -312,6 +323,9 @@ public class DesignController {
                             resultLog.append("    ❌ Failed to fetch data\n");
                             continue;
                         }
+                        //JSON 작성
+                        saveJsonToFile(rawData);
+                        
 
                         File clxFile = figmaToHtmlService.convertToClx(rawData);
                         if (clxFile == null || !clxFile.exists()) {
@@ -388,5 +402,23 @@ public class DesignController {
 
 		dataRequest.setResponse("ds1", list);
 		return new JSONDataView();
+	}
+	public File saveJsonToFile(Map<String, Object> jsonData) throws IOException {
+	    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	    String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\json\\" + today;
+
+	    // 디렉토리 생성
+	    Files.createDirectories(Paths.get(outputDir));
+
+	    // 랜덤 문자열 생성 (숫자 + 문자 조합)
+	    String randomStr = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+	    String fileName = today + "_" + randomStr + ".json";
+	    Path filePath = Paths.get(outputDir, fileName);
+
+	    // ObjectMapper를 사용해 JSON 파일로 저장
+	    ObjectMapper objectMapper = new ObjectMapper();
+	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(filePath.toFile(), jsonData);
+
+	    return filePath.toFile();
 	}
 }
