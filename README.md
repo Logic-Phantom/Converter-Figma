@@ -26,7 +26,6 @@ Figma 디자인 파일을 `.clx` 확장자를 가진 XML 포맷으로 변환하�
 | 영역       | 사용 언어       |
 |------------|-----------------|
 | 서버 사이드 | Java (JDK 8 이상) |
-| 빌드 설정  | XML (Maven `pom.xml`) |
 | 데이터 처리 | JSON (Figma API 응답) |
 | 뷰 템플릿  | XML 기반 `.clx` (eXBuilder6 전용) |
 | 스크립트   | JavaScript (자동 생성 `.js`) |
