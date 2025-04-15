@@ -15,7 +15,7 @@ import javax.json.JsonObject;
 		                double x, double y, double width, double height, 
 		                double parentX, double parentY, String style, int depth) 
 		                throws IOException {
-		
+		        //System.out.println("인스턴스 타입 클래스화 확인용");
 				// 'children' 배열 가져오기
 				List<Map<String, Object>> children = (List<Map<String, Object>>) element.get("children");
 				

@@ -42,6 +42,7 @@ import org.springframework.web.servlet.View;
 import com.cleopatra.protocol.data.DataRequest;
 import com.cleopatra.protocol.data.ParameterGroup;
 import com.cleopatra.spring.JSONDataView;
+import com.tomatosystem.service.FigmaToClxService;
 import com.tomatosystem.service.FigmaToHtmlService;
 
 
@@ -53,6 +54,8 @@ public class DesignController {
     @Autowired
     private FigmaToHtmlService figmaToHtmlService;
 
+    @Autowired
+    private FigmaToClxService figmaToClxService;
 //    @GetMapping("/convert")
 //    public ResponseEntity<InputStreamResource> downloadHtml() throws Exception {
 //
@@ -109,8 +112,11 @@ public class DesignController {
             //JSON 작성
             saveJsonToFile(rawData);
 
+            //기본 동작
+            //File clxFile = figmaToHtmlService.convertToClx(rawData);
             
-            File clxFile = figmaToHtmlService.convertToClx(rawData);
+            //인스턴스 타입 Class 테스트
+            File clxFile = figmaToClxService.convertToClx(rawData);
             if (clxFile == null || !clxFile.exists()) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CLX file creation failed.");
             }

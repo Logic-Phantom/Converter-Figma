@@ -13,8 +13,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.tomatosystem.type.InstanceNodeConverter;
 
+@Service
 public class FigmaToClxService {
 	 //제일 베스트
 	  public File convertToClx(Map<String, Object> figmaJson) throws IOException {
