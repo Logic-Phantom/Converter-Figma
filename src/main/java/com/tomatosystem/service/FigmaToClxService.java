@@ -16,6 +16,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.tomatosystem.type.InstanceNodeConverter;
+import com.tomatosystem.type.TextNodeConverter;
 
 @Service
 public class FigmaToClxService {
@@ -248,15 +249,21 @@ public class FigmaToClxService {
 		    }
 		    
 		    // 🔹 일반 TEXT 요소는 <cl:output> 태그로 변환
+//		    if ("TEXT".equalsIgnoreCase(type)) {
+//		        String textId = "output_" + generateId();
+//		        String textValue = getTextValue(element);
+//
+//		        writer.write(indent + "<cl:output std:sid=\"output-" + generateId() + "\" id=\"" + textId + "\" value=\"" + escapeXml(textValue) + "\" style=\"" + escapeXml(style) + "\">\n");
+//		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//		        writer.write(indent + "</cl:output>\n");
+//		        return;
+//		    }
 		    if ("TEXT".equalsIgnoreCase(type)) {
-		        String textId = "output_" + generateId();
-		        String textValue = getTextValue(element);
-
-		        writer.write(indent + "<cl:output std:sid=\"output-" + generateId() + "\" id=\"" + textId + "\" value=\"" + escapeXml(textValue) + "\" style=\"" + escapeXml(style) + "\">\n");
-		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-		        writer.write(indent + "</cl:output>\n");
+		        TextNodeConverter textConverter = new TextNodeConverter();
+		        textConverter.convert(writer, element, x, y, width, height, parentX, parentY, style, depth);
 		        return;
 		    }
+		    
 
 		    // 🔹 이미지 요소 변환
 //		    if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {

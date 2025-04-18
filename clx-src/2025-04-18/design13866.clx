@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-64c822b5" version="1.0.5538">
+  <head std:sid="head-4848543b">
+    <screen std:sid="screen-db4d3618" id="default" name="default" width="1924px" height="768px"/>
+    <cl:model std:sid="model-569ddfc9"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-655f5874">
+            <cl:group std:sid="group-f8275502" id="group_3792ef78" style="background-color: #FFFFFF; border-color: #666666; ">
+                <cl:xylayoutdata top="0.0px" left="0.0px" width="1654.0px" height="1176.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:group std:sid="group-252dc7e4" id="group_54f68e70" style="">
+                    <cl:xylayoutdata top="528.0px" left="30.0px" width="1601.0px" height="647.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-d97c9ab9" id="group_e12dbdb0" style="">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="1601.0px" height="647.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-1758c2c0" id="group_238b4f1e" style="">
+                            <cl:xylayoutdata top="88.0px" left="0.0px" width="1594.0px" height="559.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-b267e1db" id="group_6efa5482" style="">
+                                <cl:xylayoutdata top="49.0px" left="0.0px" width="1594.0px" height="510.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:grid std:sid="grid-6625b0e2" id="grda384db02">
+                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="1594.0px" height="430.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                  <cl:gridcolumn std:sid="g-column-5b5c8bb6"/>
+                                  <cl:gridcolumn std:sid="g-column-6b0e5da2"/>
+                                  <cl:gridcolumn std:sid="g-column-9e30dddb"/>
+                                  <cl:gridcolumn std:sid="g-column-40fd1d0e"/>
+                                  <cl:gridcolumn std:sid="g-column-8a325b0e"/>
+                                  <cl:gridheader std:sid="gh-band-92ee5dcd">
+                                    <cl:gridrow std:sid="g-row-0b9c4c17"/>
+                                    <cl:gridcell std:sid="gh-cell-28bf658e" rowindex="0" colindex="0"/>
+                                    <cl:gridcell std:sid="gh-cell-2376dfae" rowindex="0" colindex="1"/>
+                                    <cl:gridcell std:sid="gh-cell-17ec80fb" rowindex="0" colindex="2"/>
+                                    <cl:gridcell std:sid="gh-cell-d6eb07b9" rowindex="0" colindex="3"/>
+                                    <cl:gridcell std:sid="gh-cell-c3bcfb56" rowindex="0" colindex="4"/>
+                                  </cl:gridheader>
+                                  <cl:griddetail std:sid="gd-band-076d1fd9">
+                                    <cl:gridrow std:sid="g-row-0b7ef817"/>
+                                    <cl:gridcell std:sid="gd-cell-93b8c8bc" rowindex="0" colindex="0"/>
+                                    <cl:gridcell std:sid="gd-cell-6cbfcd2c" rowindex="0" colindex="1"/>
+                                    <cl:gridcell std:sid="gd-cell-bff2d1c7" rowindex="0" colindex="2"/>
+                                    <cl:gridcell std:sid="gd-cell-fbc1bea2" rowindex="0" colindex="3"/>
+                                    <cl:gridcell std:sid="gd-cell-8f05c297" rowindex="0" colindex="4"/>
+                                  </cl:griddetail>
+                                </cl:grid>
+                                <cl:button std:sid="button-1afdd22d" id="instance_bf91e642" value="Button" style="                                ">
+                                    <cl:xylayoutdata top="450.0px" left="467.0px" width="660.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:button>
+                            </cl:group>
+                            <cl:group std:sid="group-d0636d16" id="group_dc798b2b" style="">
+                                <cl:xylayoutdata top="0.0px" left="0.0px" width="1594.0px" height="49.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-6323a704" id="group_d9f3138b" style="">
+                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="1594.0px" height="49.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-ab702369" id="group_2dfe80bb" style="">
+                                        <cl:xylayoutdata top="6.0px" left="1476.0px" width="118.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:button std:sid="button-b9b3c032" id="instance_791e59c8" value="엑셀다운로드" style="                                        ">
+                                            <cl:xylayoutdata top="0.0px" left="0.0px" width="118.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:button>
+                                        <cl:group std:sid="group-5907fa3c" id="group_c6e5fd55" style="">
+                                            <cl:xylayoutdata top="9.0px" left="11.0px" width="14.0px" height="14.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:output std:sid="output-b85b4868" id="output_6360aad9" value="총 123회" style="">
+                                        <cl:xylayoutdata top="18.0px" left="0.0px" width="1594.0px" height="12.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:output>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                        <cl:group std:sid="group-4699406a" id="group_9c6448c7" style="">
+                            <cl:xylayoutdata top="0.0px" left="1.0px" width="1600.0px" height="56.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:button std:sid="button-1b8befce" id="instance_c02d5ff9" value="문헌목록" style="                            ">
+                                <cl:xylayoutdata top="0.0px" left="0.0px" width="266.0px" height="56.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:button>
+                            <cl:button std:sid="button-027c4165" id="instance_10cbdc06" value="평가위원" style="                            ">
+                                <cl:xylayoutdata top="0.0px" left="266.0px" width="266.0px" height="56.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:button>
+                            <cl:button std:sid="button-2578dcdd" id="instance_01f26e20" value="문헌평가" style="                            ">
+                                <cl:xylayoutdata top="0.0px" left="532.0px" width="266.0px" height="56.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:button>
+                            <cl:button std:sid="button-96dbd602" id="instance_009d7f08" value="근거 신뢰수준 역학평가" style="                            ">
+                                <cl:xylayoutdata top="0.0px" left="798.0px" width="266.0px" height="56.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:button>
+                            <cl:button std:sid="button-ebf36cb1" id="instance_2f85dbe9" value="근거 신뢰수준 독성평가" style="                            ">
+                                <cl:xylayoutdata top="0.0px" left="1064.0px" width="266.0px" height="56.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:button>
+                            <cl:button std:sid="button-cead9279" id="instance_48b67f44" value="최종평가" style="                            ">
+                                <cl:xylayoutdata top="0.0px" left="1330.0px" width="266.0px" height="56.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:button>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-68d98711" id="group_e25a77f6" style="">
+                    <cl:xylayoutdata top="76.0px" left="30.0px" width="1594.0px" height="412.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-da86ca05" id="group_35b6442d" style="">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="1594.0px" height="49.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-145ecbe6" id="group_518c9aeb" style="">
+                            <cl:xylayoutdata top="6.0px" left="1476.0px" width="103.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:button std:sid="button-ad1661e6" id="instance_5255fefb" value="평가의뢰 조회" style="                            ">
+                                <cl:xylayoutdata top="0.0px" left="0.0px" width="103.0px" height="32.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:button>
+                            <cl:group std:sid="group-2dad818d" id="group_59d28419" style="">
+                                <cl:xylayoutdata top="9.0px" left="11.0px" width="14.0px" height="14.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:group>
+                        </cl:group>
+                        <cl:output std:sid="output-5612bea3" id="output_15b9a26f" value="프로젝트상세" style="">
+                            <cl:xylayoutdata top="18.0px" left="0.0px" width="1594.0px" height="12.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                    </cl:group>
+                    <cl:group std:sid="group-6cf6cf84" id="group_f1b250f3" style="">
+                        <cl:xylayoutdata top="53.0px" left="0.0px" width="1594.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:output std:sid="output-455e659c" id="output_21c51368" value="프로젝트 상세" style="">
+                            <cl:xylayoutdata top="0.0px" left="0.0px" width="1594.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:group std:sid="group-e8aa82b6" id="group_aa96a090" style="">
+                            <cl:xylayoutdata top="0.0px" left="0.0px" width="1600.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-9d48a381" id="group_c44da4cb" style="border-color: #565656; ">
+                                <cl:xylayoutdata top="0.0px" left="0.0px" width="1600.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-ebc9454b" id="group_f1fdbb25" style="background-color: #F0F0F0; border-color: #1D1D1D; ">
+                                    <cl:xylayoutdata top="0.0px" left="2.0px" width="266.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-38193999" id="group_d2cda48e" style="">
+                                        <cl:xylayoutdata top="0.0px" left="0.0px" width="266.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-99472ed4" id="group_fb2c21b6" style="">
+                                            <cl:xylayoutdata top="0.0px" left="0.0px" width="294.0px" height="1114.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-902ce436" id="group_655e5890" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="294.0px" height="177.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-f94bbe21" id="output_386226ed" value="환자정보" style="">
+                                                    <cl:xylayoutdata top="24.0px" left="24.0px" width="66.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                            <cl:group std:sid="group-2dba02d5" id="group_9edfd9bc" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="177.0px" left="0.0px" width="294.0px" height="177.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            </cl:group>
+                                            <cl:group std:sid="group-6da8fd27" id="group_1a54bc06" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="354.0px" left="0.0px" width="294.0px" height="185.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            </cl:group>
+                                            <cl:group std:sid="group-964ff6fe" id="group_fc089a2c" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="539.0px" left="0.0px" width="294.0px" height="178.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-9051a9e2" id="output_35d5d52b" value="지원암종
+진단정보" style="">
+                                                    <cl:xylayoutdata top="24.0px" left="24.0px" width="66.0px" height="42.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                            <cl:group std:sid="group-5910d774" id="group_22737f4f" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="717.0px" left="0.0px" width="294.0px" height="206.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            </cl:group>
+                                            <cl:group std:sid="group-a4e6d834" id="group_83e6e5d5" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="923.0px" left="0.0px" width="294.0px" height="82.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-675ceed8" id="output_56e6eee1" value="중복암
+진단정보" style="">
+                                                    <cl:xylayoutdata top="24.0px" left="24.0px" width="66.0px" height="42.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                            <cl:group std:sid="group-8b4eadc3" id="group_90b230b3" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="1005.0px" left="0.0px" width="294.0px" height="118.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-2b5bb6a5" id="output_0c8acc2a" value="지원대상자
+구분" style="">
+                                                    <cl:xylayoutdata top="24.0px" left="24.0px" width="83.0px" height="42.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                        </cl:group>
+                                        <cl:group std:sid="group-43e07a92" id="group_ac58c63d" style="">
+                                            <cl:xylayoutdata top="0.0px" left="0.0px" width="266.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-965a360f" id="group_77ab82f5" style="border-color: #C6C6C6; ">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-8a8bf593" id="output_b4b85674" value="프로젝트 번호" style="">
+                                                    <cl:xylayoutdata top="23.0px" left="24.0px" width="104.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                            <cl:group std:sid="group-ae315598" id="group_64dddb3d" style="border-color: #C6C6C6; ">
+                                                <cl:xylayoutdata top="60.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-fa001050" id="output_952af505" value="후보물질 명" style="">
+                                                    <cl:xylayoutdata top="23.0px" left="24.0px" width="88.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                            <cl:group std:sid="group-7d8391e0" id="group_ea27c3cd" style="border-color: #C6C6C6; ">
+                                                <cl:xylayoutdata top="120.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-d6604d9a" id="output_bfcfe51f" value="프로젝트 설명" style="">
+                                                    <cl:xylayoutdata top="23.0px" left="24.0px" width="104.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                            <cl:group std:sid="group-2a1368b1" id="group_3277a0a7" style="border-color: #C6C6C6; ">
+                                                <cl:xylayoutdata top="180.0px" left="0.0px" width="266.0px" height="59.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            </cl:group>
+                                            <cl:group std:sid="group-6344afd8" id="group_076d608b" style="border-color: #C6C6C6; ">
+                                                <cl:xylayoutdata top="239.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-38d82de2" id="output_ebe0dad7" value="프로젝트 기간" style="">
+                                                    <cl:xylayoutdata top="23.0px" left="24.0px" width="104.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                            <cl:group std:sid="group-0b51e9b0" id="group_5ca11921" style="border-color: #555555; ">
+                                                <cl:xylayoutdata top="299.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:output std:sid="output-63665851" id="output_6da9f42e" value="한국형 발암요인" style="">
+                                                    <cl:xylayoutdata top="23.0px" left="24.0px" width="121.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                </cl:group>
+                                <cl:group std:sid="group-0735f465" id="group_d1a03cc6" style="border-color: #1D1D1D; ">
+                                    <cl:xylayoutdata top="0.0px" left="268.0px" width="532.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-63daeb3f" id="group_06b59a7a" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="0.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-0324308f" id="group_a919d0a6" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-57771597" id="group_96840943" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-1525d5d7" id="instance_9ab0c88c" value="CG-202407-001" style="                                                ">
+                                                    <cl:xylayoutdata top="14.0px" left="0.0px" width="127.0px" height="12.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:group std:sid="group-e3c92f36" id="group_1fc34537" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="60.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-cc7d3b42" id="group_2399c637" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-84a68815" id="group_83a703f1" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-7a517d14" id="instance_caf10cad" value="E190 – 폴리헥사메틸렌구아니딘(PHMG) [CAS No 31961-54-3]" style="                                                ">
+                                                    <cl:xylayoutdata top="14.0px" left="0.0px" width="450.0px" height="12.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:group std:sid="group-24f92f33" id="group_6f0b53ff" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="120.0px" left="0.0px" width="532.0px" height="119.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-062944ad" id="group_df97ac1d" style="">
+                                            <cl:xylayoutdata top="12.5px" left="10.0px" width="511.0px" height="94.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-84cde918" id="group_e498b86d" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:group std:sid="group-c6460114" id="group_3508810a" style="">
+                                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                    <cl:button std:sid="button-4ea48dff" id="instance_940efd67" value="간략한 프로젝트 설명 입력 내용이 출력됩니다. 간략한 프로젝트 설명 입력 내용이 출력됩니다.
+간략한 프로젝트 설명 입력 내용이 출력됩니다." style="                                                    ">
+                                                        <cl:xylayoutdata top="1.0px" left="0.0px" width="523.0px" height="38.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                    </cl:button>
+                                                </cl:group>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:group std:sid="group-fe2b6823" id="group_dc8af7a2" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="239.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-2f93c7e6" id="group_31a7c5f2" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="435.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-51cc63e2" id="group_56ea161f" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="435.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-d947d033" id="instance_328bad10" value="YYYY.MM.DD" style="                                                ">
+                                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="202.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                                <cl:output std:sid="output-2ef46ffc" id="output_95346aec" value="-" style="">
+                                                    <cl:xylayoutdata top="15.0px" left="211.0px" width="12.0px" height="11.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                                <cl:button std:sid="button-d7d741bf" id="instance_43f30b47" value="YYYY.MM.DD" style="                                                ">
+                                                    <cl:xylayoutdata top="0.0px" left="233.0px" width="202.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:group std:sid="group-b9cc50a2" id="group_6e8c4370" style="border-color: #555555; ">
+                                        <cl:xylayoutdata top="299.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-b22aaa5e" id="group_9d49c1ec" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="480.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-2bf447d3" id="group_e7fab336" style="">
+                                                <cl:xylayoutdata top="0.0px" left="300.0px" width="180.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:group std:sid="group-6a679891" id="group_2219a7d2" style="">
+                                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="180.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                    <cl:button std:sid="button-9367406e" id="instance_62116c8c" value="한국형 발암요인 지정/취소" style="                                                    ">
+                                                        <cl:xylayoutdata top="0.0px" left="0.0px" width="180.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                    </cl:button>
+                                                </cl:group>
+                                            </cl:group>
+                                            <cl:group std:sid="group-4912c6b8" id="group_ea854263" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="290.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-e0b175e0" id="instance_5feb7a6d" value="123456" style="                                                ">
+                                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="140.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                                <cl:output std:sid="output-af677fa0" id="output_6c8bc247" value="-" style="">
+                                                    <cl:xylayoutdata top="15.0px" left="148.0px" width="12.0px" height="11.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:output>
+                                                <cl:button std:sid="button-afda16db" id="instance_f268b88f" value="123456" style="                                                ">
+                                                    <cl:xylayoutdata top="0.0px" left="150.0px" width="140.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                </cl:group>
+                                <cl:group std:sid="group-9735f7da" id="group_972024f9" style="background-color: #FFFFFF; border-color: #1D1D1D; ">
+                                    <cl:xylayoutdata top="0.0px" left="800.0px" width="266.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-3c146b20" id="group_e06f528a" style="background-color: #F0F0F0; border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="0.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-50aac19d" id="output_2e85252d" value="프로젝트 명" style="">
+                                            <cl:xylayoutdata top="23.0px" left="24.0px" width="88.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-cd0224e6" id="group_bceacb65" style="background-color: #F0F0F0; border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="60.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-acff7c5d" id="output_5a2551e5" value="CAS NO." style="">
+                                            <cl:xylayoutdata top="23.0px" left="24.0px" width="76.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-17e341e9" id="group_3031e44b" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="120.0px" left="0.0px" width="266.0px" height="119.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:group>
+                                    <cl:group std:sid="group-7acca313" id="group_be6cc045" style="background-color: #F0F0F0; border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="239.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-89a1dd56" id="output_81d5bb17" value="근거신뢰수준 평가" style="">
+                                            <cl:xylayoutdata top="23.0px" left="24.0px" width="137.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-0dfefedd" id="group_7274f49e" style="background-color: #F0F0F0; border-color: #555555; ">
+                                        <cl:xylayoutdata top="299.0px" left="0.0px" width="266.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-633f8003" id="output_9649d1e0" value="실행일자" style="">
+                                            <cl:xylayoutdata top="23.0px" left="24.0px" width="66.0px" height="13.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                </cl:group>
+                                <cl:group std:sid="group-2d4d1681" id="group_ba8bda00" style="border-color: #1D1D1D; ">
+                                    <cl:xylayoutdata top="0.0px" left="1066.0px" width="532.0px" height="359.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-16c49411" id="group_6feb19dd" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="0.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-61ae7ded" id="group_40652a95" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-c9d0b1fd" id="group_5adea7d7" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-a891b75b" id="instance_a000490a" value="IARC 모노그래프 2025-2029 우선순위 후보물질선정" style="                                                ">
+                                                    <cl:xylayoutdata top="14.0px" left="0.0px" width="366.0px" height="12.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:group std:sid="group-3d456adb" id="group_f9c427dc" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="60.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-080a6078" id="group_902cc4e7" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-729487d7" id="group_486dd4b8" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-f1d74e21" id="instance_20f890b3" value="630-20-6" style="                                                ">
+                                                    <cl:xylayoutdata top="14.0px" left="0.0px" width="74.0px" height="12.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:group std:sid="group-3e910872" id="group_687f96ef" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="120.0px" left="0.0px" width="532.0px" height="119.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:group>
+                                    <cl:group std:sid="group-f535c725" id="group_82955ee6" style="border-color: #C6C6C6; ">
+                                        <cl:xylayoutdata top="239.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-8f4ea0de" id="group_724945d7" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-ed37d35f" id="group_9a9363b5" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-8d4d4210" id="instance_baf42bdd" value="선택" style="                                                ">
+                                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="202.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                    <cl:group std:sid="group-5faeebab" id="group_a1bcb442" style="border-color: #555555; ">
+                                        <cl:xylayoutdata top="299.0px" left="0.0px" width="532.0px" height="60.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:group std:sid="group-a711b2ea" id="group_abaee015" style="">
+                                            <cl:xylayoutdata top="10.0px" left="10.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                            <cl:group std:sid="group-9be6c6cf" id="group_f6bb096e" style="">
+                                                <cl:xylayoutdata top="0.0px" left="0.0px" width="449.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                <cl:button std:sid="button-4f6fc0d7" id="instance_e1b76cd9" value="YYYY.MM.DD" style="                                                ">
+                                                    <cl:xylayoutdata top="0.0px" left="0.0px" width="202.0px" height="40.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                                </cl:button>
+                                            </cl:group>
+                                        </cl:group>
+                                    </cl:group>
+                                </cl:group>
+                                <cl:output std:sid="output-4ce1832e" id="output_1725799d" value=" " style="">
+                                    <cl:xylayoutdata top="0.0px" left="1598.0px" width="0.0px" height="11.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:output>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:udc std:sid="ud-control-66204719" type="udc.udcComAppHeader">
+                  <cl:xylayoutdata std:sid="xyl-data-d464c5fc" top="30px" left="30px" width="1592px" height="44px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:udc>
+            </cl:group>
+    <cl:xylayout std:sid="xylayout-37728f15"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
