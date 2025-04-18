@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.tomatosystem.type.GroupFrameNodeConverter;
 import com.tomatosystem.type.InstanceNodeConverter;
 import com.tomatosystem.type.TextNodeConverter;
 
@@ -98,71 +99,113 @@ public class FigmaToClxService {
 		    String indent = "    ".repeat(depth);
 		    //System.out.println("🔹 변환 중: " + type + " - " + name);
 
-		 // 🔹 그룹 및 프레임 처리
 		    if ("FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) {
-		        boolean isTable = "table".equalsIgnoreCase(name);
-              //title
-		        boolean isTitleFrame = name.toLowerCase().contains("title"); // 🔹 title 포함 여부
-		        
-		        if (isTable) {
-		            // ✅ `table`을 `<cl:grid>`로 변환
-		            String gridId = "grd" + generateId();
-		            writer.write(indent + "<cl:grid std:sid=\"grid-" + generateId() + "\" id=\"" + gridId + "\">\n");
-		            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+		        GroupFrameNodeConverter groupFrameConverter = new GroupFrameNodeConverter();
+		        boolean needsClosingTag = groupFrameConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
 
-		            // ✅ 컬럼 추가
-		            for (int i = 0; i < 5; i++) {
-		                writer.write(indent + "  <cl:gridcolumn std:sid=\"g-column-" + generateId() + "\"/>\n");
-		            }
-
-		            // ✅ 헤더 추가
-		            writer.write(indent + "  <cl:gridheader std:sid=\"gh-band-" + generateId() + "\">\n");
-		            writer.write(indent + "    <cl:gridrow std:sid=\"g-row-" + generateId() + "\"/>\n");
-		            for (int i = 0; i < 5; i++) {
-		                writer.write(indent + "    <cl:gridcell std:sid=\"gh-cell-" + generateId() + "\" rowindex=\"0\" colindex=\"" + i + "\"/>\n");
-		            }
-		            writer.write(indent + "  </cl:gridheader>\n");
-
-		            // ✅ 데이터 추가
-		            writer.write(indent + "  <cl:griddetail std:sid=\"gd-band-" + generateId() + "\">\n");
-		            writer.write(indent + "    <cl:gridrow std:sid=\"g-row-" + generateId() + "\"/>\n");
-		            for (int i = 0; i < 5; i++) {
-		                writer.write(indent + "    <cl:gridcell std:sid=\"gd-cell-" + generateId() + "\" rowindex=\"0\" colindex=\"" + i + "\"/>\n");
-		            }
-		            writer.write(indent + "  </cl:griddetail>\n");
-
-		            writer.write(indent + "</cl:grid>\n");
-		            return;
-		        }
-
-		        // ✅ title이 포함된 FRAME의 경우 UDC 생성
-		        if (isTitleFrame && "FRAME".equalsIgnoreCase(type)) {
-		            String udcId = "ud-control-" + generateId();
-		            String layoutId = "xyl-data-" + generateId();
-
-		            writer.write(indent + "<cl:udc std:sid=\"" + udcId + "\" type=\"udc.udcComAppHeader\">\n");
-		            writer.write(indent + "  <cl:xylayoutdata std:sid=\"" + layoutId + "\" top=\"" + (int)(y - parentY) + "px\" left=\"" + (int)(x - parentX) + "px\" width=\"" + (int)width + "px\" height=\"" + (int)height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
-		            writer.write(indent + "</cl:udc>\n");
-		            return;
-		        }
-		        
-		        // ✅ 일반 <cl:group> 처리
-		        String groupId = "group_" + generateId();
-		        writer.write(indent + "<cl:group std:sid=\"group-" + generateId() + "\" id=\"" + groupId + "\" style=\"" + escapeXml(style) + "\">\n");
-		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-
-		        if (children != null) {
+		        // ✅ 닫는 태그가 필요한 경우만 자식 순회 (그룹만 해당)
+		        if (needsClosingTag && children != null) {
 		            for (Map<String, Object> child : children) {
 		                String childName = (String) child.getOrDefault("name", "");
-		                if (!childName.matches("(?i)table\\d+")) { // "table1", "table2" 같은 요소는 무시
+		                // table1, table2 등은 생략 (이미 table 처리됨)
+		                if (!childName.matches("(?i)table\\d+")) {
 		                    convertElement(writer, child, depth + 1, x, y);
 		                }
 		            }
 		        }
 
-		        writer.write(indent + "</cl:group>\n");
+		        if (needsClosingTag) {
+		            writer.write(indent + "</cl:group>\n");
+		        }
 		        return;
 		    }
+		    
+		 // 🔹 그룹 및 프레임 처리
+//		    if ("FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) {
+//		        boolean isTable = "table".equalsIgnoreCase(name);
+//              //title
+//		        boolean isTitleFrame = name.toLowerCase().contains("title"); // 🔹 title 포함 여부
+//		        
+//		        if (isTable) {
+//		            // ✅ `table`을 `<cl:grid>`로 변환
+//		            String gridId = "grd" + generateId();
+//		            writer.write(indent + "<cl:grid std:sid=\"grid-" + generateId() + "\" id=\"" + gridId + "\">\n");
+//		            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//
+//		            // ✅ 컬럼 추가
+//		            for (int i = 0; i < 5; i++) {
+//		                writer.write(indent + "  <cl:gridcolumn std:sid=\"g-column-" + generateId() + "\"/>\n");
+//		            }
+//
+//		            // ✅ 헤더 추가
+//		            writer.write(indent + "  <cl:gridheader std:sid=\"gh-band-" + generateId() + "\">\n");
+//		            writer.write(indent + "    <cl:gridrow std:sid=\"g-row-" + generateId() + "\"/>\n");
+//		            for (int i = 0; i < 5; i++) {
+//		                writer.write(indent + "    <cl:gridcell std:sid=\"gh-cell-" + generateId() + "\" rowindex=\"0\" colindex=\"" + i + "\"/>\n");
+//		            }
+//		            writer.write(indent + "  </cl:gridheader>\n");
+//
+//		            // ✅ 데이터 추가
+//		            writer.write(indent + "  <cl:griddetail std:sid=\"gd-band-" + generateId() + "\">\n");
+//		            writer.write(indent + "    <cl:gridrow std:sid=\"g-row-" + generateId() + "\"/>\n");
+//		            for (int i = 0; i < 5; i++) {
+//		                writer.write(indent + "    <cl:gridcell std:sid=\"gd-cell-" + generateId() + "\" rowindex=\"0\" colindex=\"" + i + "\"/>\n");
+//		            }
+//		            writer.write(indent + "  </cl:griddetail>\n");
+//
+//		            writer.write(indent + "</cl:grid>\n");
+//		            return;
+//		        }
+//
+//		        // ✅ title이 포함된 FRAME의 경우 UDC 생성
+//		        if (isTitleFrame && "FRAME".equalsIgnoreCase(type)) {
+//		            String udcId = "ud-control-" + generateId();
+//		            String layoutId = "xyl-data-" + generateId();
+//
+//		            writer.write(indent + "<cl:udc std:sid=\"" + udcId + "\" type=\"udc.udcComAppHeader\">\n");
+//		            writer.write(indent + "  <cl:xylayoutdata std:sid=\"" + layoutId + "\" top=\"" + (int)(y - parentY) + "px\" left=\"" + (int)(x - parentX) + "px\" width=\"" + (int)width + "px\" height=\"" + (int)height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
+//		            writer.write(indent + "</cl:udc>\n");
+//		            return;
+//		        }
+//		        
+//		        // ✅ 일반 <cl:group> 처리
+//		        String groupId = "group_" + generateId();
+//		        writer.write(indent + "<cl:group std:sid=\"group-" + generateId() + "\" id=\"" + groupId + "\" style=\"" + escapeXml(style) + "\">\n");
+//		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//
+//		        if (children != null) {
+//		            for (Map<String, Object> child : children) {
+//		                String childName = (String) child.getOrDefault("name", "");
+//		                if (!childName.matches("(?i)table\\d+")) { // "table1", "table2" 같은 요소는 무시
+//		                    convertElement(writer, child, depth + 1, x, y);
+//		                }
+//		            }
+//		        }
+//
+//		        writer.write(indent + "</cl:group>\n");
+//		        return;
+//		    }
+
+		    // 그룹 및 프레임 처리
+//		    if ("FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) {
+//		        GroupFrameNodeConverter groupFrameConverter = new GroupFrameNodeConverter();
+//		        groupFrameConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
+//
+//		        // 자식 처리
+//		        if (children != null) {
+//		            for (Map<String, Object> child : children) {
+//		                String childName = (String) child.getOrDefault("name", "");
+//		                if (!childName.matches("(?i)table\\d+")) { // table1, table2 같은 요소는 무시
+//		                    convertElement(writer, child, depth + 1, x, y); // 자식 요소 처리
+//		                }
+//		            }
+//		            writer.write(indent + "</cl:group>\n");
+//		        }
+//
+//		        // 그룹 태그 닫기 (이 부분은 이제 convertElement에서 처리)
+//		        //writer.write(indent + "</cl:group>\n");
+//		        return;
+//		    }
 
 		  
 //		    if ("INSTANCE".equalsIgnoreCase(type)) {

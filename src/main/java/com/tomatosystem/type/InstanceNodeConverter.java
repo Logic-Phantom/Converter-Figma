@@ -38,10 +38,10 @@ public class InstanceNodeConverter {
 			String instanceStyle = extractStyle(element);
 			String instanceValue = getButtonValue(element);
 			
-			// 디버깅: 네임과 부모 이름 출력
-			System.out.println("Name: " + name);
-			System.out.println("Parent Name: " + parentName);
-			System.out.println("Has Vector in Right: " + hasVectorInRight);
+//			// 디버깅: 네임과 부모 이름 출력
+//			System.out.println("Name: " + name);
+//			System.out.println("Parent Name: " + parentName);
+//			System.out.println("Has Vector in Right: " + hasVectorInRight);
 			
 			// ComboBox 처리
 			if (lowerName.contains("combobox") || parentName.contains("combobox") ||
