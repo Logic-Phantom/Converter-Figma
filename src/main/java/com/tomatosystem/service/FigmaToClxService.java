@@ -28,7 +28,7 @@ public class FigmaToClxService {
 	        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	        
 	        //String outputDir = "C:\\eb6-work\\workspace\\convertTestXml\\clx-src\\" + today;
-	        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\" + today;
+	        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today;
 	        Files.createDirectories(Paths.get(outputDir));
 
 	        int randomNumber = 10000 + new Random().nextInt(90000);
@@ -101,6 +101,7 @@ public class FigmaToClxService {
 		    String indent = "    ".repeat(depth);
 		    //System.out.println("🔹 변환 중: " + type + " - " + name);
 
+		    // 🔹 그룹 및 프레임 처리
 		    if ("FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) {
 		        GroupFrameNodeConverter groupFrameConverter = new GroupFrameNodeConverter();
 		        boolean needsClosingTag = groupFrameConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
@@ -122,170 +123,7 @@ public class FigmaToClxService {
 		        return;
 		    }
 		    
-		 // 🔹 그룹 및 프레임 처리
-//		    if ("FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) {
-//		        boolean isTable = "table".equalsIgnoreCase(name);
-//              //title
-//		        boolean isTitleFrame = name.toLowerCase().contains("title"); // 🔹 title 포함 여부
-//		        
-//		        if (isTable) {
-//		            // ✅ `table`을 `<cl:grid>`로 변환
-//		            String gridId = "grd" + generateId();
-//		            writer.write(indent + "<cl:grid std:sid=\"grid-" + generateId() + "\" id=\"" + gridId + "\">\n");
-//		            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//
-//		            // ✅ 컬럼 추가
-//		            for (int i = 0; i < 5; i++) {
-//		                writer.write(indent + "  <cl:gridcolumn std:sid=\"g-column-" + generateId() + "\"/>\n");
-//		            }
-//
-//		            // ✅ 헤더 추가
-//		            writer.write(indent + "  <cl:gridheader std:sid=\"gh-band-" + generateId() + "\">\n");
-//		            writer.write(indent + "    <cl:gridrow std:sid=\"g-row-" + generateId() + "\"/>\n");
-//		            for (int i = 0; i < 5; i++) {
-//		                writer.write(indent + "    <cl:gridcell std:sid=\"gh-cell-" + generateId() + "\" rowindex=\"0\" colindex=\"" + i + "\"/>\n");
-//		            }
-//		            writer.write(indent + "  </cl:gridheader>\n");
-//
-//		            // ✅ 데이터 추가
-//		            writer.write(indent + "  <cl:griddetail std:sid=\"gd-band-" + generateId() + "\">\n");
-//		            writer.write(indent + "    <cl:gridrow std:sid=\"g-row-" + generateId() + "\"/>\n");
-//		            for (int i = 0; i < 5; i++) {
-//		                writer.write(indent + "    <cl:gridcell std:sid=\"gd-cell-" + generateId() + "\" rowindex=\"0\" colindex=\"" + i + "\"/>\n");
-//		            }
-//		            writer.write(indent + "  </cl:griddetail>\n");
-//
-//		            writer.write(indent + "</cl:grid>\n");
-//		            return;
-//		        }
-//
-//		        // ✅ title이 포함된 FRAME의 경우 UDC 생성
-//		        if (isTitleFrame && "FRAME".equalsIgnoreCase(type)) {
-//		            String udcId = "ud-control-" + generateId();
-//		            String layoutId = "xyl-data-" + generateId();
-//
-//		            writer.write(indent + "<cl:udc std:sid=\"" + udcId + "\" type=\"udc.udcComAppHeader\">\n");
-//		            writer.write(indent + "  <cl:xylayoutdata std:sid=\"" + layoutId + "\" top=\"" + (int)(y - parentY) + "px\" left=\"" + (int)(x - parentX) + "px\" width=\"" + (int)width + "px\" height=\"" + (int)height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
-//		            writer.write(indent + "</cl:udc>\n");
-//		            return;
-//		        }
-//		        
-//		        // ✅ 일반 <cl:group> 처리
-//		        String groupId = "group_" + generateId();
-//		        writer.write(indent + "<cl:group std:sid=\"group-" + generateId() + "\" id=\"" + groupId + "\" style=\"" + escapeXml(style) + "\">\n");
-//		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//
-//		        if (children != null) {
-//		            for (Map<String, Object> child : children) {
-//		                String childName = (String) child.getOrDefault("name", "");
-//		                if (!childName.matches("(?i)table\\d+")) { // "table1", "table2" 같은 요소는 무시
-//		                    convertElement(writer, child, depth + 1, x, y);
-//		                }
-//		            }
-//		        }
-//
-//		        writer.write(indent + "</cl:group>\n");
-//		        return;
-//		    }
-
-		    // 그룹 및 프레임 처리
-//		    if ("FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) {
-//		        GroupFrameNodeConverter groupFrameConverter = new GroupFrameNodeConverter();
-//		        groupFrameConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
-//
-//		        // 자식 처리
-//		        if (children != null) {
-//		            for (Map<String, Object> child : children) {
-//		                String childName = (String) child.getOrDefault("name", "");
-//		                if (!childName.matches("(?i)table\\d+")) { // table1, table2 같은 요소는 무시
-//		                    convertElement(writer, child, depth + 1, x, y); // 자식 요소 처리
-//		                }
-//		            }
-//		            writer.write(indent + "</cl:group>\n");
-//		        }
-//
-//		        // 그룹 태그 닫기 (이 부분은 이제 convertElement에서 처리)
-//		        //writer.write(indent + "</cl:group>\n");
-//		        return;
-//		    }
-
-		  
-//		    if ("INSTANCE".equalsIgnoreCase(type)) {
-//		        String instanceId = "instance_" + generateId();
-//		        String instanceValue = getButtonValue(element);
-//
-//		        // 부모 요소 이름 가져오기
-//		        Object parentNameObj = element.get("parentName");
-//		        String parentName = (parentNameObj instanceof String) ? ((String) parentNameObj).toLowerCase() : "";
-//
-//		        // 🔍 'right' 내부에 'vector' 포함 여부 체크
-//		        boolean hasVectorInRight = false;
-//
-//		        if (children != null) {
-//		            for (Map<String, Object> child : children) {
-//		                String childName = (String) child.getOrDefault("name", "");
-//
-//		                if (childName.toLowerCase().contains("right")) {
-//		                    hasVectorInRight = hasVectorDeepInRight(child);
-//		                    break;
-//		                }
-//		            }
-//		        }
-//
-//		        // ✅ 라디오 버튼인지 확인
-//		        boolean isRadioButton = name.toLowerCase().contains("radio") || checkIfRadioButton(element);
-//
-//		        // 디버깅 출력
-//		       // System.out.println("Element Name: " + name + ", Parent Name: " + parentName + ", Has Vector in Right: " + hasVectorInRight + ", Is Radio Button: " + isRadioButton);
-//
-//		        // ✅ InputBox 또는 ComboBox 변환 (right 내부 vector 포함 여부에 따라 결정)
-//		        if (name.toLowerCase().contains("base-input") || parentName.contains("input")) {
-//		            String tag = hasVectorInRight ? "cl:combobox" : "cl:inputbox";
-//		            String tagNameWithoutCl = tag.replace("cl:", ""); // "cl:"을 제거
-//		            // tag가 "combobox"일 경우 "c-box"로 변경
-//		            if ("combobox".equals(tagNameWithoutCl)) {
-//		                tagNameWithoutCl = "c-box";
-//		            }
-//		            
-//		            writer.write(indent + "<" + tag + " std:sid=\"" + tagNameWithoutCl + "-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(style) + "\">\n");
-//		            //writer.write(indent + "<" + tag + " std:sid=\'"+tag + "-'" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(style) + "\">\n");
-//		            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//		            writer.write(indent + "</" + tag + ">\n");
-//		            return;
-//		        }
-//
-//		        // ✅ SelectBox (ComboBox) 변환
-//		        if (name.toLowerCase().contains("selectbox") || parentName.contains("selectbox")) {
-//		            writer.write(indent + "<cl:combobox std:sid=\"c-box-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(style) + "\">\n");
-//		            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//		            writer.write(indent + "</cl:combobox>\n");
-//		            return;
-//		        }
-//
-//		        // ✅ Pagination (PageIndexer) 변환
-//		        if (name.toLowerCase().contains("pagination")) {
-//		            writer.write(indent + "<cl:pageindexer std:sid=\"pageindexer-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(style) + "\">\n");
-//		            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//		            writer.write(indent + "</cl:pageindexer>\n");
-//		            return;
-//		        }
-//
-//		        // ✅ 기존 버튼 & 라디오 버튼 처리 (GROUP 내부 중복 생성 방지)
-//		        if (!parentName.contains("group")) { // 그룹 내부에서는 중복 생성 방지
-//		            String tag = isRadioButton ? "cl:radiobutton" : "cl:button";
-//		            String tagNameWithoutCl = tag.replace("cl:", ""); // "cl:"을 제거
-//		            //r-button
-//		            if ("radiobutton".equals(tagNameWithoutCl)) {
-//		                tagNameWithoutCl = "r-button";
-//		            }
-//		            writer.write(indent + "<" + tag + " std:sid=\"" + tagNameWithoutCl + "-" + generateId() + "\" id=\"" + instanceId + "\" value=\"" + escapeXml(instanceValue) +  "\" style=\"" + escapeXml(style) + "\">\n");
-//		            //writer.write(indent + "<" + tag + " std:sid=\'"+tag + "-'" + generateId() + "\" id=\"" + instanceId + "\" value=\"" + escapeXml(instanceValue) + "\" style=\"" + escapeXml(style) + "\">\n");
-//		            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//		            writer.write(indent + "</" + tag + ">\n");
-//		        }
-//
-//		        return;
-//		    }
+		
 		    // 🔹 INSTANCE 타입 처리 - InstanceNodeConverter를 사용
 		    if ("INSTANCE".equalsIgnoreCase(type)) {
 		        InstanceNodeConverter instanceConverter = new InstanceNodeConverter(); // InstanceNodeConverter 클래스의 인스턴스 생성
@@ -294,15 +132,6 @@ public class FigmaToClxService {
 		    }
 		    
 		    // 🔹 일반 TEXT 요소는 <cl:output> 태그로 변환
-//		    if ("TEXT".equalsIgnoreCase(type)) {
-//		        String textId = "output_" + generateId();
-//		        String textValue = getTextValue(element);
-//
-//		        writer.write(indent + "<cl:output std:sid=\"output-" + generateId() + "\" id=\"" + textId + "\" value=\"" + escapeXml(textValue) + "\" style=\"" + escapeXml(style) + "\">\n");
-//		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//		        writer.write(indent + "</cl:output>\n");
-//		        return;
-//		    }
 		    if ("TEXT".equalsIgnoreCase(type)) {
 		        TextNodeConverter textConverter = new TextNodeConverter();
 		        textConverter.convert(writer, element, x, y, width, height, parentX, parentY, style, depth);
@@ -320,13 +149,6 @@ public class FigmaToClxService {
 //		    }
 
 		    // 🔹 인풋 박스 변환
-//		    if ("INPUT".equalsIgnoreCase(type)) {
-//		        String inputId = "input_" + generateId();
-//		        writer.write(indent + "<cl:inputbox std:sid=\"inputbox-" + generateId() + "\" id=\"" + inputId + "\" style=\"" + escapeXml(style) + "\">\n");
-//		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//		        writer.write(indent + "</cl:inputbox>\n");
-//		        return;
-//		    }
 		    if ("INPUT".equalsIgnoreCase(type)) {
 		        InputNodeConverter inputConverter = new InputNodeConverter();
 		        inputConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
