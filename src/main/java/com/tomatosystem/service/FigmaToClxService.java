@@ -244,7 +244,7 @@ public class FigmaToClxService {
 		    // 🔹 INSTANCE 타입 처리 - InstanceNodeConverter를 사용
 		    if ("INSTANCE".equalsIgnoreCase(type)) {
 		        InstanceNodeConverter instanceConverter = new InstanceNodeConverter(); // InstanceNodeConverter 클래스의 인스턴스 생성
-		        instanceConverter.convert(writer, element, style, x, y, width, height, parentX, parentY, indent, depth); // convert 메서드 호출
+		        instanceConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth); // convert 메서드에 name 넘기기
 		        return;
 		    }
 		    
