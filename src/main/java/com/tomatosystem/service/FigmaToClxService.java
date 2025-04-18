@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.tomatosystem.type.GroupFrameNodeConverter;
 import com.tomatosystem.type.InstanceNodeConverter;
 import com.tomatosystem.type.TextNodeConverter;
+import com.tomatosystem.type.VectorNodeConverter;
 
 @Service
 public class FigmaToClxService {
@@ -310,10 +311,10 @@ public class FigmaToClxService {
 
 		    // 🔹 이미지 요소 변환
 //		    if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {
-//		        String imgId = "img_" + generateId();
-//		        writer.write(indent + "<cl:img std:sid=\"img_-" + generateId() + "\" id=\"" + imgId + "\" style=\"" + escapeXml(style) + "\">\n");
-//		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//		        writer.write(indent + "</cl:img>\n");
+//		        VectorNodeConverter vectorConverter = new VectorNodeConverter();
+//		        boolean needsClosingTag = vectorConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
+//		        
+//		        // 이 부분에서 닫는 태그가 필요 없다면 false로 반환하고, 필요하면 true로 반환
 //		        return;
 //		    }
 
