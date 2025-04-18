@@ -16,6 +16,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.tomatosystem.type.GroupFrameNodeConverter;
+import com.tomatosystem.type.InputNodeConverter;
 import com.tomatosystem.type.InstanceNodeConverter;
 import com.tomatosystem.type.TextNodeConverter;
 import com.tomatosystem.type.VectorNodeConverter;
@@ -319,11 +320,16 @@ public class FigmaToClxService {
 //		    }
 
 		    // 🔹 인풋 박스 변환
+//		    if ("INPUT".equalsIgnoreCase(type)) {
+//		        String inputId = "input_" + generateId();
+//		        writer.write(indent + "<cl:inputbox std:sid=\"inputbox-" + generateId() + "\" id=\"" + inputId + "\" style=\"" + escapeXml(style) + "\">\n");
+//		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//		        writer.write(indent + "</cl:inputbox>\n");
+//		        return;
+//		    }
 		    if ("INPUT".equalsIgnoreCase(type)) {
-		        String inputId = "input_" + generateId();
-		        writer.write(indent + "<cl:inputbox std:sid=\"inputbox-" + generateId() + "\" id=\"" + inputId + "\" style=\"" + escapeXml(style) + "\">\n");
-		        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-		        writer.write(indent + "</cl:inputbox>\n");
+		        InputNodeConverter inputConverter = new InputNodeConverter();
+		        inputConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
 		        return;
 		    }
 
