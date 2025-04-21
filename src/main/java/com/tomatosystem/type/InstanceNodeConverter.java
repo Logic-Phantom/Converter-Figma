@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.tomatosystem.utill.ComponentKeywordProperties;
+
 public class InstanceNodeConverter {
 
 	public void convert(FileWriter writer, Map<String, Object> element, String name,
@@ -44,39 +46,74 @@ public class InstanceNodeConverter {
 //			System.out.println("Has Vector in Right: " + hasVectorInRight);
 			
 			// ComboBox 처리
-			if (lowerName.contains("combobox") || parentName.contains("combobox") ||
-			lowerName.contains("selectbox") || parentName.contains("selectbox") ||
-			(lowerName.contains("base-input") && hasVectorInRight)) {
-			
-			writer.write("    ".repeat(depth) + "<cl:combobox std:sid=\"c-box-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-			writer.write("    ".repeat(depth) + "</cl:combobox>\n");
-			return;
-			}
-			
-			// InputBox 처리
-			if (lowerName.contains("base-input") || parentName.contains("input")) {
-			writer.write("    ".repeat(depth) + "<cl:inputbox std:sid=\"inputbox-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-			writer.write("    ".repeat(depth) + "</cl:inputbox>\n");
-			return;
-			}
-			
-			// Pagination 처리
-			if (lowerName.contains("pagination")) {
-			writer.write("    ".repeat(depth) + "<cl:pageindexer std:sid=\"pageindexer-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-			writer.write("    ".repeat(depth) + "</cl:pageindexer>\n");
-			return;
-			}
-			
-			// RadioButton 처리
-			if (lowerName.contains("radio") || checkIfRadioButton(element)) {
-			writer.write("    ".repeat(depth) + "<cl:radiobutton std:sid=\"r-button-" + generateId() + "\" id=\"" + instanceId + "\" value=\"" + escapeXml(instanceValue) + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-			writer.write("    ".repeat(depth) + "</cl:radiobutton>\n");
-			return;
-			}
+//			if (lowerName.contains("combobox") || parentName.contains("combobox") ||
+//			lowerName.contains("selectbox") || parentName.contains("selectbox") ||
+//			(lowerName.contains("base-input") && hasVectorInRight)) {
+//			
+//			writer.write("    ".repeat(depth) + "<cl:combobox std:sid=\"c-box-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//			writer.write("    ".repeat(depth) + "</cl:combobox>\n");
+//			return;
+//			}
+//			
+//			// InputBox 처리
+//			if (lowerName.contains("base-input") || parentName.contains("input")) {
+//			writer.write("    ".repeat(depth) + "<cl:inputbox std:sid=\"inputbox-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//			writer.write("    ".repeat(depth) + "</cl:inputbox>\n");
+//			return;
+//			}
+//			
+//			// Pagination 처리
+//			if (lowerName.contains("pagination")) {
+//			writer.write("    ".repeat(depth) + "<cl:pageindexer std:sid=\"pageindexer-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//			writer.write("    ".repeat(depth) + "</cl:pageindexer>\n");
+//			return;
+//			}
+//			
+//			// RadioButton 처리
+//			if (lowerName.contains("radio") || checkIfRadioButton(element)) {
+//			writer.write("    ".repeat(depth) + "<cl:radiobutton std:sid=\"r-button-" + generateId() + "\" id=\"" + instanceId + "\" value=\"" + escapeXml(instanceValue) + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+//			writer.write("    ".repeat(depth) + "</cl:radiobutton>\n");
+//			return;
+//			}
+	        // ComboBox 처리
+	        if (ComponentKeywordProperties.nameMatches(lowerName, "figma.combobox") ||
+	            ComponentKeywordProperties.nameMatches(parentName, "figma.combobox") ||
+	            (ComponentKeywordProperties.nameMatches(lowerName, "figma.baseinput") && hasVectorInRight)) {
+
+	            writer.write("    ".repeat(depth) + "<cl:combobox std:sid=\"c-box-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+	            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+	            writer.write("    ".repeat(depth) + "</cl:combobox>\n");
+	            return;
+	        }
+
+	        // InputBox 처리
+	        if (ComponentKeywordProperties.nameMatches(lowerName, "figma.input") || ComponentKeywordProperties.nameMatches(parentName, "figma.input")) {
+	            writer.write("    ".repeat(depth) + "<cl:inputbox std:sid=\"inputbox-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+	            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+	            writer.write("    ".repeat(depth) + "</cl:inputbox>\n");
+	            return;
+	        }
+
+	        // Pagination 처리
+	        if (ComponentKeywordProperties.nameMatches(lowerName, "figma.pagination")) {
+	            writer.write("    ".repeat(depth) + "<cl:pageindexer std:sid=\"pageindexer-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+	            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+	            writer.write("    ".repeat(depth) + "</cl:pageindexer>\n");
+	            return;
+	        }
+
+	        // RadioButton 처리
+	        if (ComponentKeywordProperties.nameMatches(lowerName, "figma.radio") || checkIfRadioButton(element)) {
+	            writer.write("    ".repeat(depth) + "<cl:radiobutton std:sid=\"r-button-" + generateId() + "\" id=\"" + instanceId + "\" value=\"" + escapeXml(instanceValue) + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
+	            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+	            writer.write("    ".repeat(depth) + "</cl:radiobutton>\n");
+	            return;
+	        }
+
 			
 			// Button 처리
 			writer.write("    ".repeat(depth) + "<cl:button std:sid=\"button-" + generateId() + "\" id=\"" + instanceId + "\" value=\"" + escapeXml(instanceValue) + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
