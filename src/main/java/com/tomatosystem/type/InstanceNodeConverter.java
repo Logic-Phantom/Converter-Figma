@@ -82,7 +82,9 @@ public class InstanceNodeConverter {
 	        // ComboBox 처리
 	        if (ComponentKeywordProperties.nameMatches(lowerName, "figma.combobox") ||
 	            ComponentKeywordProperties.nameMatches(parentName, "figma.combobox") ||
-	            (ComponentKeywordProperties.nameMatches(lowerName, "figma.baseinput") && hasVectorInRight)) {
+	            ComponentKeywordProperties.nameMatches(lowerName, "figma.selectbox") ||
+	            ComponentKeywordProperties.nameMatches(parentName, "figma.selectbox") ||
+	            (ComponentKeywordProperties.nameMatches(lowerName, "figma.input") && hasVectorInRight)) {
 
 	            writer.write("    ".repeat(depth) + "<cl:combobox std:sid=\"c-box-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
 	            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
