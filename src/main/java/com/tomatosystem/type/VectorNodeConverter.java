@@ -7,33 +7,25 @@ import java.util.UUID;
 
 public class VectorNodeConverter {
 
-    public boolean convert(FileWriter writer, Map<String, Object> element, String name,
-                           double x, double y, double width, double height,
-                           double parentX, double parentY, String style, int depth) throws IOException {
-
-        String indent = "    ".repeat(depth);
-        String type = (String) element.get("type");
-
-        if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {
-            String imgId = "img_" + generateId();
-            writer.write(indent + "<cl:img std:sid=\"img-" + generateId() + "\" id=\"" + imgId + "\" style=\"" + escapeXml(style) + "\">\n");
-            writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-
-            // VECTOR 타입 처리
-            if ("VECTOR".equalsIgnoreCase(type)) {
-                writer.write(indent + "  <cl:vector type=\"vector\" />\n");
-            }
-            // IMAGE 타입 처리
-            else if ("IMAGE".equalsIgnoreCase(type)) {
-                writer.write(indent + "  <cl:image src=\"" + escapeXml((String) element.get("imageUrl")) + "\" />\n");
-            }
-
-            writer.write(indent + "</cl:img>\n");
-            return false; // 닫는 태그가 자동으로 처리됨
-        }
-
-        return true; // 다른 타입은 기본적으로 처리되지 않음
-    }
+	 public boolean convert(FileWriter writer, Map<String, Object> element, String name,
+             double x, double y, double width, double height,
+             double parentX, double parentY, String style, int depth) throws IOException {
+			
+			String indent = "    ".repeat(depth);
+			String type = (String) element.get("type");
+			
+			if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {
+			String stdSid = "image-" + generateId();
+			
+			writer.write(indent + "<cl:img std:sid=\"" + stdSid + "\">\n");
+			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+			writer.write(indent + "</cl:img>\n");
+			
+			return false; // 더 이상 자식이나 추가 요소 없음
+			}
+			
+			return true;
+			}
 
     // 유틸리티 메서드들 (예시로 구현)
     private String generateId() {
