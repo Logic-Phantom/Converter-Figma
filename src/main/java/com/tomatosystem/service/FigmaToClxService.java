@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.tomatosystem.type.GroupFrameNodeConverter;
 import com.tomatosystem.type.InputNodeConverter;
 import com.tomatosystem.type.InstanceNodeConverter;
+import com.tomatosystem.type.RectangleNodeConverter;
 import com.tomatosystem.type.TextNodeConverter;
 import com.tomatosystem.type.VectorNodeConverter;
 
@@ -123,7 +124,13 @@ public class FigmaToClxService {
 		        return;
 		    }
 		    
-		
+		    // Rectangle 타입 처리
+		    if ("RECTANGLE".equalsIgnoreCase(type)) {
+		        RectangleNodeConverter rectangleConverter = new RectangleNodeConverter();
+		        rectangleConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
+		        return;
+		    }
+		    
 		    // 🔹 INSTANCE 타입 처리 - InstanceNodeConverter를 사용
 		    if ("INSTANCE".equalsIgnoreCase(type)) {
 		        InstanceNodeConverter instanceConverter = new InstanceNodeConverter(); // InstanceNodeConverter 클래스의 인스턴스 생성
