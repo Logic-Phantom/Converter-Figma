@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-e962ded6" version="1.0.5538">
+  <head std:sid="head-03750920">
+    <screen std:sid="screen-692ca076" id="default" name="default" width="1924px" height="768px"/>
+    <cl:model std:sid="model-6f69baa5"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-b16137a4">
+            <cl:group std:sid="group-18a645e9-2089-4467-a574-5955309869ca" id="group_b82c0a90-0fb2-408c-808d-46617fa2da07" style="background-color: #FFFFFF; ">
+                <cl:xylayoutdata std:sid="30ddf203-6d20-49e3-83e2-cd11021745de" top="0px" left="0px" width="1920px" height="940px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:group std:sid="group-c51b6900-ab6e-4644-a7a1-689bf766aaf7" id="group_ce25a718-8ec7-43d7-a9de-56390b066684" style="">
+                    <cl:xylayoutdata std:sid="15fc9644-79de-4d49-abd4-aacd68764342" top="0px" left="-11px" width="1942px" height="1058px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-6b97bc64-fb19-470b-8eb5-76cbce87f40b" id="group_ed9d9458-ac1c-4814-ab5a-437880263f13" style="background-color: #292929; ">
+                    <cl:xylayoutdata std:sid="b0e73c11-cb8b-423e-a102-a58d61327526" top="0px" left="0px" width="1920px" height="940px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-53971f55-3bad-434e-a7fa-046243cb9e55" id="group_8837c0e4-d859-43c3-b51f-9b92844a3a26" style="background-color: #FFFFFF; border-color: #E5E2E2; ">
+                    <cl:xylayoutdata std:sid="60216b4d-72cf-40ad-ad15-c054b960f16d" top="204px" left="473px" width="973px" height="535px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-5d462a0b-abf8-44bc-a9cc-e1fa99e8f2dc" id="group_a20699c7-fa37-4c30-b6f8-05e12b9fd869" style="">
+                    <cl:xylayoutdata std:sid="f2d7b78b-0c20-4812-9444-85724d8e0d1f" top="335px" left="954px" width="1px" height="354px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-2b6cc2d7-97c9-43c9-a5ec-183be37d096a" id="group_48e8f875-705c-45a1-ae43-659c39a459d9" style="background-color: #E2E2E3; ">
+                        <cl:xylayoutdata std:sid="f9492945-3739-4c5f-8e6d-9053b11c3bd4" top="0px" left="0px" width="1px" height="354px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-3f6e7ebd-1829-49ad-84ee-cbd828335fa9" id="group_bace0801-c30b-4185-ab85-b9b7ad238273" style="background-color: #00ABB3; ">
+                    <cl:xylayoutdata std:sid="8f64ce26-615d-4607-87e8-1c3e2a9034e9" top="570px" left="534px" width="360px" height="52px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-e28caa71" id="output_2af6c477" value="로그인" style="">
+                        <cl:xylayoutdata top="19.0px" left="103.0px" width="154.54969787597656px" height="14.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:group std:sid="group-fe246a39-3a4d-4240-9364-797a4bf69c20" id="group_21411bc4-68ae-46f7-b3cb-c3ebec00dd9c" style="background-color: #5686C4; ">
+                    <cl:xylayoutdata std:sid="01bcbae1-8847-4597-8ea8-7d23176afef6" top="570px" left="1015px" width="360px" height="52px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-c325b656" id="output_3a5c70fb" value="계정 신청절차 안내" style="">
+                        <cl:xylayoutdata top="19.0px" left="103.0px" width="154.54969787597656px" height="14.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:group std:sid="group-bc095a40-a3cf-4a3c-b930-d461be11daa0" id="group_af317e91-9b62-477a-ac77-e4db3c353ebf" style="">
+                    <cl:xylayoutdata std:sid="0591e4be-a2d2-43d8-8084-bbf87d69da74" top="480px" left="534px" width="360px" height="70px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-566f7e90" id="output_393f201b" value="비밀번호" style="">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="154.54969787597656px" height="14.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:group std:sid="group-f9fb0171-4fbd-4712-9d19-73bb69d03cd6" id="group_ca53db38-05b9-4c34-a6dc-a7e9b31a8099" style="background-color: #FFFFFF; border-color: #CFD0D2; ">
+                        <cl:xylayoutdata std:sid="f779bb66-42bf-4586-8ec7-f35d51e790d9" top="18px" left="0px" width="360px" height="52px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:group>
+                    <cl:output std:sid="output-ba1c8f52" id="output_ad9fca71" value="비밀번호를 입력해주세요" style="">
+                        <cl:xylayoutdata top="33.0px" left="16.0px" width="137.0px" height="21.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:group std:sid="group-2214dbd2-06cf-4fcb-ab77-ed5d0f7da87a" id="group_4af12fb0-64a7-4dce-8e33-0b7bf77c729e" style="">
+                    <cl:xylayoutdata std:sid="26eedab3-bfa4-46f3-8703-e157599803a0" top="390px" left="534px" width="360px" height="70px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-c5c28bca" id="output_58bb4fe1" value="아이디" style="">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="154.54969787597656px" height="14.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:group std:sid="group-f2e774cf-0df4-4b20-97f4-381f38153d72" id="group_1e3e74af-41b1-43e7-801b-a1ac33d4486d" style="background-color: #FFFFFF; border-color: #CFD0D2; ">
+                        <cl:xylayoutdata std:sid="1c183270-7d60-469e-897d-6bc762ec573d" top="18px" left="0px" width="360px" height="52px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:group>
+                    <cl:output std:sid="output-85f7212e" id="output_714496a4" value="아이디를 입력해주세요" style="">
+                        <cl:xylayoutdata top="33.0px" left="16.0px" width="125.0px" height="21.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:group std:sid="group-f40825bb-578a-4abc-b5d4-37ab6db0cb00" id="group_6cd01d4e-8d40-40eb-850f-082c367a5206" style="">
+                    <cl:xylayoutdata std:sid="4882a4ed-c220-46c1-8e56-93b4b9347dc1" top="640px" left="676px" width="77px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-bc010f9b" id="output_60266df8" value="비밀번호 찾기" style="">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="77.0px" height="21.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:output std:sid="output-8611a00d" id="output_e626308f" value="로그인" style="">
+                    <cl:xylayoutdata top="345.0px" left="534.0px" width="52.0px" height="25.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-4c693776" id="output_229bca07" value="시스템 문의" style="">
+                    <cl:xylayoutdata top="637.0px" left="1035.0px" width="64.0px" height="18.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:button std:sid="button-2bd910df-5996-44cb-bb2f-3d9238450a98" id="instance_8cf02332-72d6-4725-8998-91cfff7d3738" value="Button" style="">
+                    <cl:xylayoutdata top="636.0px" left="1015.0px" width="20.0px" height="20.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:output std:sid="output-ec41cbf6" id="output_60d3ddff" value="741-0100(아우리 통합지원센터)
+743-4841(시스템 담당)" style="">
+                    <cl:xylayoutdata top="636.0px" left="1109.0px" width="168.0px" height="39.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-e7914a75" id="output_a1bcd5ba" value="개인정보처리방침 COPYRIGHT 2012 BY INCHEON INTERNATIONAL AIRPORT CORPORATION. ALL RIGHTS RESERVED" style="">
+                    <cl:xylayoutdata top="759.0px" left="651.0px" width="618.0px" height="18.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:group std:sid="group-1caa751a-ec5f-48cc-b897-6132e0b97178" id="group_89bd7ac2-1c14-4cee-9d4e-686e81150b30" style="">
+                    <cl:xylayoutdata std:sid="108d7745-8e02-4bd7-9e2b-c419efb48d81" top="254px" left="795px" width="331px" height="31px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-a12b46ac" id="output_90aa1fbb" value="정보연계포털" style="">
+                        <cl:xylayoutdata top="6.0px" left="229.0px" width="102.0px" height="25.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:group std:sid="group-938fa067-46cd-405a-9f6e-418077c0a9b0" id="group_78dbcc2a-d695-450d-8ba6-5edddb450d35" style="">
+                        <cl:xylayoutdata std:sid="da12e6b8-1891-4ba3-8a2e-e652fc34a4cf" top="0px" left="0px" width="220px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-b9f231a4-c3ba-455a-b85b-6f023d17dc81" id="group_586095b9-f163-49f4-a55c-2a094f7d602b" style="">
+                    <cl:xylayoutdata std:sid="fe934286-fed4-40e6-aaba-1a7f21674846" top="345px" left="1015px" width="372px" height="177px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-dc31eefe" id="output_3340c767" value="공지사항" style="">
+                        <cl:xylayoutdata top="0.0px" left="0.0px" width="69.0px" height="25.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:group std:sid="group-7dae70df-cce3-4b87-a9b1-2a2a3fbc0781" id="group_b706a330-96d9-46bb-bda2-2e88091a3ccf" style="">
+                        <cl:xylayoutdata std:sid="70f2551e-7a35-4db1-8e39-31f325e2ef86" top="45px" left="12px" width="320px" height="132px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:output std:sid="output-81875f8a" id="output_6b908ea6" value="협업포털 개인정보 파기공지(2024.11.01)" style="">
+                            <cl:xylayoutdata top="0.0px" left="0.0px" width="227.0px" height="21.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-121c63e9" id="output_a1fb5b15" value="협업포털 개인정보 파기공지(2024.09.03)" style="">
+                            <cl:xylayoutdata top="37.0px" left="0.0px" width="235.0px" height="21.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-1542762e" id="output_58eec359" value="[필독]Edge에서 협업포털 사용 조치방법" style="">
+                            <cl:xylayoutdata top="74.0px" left="0.0px" width="222.0px" height="21.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-1004afd0" id="output_554ae07d" value="협업포털 접속불가 및 지연 시 처리방법" style="">
+                            <cl:xylayoutdata top="111.0px" left="0.0px" width="212.0px" height="21.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                    </cl:group>
+                    <cl:group std:sid="group-46eaabb7-c2c3-4949-9b83-8b90b4918e7a" id="group_84dff21b-fa1f-4cd9-ac81-f2a29cd3c18e" style="">
+                        <cl:xylayoutdata std:sid="2d2b9b6e-ff96-4a83-8290-ac3cd71f4d78" top="49px" left="0px" width="12px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-e7a398ae-85f6-49c7-9a5b-e7eabe613005" id="group_fd2f2559-af7c-4ea5-a3e8-b0eb03ab8297" style="background-color: #555555; ">
+                            <cl:xylayoutdata std:sid="6c17bf89-a5a3-4f5e-b872-18d65ccc06b0" top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-902c2bac-a7a7-447c-8995-8f82c22332ad" id="group_171f766b-8324-4832-b7f2-e966de5ec51a" style="">
+                        <cl:xylayoutdata std:sid="06950cbd-7adf-4230-9568-20acb452be8d" top="86px" left="0px" width="12px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-8d3c72c6-e153-4c51-ac77-ffe5add44f94" id="group_ecb8c0bd-e851-4179-99d7-6228afe5b833" style="background-color: #555555; ">
+                            <cl:xylayoutdata std:sid="33b71522-f7c8-4d2c-802d-9c7ff3ce51ae" top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-ef2c1235-f62b-49e4-90f5-e06125f70f3c" id="group_5692c758-e0ae-435f-aefe-65634fc788ae" style="">
+                        <cl:xylayoutdata std:sid="e693559d-5a5e-4339-b9e9-61c2e833bd54" top="123px" left="0px" width="12px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-8e9ce6d3-2186-46b7-a3f9-d38387affe6f" id="group_3fe7c4a4-5ebb-41e9-a597-d87e3d119688" style="background-color: #555555; ">
+                            <cl:xylayoutdata std:sid="f7aa006f-c36f-418d-994b-76ddc0ee4965" top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-390a59a3-5b28-49ce-8b07-de59ff24d099" id="group_5f90cfd6-6b30-4a48-8fed-f046857f759a" style="">
+                        <cl:xylayoutdata std:sid="ca4fde76-031f-4054-a179-b77ef7a9c86f" top="160px" left="0px" width="12px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-3a65a01d-3ed9-44d4-a91f-934ca407b25e" id="group_6a3a903f-a136-4e7f-bfa6-3d0d1b44d639" style="background-color: #555555; ">
+                            <cl:xylayoutdata std:sid="f4912948-7e0e-4183-b957-0d774a7e270c" top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+            </cl:group>
+    <cl:xylayout std:sid="xylayout-843cc6aa"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

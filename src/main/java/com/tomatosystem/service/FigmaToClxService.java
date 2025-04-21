@@ -24,6 +24,9 @@ import com.tomatosystem.type.VectorNodeConverter;
 
 @Service
 public class FigmaToClxService {
+	  private String token;
+	  private String fileKey;
+	
 	 //제일 베스트
 	  public File convertToClx(Map<String, Object> figmaJson) throws IOException {
 	        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -84,6 +87,69 @@ public class FigmaToClxService {
 	        return clxFile;
 	    }
 
+	  public File convertToClxImg(Map<String, Object> figmaData, String token, String fileKey) throws IOException {
+//	        VectorNodeConverter vectorConverter = new VectorNodeConverter(token, fileKey);
+		    this.token = token;
+		    this.fileKey = fileKey;
+	        
+	        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        
+	        //String outputDir = "C:\\eb6-work\\workspace\\convertTestXml\\clx-src\\" + today;
+	        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today;
+	        Files.createDirectories(Paths.get(outputDir));
+
+	        int randomNumber = 10000 + new Random().nextInt(90000);
+	        String baseFileName = "design" + randomNumber;
+	        String clxFilePath = outputDir + "\\" + baseFileName + ".clx";
+	        String jsFilePath = outputDir + "\\" + baseFileName + ".js";
+
+	        File clxFile = new File(clxFilePath);
+	        File jsFile = new File(jsFilePath);
+
+	        // XML 파일 생성
+	        try (FileWriter writer = new FileWriter(clxFile, StandardCharsets.UTF_8)) {
+	            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	            writer.write("<html xmlns=\"http://www.w3.org/1999/xhtml\" " +
+	                    "xmlns:cl=\"http://tomatosystem.co.kr/cleopatra\" " +
+	                    "xmlns:std=\"http://tomatosystem.co.kr/cleopatra/studio\" " +
+	                    "std:sid=\"html-" + generateId() + "\" version=\"1.0.5538\">\n");
+
+	            writer.write("  <head std:sid=\"head-" + generateId() + "\">\n");
+	            writer.write("    <screen std:sid=\"screen-" + generateId() + "\" id=\"default\" name=\"default\" width=\"1924px\" height=\"768px\"/>\n");
+	            writer.write("    <cl:model std:sid=\"model-" + generateId() + "\"/>\n");
+	            writer.write("    <cl:appspec/>\n");
+	            writer.write("  </head>\n");
+	            writer.write("  <body std:sid=\"body-" + generateId() + "\">\n");
+
+	            // 🔹 Figma JSON에서 children 가져오기
+	            Map<String, Object> document = (Map<String, Object>) figmaData.get("document");
+	            if (document != null) {
+	                List<Map<String, Object>> children = (List<Map<String, Object>>) document.get("children");
+	                if (children != null) {
+	                    for (Map<String, Object> element : children) {
+	                        convertElement(writer, element, 2, 0, 0);
+	                    }
+	                }
+	            }
+
+	            writer.write("    <cl:xylayout std:sid=\"xylayout-" + generateId() + "\"/>\n");
+	            writer.write("  </body>\n");
+	            writer.write("  <std:studiosetting>\n");
+	            writer.write("    <std:hruler/>\n");
+	            writer.write("    <std:vruler/>\n");
+	            writer.write("  </std:studiosetting>\n");
+	            writer.write("</html>\n");
+	        }
+
+	        // JavaScript 파일 생성
+	        try (FileWriter jsWriter = new FileWriter(jsFile, StandardCharsets.UTF_8)) {
+	            jsWriter.write("// Generated JavaScript File for " + baseFileName + ".clx\n");
+	            jsWriter.write("console.log('JavaScript for " + baseFileName + " loaded.');\n");
+	        }
+
+	        return clxFile;
+	    }
+	  
 	  private void convertElement(FileWriter writer, Map<String, Object> element, int depth, double parentX, double parentY) throws IOException {
 		    String type = (String) element.get("type");
 		    String name = (String) element.getOrDefault("name", "Unknown");
@@ -155,6 +221,12 @@ public class FigmaToClxService {
 //		        return;
 //		    }
 
+		    if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {
+		        VectorNodeConverter vectorConverter = new VectorNodeConverter(this.token, this.fileKey);
+		        boolean shouldContinue = vectorConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
+		        if (!shouldContinue) return;
+		    }
+		    
 		    // 🔹 인풋 박스 변환
 		    if ("INPUT".equalsIgnoreCase(type)) {
 		        InputNodeConverter inputConverter = new InputNodeConverter();
