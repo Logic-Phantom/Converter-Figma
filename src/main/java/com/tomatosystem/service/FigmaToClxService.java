@@ -213,19 +213,12 @@ public class FigmaToClxService {
 		    
 
 		    // 🔹 이미지 요소 변환
-//		    if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {
-//		        VectorNodeConverter vectorConverter = new VectorNodeConverter();
-//		        boolean needsClosingTag = vectorConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
-//		        
-//		        // 이 부분에서 닫는 태그가 필요 없다면 false로 반환하고, 필요하면 true로 반환
-//		        return;
-//		    }
 
-		    if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {
-		        VectorNodeConverter vectorConverter = new VectorNodeConverter(this.token, this.fileKey);
-		        boolean shouldContinue = vectorConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
-		        if (!shouldContinue) return;
-		    }
+//		    if ("VECTOR".equalsIgnoreCase(type) || "IMAGE".equalsIgnoreCase(type)) {
+//		        VectorNodeConverter vectorConverter = new VectorNodeConverter(this.token, this.fileKey);
+//		        boolean shouldContinue = vectorConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
+//		        if (!shouldContinue) return;
+//		    }
 		    
 		    // 🔹 인풋 박스 변환
 		    if ("INPUT".equalsIgnoreCase(type)) {
