@@ -1,6 +1,8 @@
 package com.tomatosystem.type;
 
 import java.io.FileWriter;
+
+import static com.tomatosystem.utill.NodeConverterUtils.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -103,18 +105,18 @@ public class GroupFrameNodeConverter {
 	    return null;
 	}
 	
-    private String generateId() {
-        return UUID.randomUUID().toString();
-    }
-
-    private void writeLayoutData(FileWriter writer, double x, double y, double width, double height,
-                                 double parentX, double parentY, int depth) throws IOException {
-        String indent = "    ".repeat(depth);
-        writer.write(indent + "<cl:xylayoutdata std:sid=\"" + generateId() + "\" top=\"" + (int) (y - parentY) + "px\" left=\"" + (int) (x - parentX) + "px\" width=\"" + (int) width + "px\" height=\"" + (int) height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
-    }
-
-    private String escapeXml(String str) {
-        if (str == null) return "";
-        return str.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
-    }
+//    private String generateId() {
+//        return UUID.randomUUID().toString();
+//    }
+//
+//    private void writeLayoutData(FileWriter writer, double x, double y, double width, double height,
+//                                 double parentX, double parentY, int depth) throws IOException {
+//        String indent = "    ".repeat(depth);
+//        writer.write(indent + "<cl:xylayoutdata std:sid=\"" + generateId() + "\" top=\"" + (int) (y - parentY) + "px\" left=\"" + (int) (x - parentX) + "px\" width=\"" + (int) width + "px\" height=\"" + (int) height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
+//    }
+//
+//    private String escapeXml(String str) {
+//        if (str == null) return "";
+//        return str.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+//    }
 }

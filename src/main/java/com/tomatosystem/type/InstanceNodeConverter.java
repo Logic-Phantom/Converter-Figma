@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import com.tomatosystem.utill.ComponentKeywordProperties;
 
+import static com.tomatosystem.utill.NodeConverterUtils.*;
+
 public class InstanceNodeConverter {
 
 	public void convert(FileWriter writer, Map<String, Object> element, String name,
@@ -40,45 +42,7 @@ public class InstanceNodeConverter {
 			String instanceStyle = extractStyle(element);
 			String instanceValue = getButtonValue(element);
 			
-//			// 디버깅: 네임과 부모 이름 출력
-//			System.out.println("Name: " + name);
-//			System.out.println("Parent Name: " + parentName);
-//			System.out.println("Has Vector in Right: " + hasVectorInRight);
 			
-			// ComboBox 처리
-//			if (lowerName.contains("combobox") || parentName.contains("combobox") ||
-//			lowerName.contains("selectbox") || parentName.contains("selectbox") ||
-//			(lowerName.contains("base-input") && hasVectorInRight)) {
-//			
-//			writer.write("    ".repeat(depth) + "<cl:combobox std:sid=\"c-box-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//			writer.write("    ".repeat(depth) + "</cl:combobox>\n");
-//			return;
-//			}
-//			
-//			// InputBox 처리
-//			if (lowerName.contains("base-input") || parentName.contains("input")) {
-//			writer.write("    ".repeat(depth) + "<cl:inputbox std:sid=\"inputbox-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//			writer.write("    ".repeat(depth) + "</cl:inputbox>\n");
-//			return;
-//			}
-//			
-//			// Pagination 처리
-//			if (lowerName.contains("pagination")) {
-//			writer.write("    ".repeat(depth) + "<cl:pageindexer std:sid=\"pageindexer-" + generateId() + "\" id=\"" + instanceId + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//			writer.write("    ".repeat(depth) + "</cl:pageindexer>\n");
-//			return;
-//			}
-//			
-//			// RadioButton 처리
-//			if (lowerName.contains("radio") || checkIfRadioButton(element)) {
-//			writer.write("    ".repeat(depth) + "<cl:radiobutton std:sid=\"r-button-" + generateId() + "\" id=\"" + instanceId + "\" value=\"" + escapeXml(instanceValue) + "\" style=\"" + escapeXml(instanceStyle) + "\">\n");
-//			writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
-//			writer.write("    ".repeat(depth) + "</cl:radiobutton>\n");
-//			return;
-//			}
 	        // ComboBox 처리
 	        if (ComponentKeywordProperties.nameMatches(lowerName, "figma.combobox") ||
 	            ComponentKeywordProperties.nameMatches(parentName, "figma.combobox") ||
@@ -239,25 +203,25 @@ public class InstanceNodeConverter {
         return false;
     }
 
-    public void writeLayoutData(FileWriter writer, double elementX, double elementY, double width, double height, double parentX, double parentY, int depth) throws IOException {
-        double relativeX = elementX - parentX;
-        double relativeY = elementY - parentY;
-
-        String indent = "    ".repeat(depth);
-        writer.write(indent + "<cl:xylayoutdata " +
-                "top=\"" + relativeY + "px\" " +
-                "left=\"" + relativeX + "px\" " +
-                "width=\"" + width + "px\" " +
-                "height=\"" + height + "px\" " +
-                "horizontalAnchor=\"LEFT\" " +
-                "verticalAnchor=\"TOP\"/>\n");
-    }
-
-    public String escapeXml(String input) {
-        return input.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
-    }
-
-    public String generateId() {
-        return UUID.randomUUID().toString();  // UUID 전체 사용
-    }
+//    public void writeLayoutData(FileWriter writer, double elementX, double elementY, double width, double height, double parentX, double parentY, int depth) throws IOException {
+//        double relativeX = elementX - parentX;
+//        double relativeY = elementY - parentY;
+//
+//        String indent = "    ".repeat(depth);
+//        writer.write(indent + "<cl:xylayoutdata " +
+//                "top=\"" + relativeY + "px\" " +
+//                "left=\"" + relativeX + "px\" " +
+//                "width=\"" + width + "px\" " +
+//                "height=\"" + height + "px\" " +
+//                "horizontalAnchor=\"LEFT\" " +
+//                "verticalAnchor=\"TOP\"/>\n");
+//    }
+//
+//    public String escapeXml(String input) {
+//        return input.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
+//    }
+//
+//    public String generateId() {
+//        return UUID.randomUUID().toString();  // UUID 전체 사용
+//    }
 }
