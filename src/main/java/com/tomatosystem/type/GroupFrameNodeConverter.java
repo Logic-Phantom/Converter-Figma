@@ -51,16 +51,6 @@ public class GroupFrameNodeConverter {
 			}
 			
 			// ✅ UDC 처리
-//			if (isTitleFrame) {
-//			String udcId = "ud-control-" + generateId();
-//			String layoutId = "xyl-data-" + generateId();
-//			
-//			writer.write(indent + "<cl:udc std:sid=\"" + udcId + "\" type=\"udc.udcComAppHeader\">\n");
-//			writer.write(indent + "  <cl:xylayoutdata std:sid=\"" + layoutId + "\" top=\"" + (int) (y - parentY) + "px\" left=\"" + (int) (x - parentX) + "px\" width=\"" + (int) width + "px\" height=\"" + (int) height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
-//			writer.write(indent + "</cl:udc>\n");
-//			
-//			return false; // 자식 처리 안함
-//			}
 			if (isTitleFrame) {
 			    String udcId = "ud-control-" + generateId();
 			    String layoutId = "xyl-data-" + generateId();
@@ -105,18 +95,4 @@ public class GroupFrameNodeConverter {
 	    return null;
 	}
 	
-//    private String generateId() {
-//        return UUID.randomUUID().toString();
-//    }
-//
-//    private void writeLayoutData(FileWriter writer, double x, double y, double width, double height,
-//                                 double parentX, double parentY, int depth) throws IOException {
-//        String indent = "    ".repeat(depth);
-//        writer.write(indent + "<cl:xylayoutdata std:sid=\"" + generateId() + "\" top=\"" + (int) (y - parentY) + "px\" left=\"" + (int) (x - parentX) + "px\" width=\"" + (int) width + "px\" height=\"" + (int) height + "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
-//    }
-//
-//    private String escapeXml(String str) {
-//        if (str == null) return "";
-//        return str.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
-//    }
 }

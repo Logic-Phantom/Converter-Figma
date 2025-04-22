@@ -203,25 +203,4 @@ public class InstanceNodeConverter {
         return false;
     }
 
-//    public void writeLayoutData(FileWriter writer, double elementX, double elementY, double width, double height, double parentX, double parentY, int depth) throws IOException {
-//        double relativeX = elementX - parentX;
-//        double relativeY = elementY - parentY;
-//
-//        String indent = "    ".repeat(depth);
-//        writer.write(indent + "<cl:xylayoutdata " +
-//                "top=\"" + relativeY + "px\" " +
-//                "left=\"" + relativeX + "px\" " +
-//                "width=\"" + width + "px\" " +
-//                "height=\"" + height + "px\" " +
-//                "horizontalAnchor=\"LEFT\" " +
-//                "verticalAnchor=\"TOP\"/>\n");
-//    }
-//
-//    public String escapeXml(String input) {
-//        return input.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
-//    }
-//
-//    public String generateId() {
-//        return UUID.randomUUID().toString();  // UUID 전체 사용
-//    }
 }
