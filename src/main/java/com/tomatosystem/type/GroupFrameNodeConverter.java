@@ -67,6 +67,51 @@ public class GroupFrameNodeConverter {
 			    writer.write(indent + "</cl:udc>\n");
 			    return false; // 자식 처리 안함
 			}
+			//라디오 한번에처리로직
+			//라디오 요소의 갯수만큼 아이템으로 생성해야하여, 그룹에서 미리 자식을 훑고 판단할 수밖에없음
+			if ("GROUP".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type)) {
+			    List<Map<String, Object>> children = (List<Map<String, Object>>) element.get("children");
+
+			    if (children != null && hasMultipleRadioButtons(children)) {
+			        // GROUP 시작
+			        String groupSid = "group-" + generateId();
+			        String groupId = "group_" + generateId();
+			        writer.write(indent + "<cl:group std:sid=\"" + groupSid + "\" id=\"" + groupId + "\" style=\"\">\n");
+
+			        // 그룹 레이아웃
+			        writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
+
+			        // <cl:radiobutton> 시작
+			        String radioSid = "r-button-" + generateId();
+			        String radioId = "rdb" + generateId();
+			        writer.write(indent + "  <cl:radiobutton std:sid=\"" + radioSid + "\" id=\"" + radioId + "\">\n");
+
+			        // 라디오 자체 레이아웃 (내부 위치는 추후 계산 가능)
+			        //writer.write(indent + "    <cl:xylayoutdata std:sid=\"xyl-data-" + generateId() + "\" top=\"3px\" left=\"4px\" width=\"100px\" height=\"15px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
+	     		     // 라디오 자체 레이아웃
+			        writer.write(indent + "    <cl:xylayoutdata std:sid=\"xyl-data-" + generateId() + "\" top=\"3px\" left=\"4px\" width=\"" + width + "px\" height=\"15px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
+
+
+			        for (Map<String, Object> radioChild : children) {
+			            String childType = (String) radioChild.get("type");
+			            String childName = (String) radioChild.get("name");
+
+			            if ("INSTANCE".equals(childType) && childName.toLowerCase().contains("radio")) {
+			                String label = childName;
+			                String value = findFirstTextValue(radioChild);
+			                String itemSid = "item-" + generateId();
+
+			                writer.write(indent + "    <cl:item std:sid=\"" + itemSid + "\" label=\"" + escapeXml(value) + "\" value=\"" + escapeXml(value) + "\"/>\n");
+			            }
+			        }
+
+			        writer.write(indent + "  </cl:radiobutton>\n");
+			        writer.write(indent + "  <cl:xylayout std:sid=\"xylayout-" + generateId() + "\"/>\n");
+			        writer.write(indent + "</cl:group>\n");
+
+			        return false; // 자식은 따로 처리 안 함
+			    }
+			}
 			
 			// ✅ 일반 그룹 처리
 			String groupId = "group_" + generateId();
@@ -75,6 +120,18 @@ public class GroupFrameNodeConverter {
 			
 			return true; // 자식 계속 처리
 			}
+    private boolean hasMultipleRadioButtons(List<Map<String, Object>> children) {
+        // 자식 요소 중 "radio" 인스턴스가 2개 이상인지 체크
+        int radioCount = 0;
+        for (Map<String, Object> child : children) {
+            String type = (String) child.get("type");
+            if ("INSTANCE".equals(type) && child.get("name").toString().toLowerCase().contains("radio")) {
+                radioCount++;
+            }
+        }
+        return radioCount > 1; // 라디오 버튼이 2개 이상일 경우
+    }
+    
 
 	private String findFirstTextValue(Map<String, Object> node) {
 	    String type = (String) node.get("type");

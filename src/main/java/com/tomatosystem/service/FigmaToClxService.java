@@ -225,11 +225,26 @@ public class FigmaToClxService {
 		    }
 		    
 		    // 🔹 INSTANCE 타입 처리 - InstanceNodeConverter를 사용
+//		    if ("INSTANCE".equalsIgnoreCase(type)) {
+//		        InstanceNodeConverter instanceConverter = new InstanceNodeConverter(); // InstanceNodeConverter 클래스의 인스턴스 생성
+//		        instanceConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth); // convert 메서드에 name 넘기기
+//		        return;
+//		    }
+		    
+		    // 🔹 INSTANCE 타입 처리 - 라디오 버튼인 경우 처리 안함
+			//라디오 요소의 갯수만큼 아이템으로 생성해야하여, 그룹에서 미리 자식을 훑고 판단할 수밖에없음 (인스턴스 -> 그룹) 처리 변경
 		    if ("INSTANCE".equalsIgnoreCase(type)) {
-		        InstanceNodeConverter instanceConverter = new InstanceNodeConverter(); // InstanceNodeConverter 클래스의 인스턴스 생성
-		        instanceConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth); // convert 메서드에 name 넘기기
+		        // 라디오 버튼은 이미 그룹에서 처리되므로, INSTANCE에서 라디오 버튼은 처리하지 않음
+		        if (name.toLowerCase().contains("radio")) {
+		            return; // 라디오 버튼인 경우 이 부분을 건너뛰어야 함
+		        }
+
+		        // 일반 INSTANCE 요소 처리
+		        InstanceNodeConverter instanceConverter = new InstanceNodeConverter();
+		        instanceConverter.convert(writer, element, name, x, y, width, height, parentX, parentY, style, depth);
 		        return;
 		    }
+		    
 		    
 		    // 🔹 일반 TEXT 요소는 <cl:output> 태그로 변환
 		    if ("TEXT".equalsIgnoreCase(type)) {
