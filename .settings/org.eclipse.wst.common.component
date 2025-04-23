@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                        
+                            
+    
     
     
     
@@ -12,23 +13,27 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/exbuilder/config" tag="exbuilderConfig"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/ui" source-path="/.exbuilder-fragments/eXCoverter-Figma" tag="exbuilderProjectReference"/>
-                                                
+                                                        
+        
         
         
         
         
         <property name="java-output-path" value="/eXCoverter-Figma/target/classes"/>
-                                
+                                        
+        
         
         
         <property name="context-root" value="eXCoverter-Figma"/>
-                                            
+                                                    
+    
     
     
     
     
     </wb-module>
-                    
+                        
+
 
 
 
