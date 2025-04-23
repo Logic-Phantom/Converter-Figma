@@ -88,67 +88,94 @@ public class FigmaToClxService {
 	    }
 
 	  public File convertToClxImg(Map<String, Object> figmaData, String token, String fileKey) throws IOException {
-//	        VectorNodeConverter vectorConverter = new VectorNodeConverter(token, fileKey);
 		    this.token = token;
 		    this.fileKey = fileKey;
-	        
-	        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-	        
-	        //String outputDir = "C:\\eb6-work\\workspace\\convertTestXml\\clx-src\\" + today;
-	        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today;
-	        Files.createDirectories(Paths.get(outputDir));
 
-	        int randomNumber = 10000 + new Random().nextInt(90000);
-	        String baseFileName = "design" + randomNumber;
-	        String clxFilePath = outputDir + "\\" + baseFileName + ".clx";
-	        String jsFilePath = outputDir + "\\" + baseFileName + ".js";
+		    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		    String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today;
+		    Files.createDirectories(Paths.get(outputDir));
 
-	        File clxFile = new File(clxFilePath);
-	        File jsFile = new File(jsFilePath);
+		    int randomNumber = 10000 + new Random().nextInt(90000);
+		    String baseFileName = "design" + randomNumber;
+		    String clxFilePath = outputDir + "\\" + baseFileName + ".clx";
+		    String jsFilePath = outputDir + "\\" + baseFileName + ".js";
 
-	        // XML 파일 생성
-	        try (FileWriter writer = new FileWriter(clxFile, StandardCharsets.UTF_8)) {
-	            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-	            writer.write("<html xmlns=\"http://www.w3.org/1999/xhtml\" " +
-	                    "xmlns:cl=\"http://tomatosystem.co.kr/cleopatra\" " +
-	                    "xmlns:std=\"http://tomatosystem.co.kr/cleopatra/studio\" " +
-	                    "std:sid=\"html-" + generateId() + "\" version=\"1.0.5538\">\n");
+		    File clxFile = new File(clxFilePath);
+		    File jsFile = new File(jsFilePath);
 
-	            writer.write("  <head std:sid=\"head-" + generateId() + "\">\n");
-	            writer.write("    <screen std:sid=\"screen-" + generateId() + "\" id=\"default\" name=\"default\" width=\"1924px\" height=\"768px\"/>\n");
-	            writer.write("    <cl:model std:sid=\"model-" + generateId() + "\"/>\n");
-	            writer.write("    <cl:appspec/>\n");
-	            writer.write("  </head>\n");
-	            writer.write("  <body std:sid=\"body-" + generateId() + "\">\n");
+		    // 🔹 Figma 최상위 FRAME width, height 재귀 추출
+		    String screenWidth = "1654px"; // 기본값
+		    String screenHeight = "768px"; // 기본값
 
-	            // 🔹 Figma JSON에서 children 가져오기
-	            Map<String, Object> document = (Map<String, Object>) figmaData.get("document");
-	            if (document != null) {
-	                List<Map<String, Object>> children = (List<Map<String, Object>>) document.get("children");
-	                if (children != null) {
-	                    for (Map<String, Object> element : children) {
-	                        convertElement(writer, element, 2, 0, 0);
-	                    }
-	                }
-	            }
+		    Map<String, Object> document = (Map<String, Object>) figmaData.get("document");
+		    if (document != null) {
+		        Map<String, Object> bounds = findFirstFrameWithBounds(document);
+		        if (bounds != null) {
+		            double w = (double) bounds.getOrDefault("width", 1654.0);
+		            double h = (double) bounds.getOrDefault("height", 768.0);
+		            screenWidth = (int) w + "px";
+		            screenHeight = (int) h + "px";
+		        }
+		    }
 
-	            writer.write("    <cl:xylayout std:sid=\"xylayout-" + generateId() + "\"/>\n");
-	            writer.write("  </body>\n");
-	            writer.write("  <std:studiosetting>\n");
-	            writer.write("    <std:hruler/>\n");
-	            writer.write("    <std:vruler/>\n");
-	            writer.write("  </std:studiosetting>\n");
-	            writer.write("</html>\n");
-	        }
+		    try (FileWriter writer = new FileWriter(clxFile, StandardCharsets.UTF_8)) {
+		        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		        writer.write("<html xmlns=\"http://www.w3.org/1999/xhtml\" " +
+		                "xmlns:cl=\"http://tomatosystem.co.kr/cleopatra\" " +
+		                "xmlns:std=\"http://tomatosystem.co.kr/cleopatra/studio\" " +
+		                "std:sid=\"html-" + generateId() + "\" version=\"1.0.5538\">\n");
 
-	        // JavaScript 파일 생성
-	        try (FileWriter jsWriter = new FileWriter(jsFile, StandardCharsets.UTF_8)) {
-	            jsWriter.write("// Generated JavaScript File for " + baseFileName + ".clx\n");
-	            jsWriter.write("console.log('JavaScript for " + baseFileName + " loaded.');\n");
-	        }
+		        writer.write("  <head std:sid=\"head-" + generateId() + "\">\n");
+		        writer.write("    <screen std:sid=\"screen-" + generateId() + "\" id=\"default\" name=\"default\" width=\"" + screenWidth + "\" height=\"" + screenHeight + "\"/>\n");
+		        writer.write("    <cl:model std:sid=\"model-" + generateId() + "\"/>\n");
+		        writer.write("    <cl:appspec/>\n");
+		        writer.write("  </head>\n");
+		        writer.write("  <body std:sid=\"body-" + generateId() + "\">\n");
 
-	        return clxFile;
-	    }
+		        if (document != null) {
+		            List<Map<String, Object>> children = (List<Map<String, Object>>) document.get("children");
+		            if (children != null) {
+		                for (Map<String, Object> element : children) {
+		                    convertElement(writer, element, 2, 0, 0);
+		                }
+		            }
+		        }
+
+		        writer.write("    <cl:xylayout std:sid=\"xylayout-" + generateId() + "\"/>\n");
+		        writer.write("  </body>\n");
+		        writer.write("  <std:studiosetting>\n");
+		        writer.write("    <std:hruler/>\n");
+		        writer.write("    <std:vruler/>\n");
+		        writer.write("  </std:studiosetting>\n");
+		        writer.write("</html>\n");
+		    }
+
+		    try (FileWriter jsWriter = new FileWriter(jsFile, StandardCharsets.UTF_8)) {
+		        jsWriter.write("// Generated JavaScript File for " + baseFileName + ".clx\n");
+		        jsWriter.write("console.log('JavaScript for " + baseFileName + " loaded.');\n");
+		    }
+
+		    return clxFile;
+		}
+	  
+	  @SuppressWarnings("unchecked")
+	  private Map<String, Object> findFirstFrameWithBounds(Map<String, Object> node) {
+	      if ("FRAME".equals(node.get("type")) && node.containsKey("absoluteBoundingBox")) {
+	          return (Map<String, Object>) node.get("absoluteBoundingBox");
+	      }
+
+	      List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
+	      if (children != null) {
+	          for (Map<String, Object> child : children) {
+	              Map<String, Object> result = findFirstFrameWithBounds(child);
+	              if (result != null) {
+	                  return result;
+	              }
+	          }
+	      }
+
+	      return null;
+	  }
 	  
 	  private void convertElement(FileWriter writer, Map<String, Object> element, int depth, double parentX, double parentY) throws IOException {
 		    String type = (String) element.get("type");

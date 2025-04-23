@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-9dc0670a" version="1.0.5538">
+  <head std:sid="head-985d2f3e">
+    <screen std:sid="screen-5ca85ee1" id="default" name="default" width="1920px" height="940px"/>
+    <cl:model std:sid="model-52d5d33d"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-6738acb0">
+            <cl:group std:sid="group-67cfa4d967314af384fa1f80a25f8c5d" id="group_da5cd24011784504aed232e077cf2472" style="background-color: #F6F6F7; ">
+                <cl:xylayoutdata top="0px" left="0px" width="1920px" height="940px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:group std:sid="group-cd11d547033f4064ae145c80b26abbd1" id="group_6b326fecb4b343bbbf6db5c04a0bbd05" style="">
+                    <cl:xylayoutdata top="0px" left="0px" width="1920px" height="65px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-ea374224e24e44cea6c78944c698de59" id="group_9f6e8895319048458446a687027ffb8f" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="1920px" height="64px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-ecf0ca10474d425db1184a33573ba927" id="group_cc2a8720480b4cbfad04a00104134b4c" style="background-color: #FFFFFF; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="1920px" height="64px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-54bf2d6f34a84ba5a62d6e2dc3394417" id="group_d45f7abe18ff48d69832de41d77d21b4" style="">
+                            <cl:xylayoutdata top="8px" left="32px" width="153px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-380c972a2c31408aad3cd6ed852eacaf" id="group_96d97cdf5f79400195e947e9d722e400" style="">
+                                <cl:xylayoutdata top="10px" left="0px" width="41px" height="26px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:group>
+                            <cl:group std:sid="group-0ccc6c66fbe241b39be76c98b40ea0bc" id="group_c41ec285d27d4dd490c0473cac6c35a8" style="">
+                                <cl:xylayoutdata top="0px" left="73px" width="48px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-0a2355e811714f15bd1511fa4e9e3d6d" id="group_344e68a3702849dfb708302b62452a44" style="">
+                                    <cl:xylayoutdata top="10px" left="10px" width="28px" height="28px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-5d55c5dfd2ea4f21b350c81a3f85500d" id="group_ac46ae3d2d5540faa391aca82cd1fd4f" style="background-color: #D9D9D9; ">
+                                        <cl:xylayoutdata top="0px" left="0px" width="28px" height="28px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:group>
+                                    <cl:button std:sid="button-4db95f99b3764b169c0c2b4708b9cee4" id="instance_f303f18c92834316832e40ae84a7eae9" value="Button" style="background-color: #FFFFFF; background-image: none; ">
+                                        <cl:xylayoutdata top="2px" left="2px" width="24px" height="24px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:button>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                        <cl:group std:sid="group-fce20d48797349beaf4a282e2ffa46d8" id="group_a5b5e11d1ede45b5883e589e6098b850" style="">
+                            <cl:xylayoutdata top="8px" left="1595px" width="293px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-4f1db1ec946744b8a263db1737af4e95" id="group_5cfed55d3be247eb885557976eff2c3a" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="48px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-04f19b81cc454adb9eb47993fc2dcc31" id="group_94b4fbcf972b41c49fc0cc0279fdd69f" style="background-color: #D9D9D9; ">
+                                    <cl:xylayoutdata top="0px" left="0px" width="48px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:group>
+                                <cl:group std:sid="group-99839b5a61b7459ca87fab5a8ceeb1ec" id="group_5047b8ff68ce4c579de9c570c70ad50b" style="">
+                                    <cl:xylayoutdata top="10px" left="10px" width="28px" height="28px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-ded39e6130c84f93b5dab14989511cc2" id="group_1a56fa67fffe4dc385d3d1fade958f90" style="background-color: #D9D9D9; ">
+                                        <cl:xylayoutdata top="0px" left="0px" width="28px" height="28px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:group>
+                                    <cl:button std:sid="button-3e54d5e05dfc4e4abfd7693bf8d4e57f" id="instance_207486b26ff94608a3fc977b6a32ff3e" value="Button" style="background-color: #FFFFFF; background-image: none; ">
+                                        <cl:xylayoutdata top="2px" left="2px" width="24px" height="24px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:button>
+                                </cl:group>
+                                <cl:group std:sid="group-1111549831194447a91f128482f91052" id="group_90002dce3bd649678981ed4bd84e380c" style="">
+                                    <cl:xylayoutdata top="10px" left="32px" width="6px" height="6px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-70b0af03738c483796a0d80e341ecbdb" id="group_90c6dc12b00542abb4a683d63891de44" style="background-color: #D70015; ">
+                                        <cl:xylayoutdata top="0px" left="0px" width="6px" height="6px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:group>
+                                </cl:group>
+                            </cl:group>
+                            <cl:group std:sid="group-c20d17e328624f92bd1eadfb6b0b667e" id="group_9f693b3274ca438cb9855d7410e54998" style="">
+                                <cl:xylayoutdata top="6px" left="64px" width="229px" height="36px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-b71bf37a359e4a198741a03a0810b8c9" id="group_bab04e6dea494da6b385f7b4374eb8b7" style="background-color: #00ABB3; ">
+                                    <cl:xylayoutdata top="0px" left="0px" width="36px" height="36px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-94fc2d24884442b38b71b12d3517fc07" id="group_2925f2a0177246ac97e2e95299f5b056" style="">
+                                        <cl:xylayoutdata top="8px" left="8px" width="20px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:group>
+                                </cl:group>
+                                <cl:group std:sid="group-7aa53c40d4e34288a7df7541ade6aee8" id="group_3614e893fa444091a6af1599bfa08b6e" style="">
+                                    <cl:xylayoutdata top="6px" left="48px" width="181px" height="24px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:output std:sid="output-6515172b6a7645cda9c9a26699048ca7" id="output_026c6b5f723245488c61c471e7e0689e" value="aidt003" style="">
+                                        <cl:xylayoutdata top="2px" left="0px" width="58px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:output>
+                                    <cl:output std:sid="output-bc2f46bd64a345adab358ca4531a9bb7" id="output_77ae2ca40d4548d1bb9034bf38585b4d" value="홍길동" style="">
+                                        <cl:xylayoutdata top="2px" left="66px" width="41px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:output>
+                                    <cl:output std:sid="output-bd99ce2b5e674aa5931e066b919f8d21" id="output_131caf6391554e31916ce00991e8c2e8" value="00:00:00" style="">
+                                        <cl:xylayoutdata top="0px" left="115px" width="66px" height="24px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:output>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-5100e4e3997f4243b96d3dc4a7e855f3" id="group_c674eea300f9482394042fb1ad35c5da" style="background-color: #E2E2E3; ">
+                        <cl:xylayoutdata top="64px" left="0px" width="1920px" height="1px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-0cc60505eeb648f8aa817670215c5420" id="group_0350456e8d274aff9d11f53cbe064d3b" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="141px" left="40px" width="723px" height="192px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-c22a0a3840f146b1b6c1bb8d3056ce9d" id="group_3fc06d59f6d24ee181869e6cfaa9b163" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="398px" left="40px" width="1840px" height="502px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-39d4c55dd1464566a6243853733d3827" id="group_a6cafdf3f0d141c895c9e6fc8e582b69" style="">
+                    <cl:xylayoutdata top="428px" left="70px" width="430px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-46c6e4c1e5db4c7c86ef99df03bbc272" id="group_2f07844f1452450bafc6fa1037bf4a95" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-9465f864707947d085eccf3ea83b9056" id="group_997de7540fae4c6c93cdfa56a53540ee" style="">
+                            <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-bf33c56f9e704415907a3ff0bcc4e462" id="group_c6045231e3ac4301b08c27d42c2623ff" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:output std:sid="output-c8092bebb9604d9192caeaf6f17c9299" id="output_01fa25120a534ce88603f51a949fa39e" value="정보연계 현황(종)" style="">
+                                    <cl:xylayoutdata top="0px" left="12px" width="111px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:output>
+                            </cl:group>
+                            <cl:group std:sid="group-2667494ba6264c0097e80a19f69f23e2" id="group_ff24c7c668044fb8923f12c00ae44f84" style="">
+                                <cl:xylayoutdata top="2px" left="0px" width="4px" height="16px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-4118ac9b1fa247609757ed4e5b73fd7d" id="group_12339e39837847ce9220ad5f6f51aea0" style="">
+                    <cl:xylayoutdata top="656px" left="70px" width="430px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-51e2d336ed7749ae94a47ef936dbf661" id="group_f867ca9e855944b1a8a5d768067d2134" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-19c5be156cf14c0aa78dbf875d1d1b55" id="group_8dd378c09a1c4c218dbcf04c619fc670" style="">
+                            <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-c49de3df19a64bdb8dde61c8bf4ec1d9" id="group_d745a5522a5b4c4db450ab5772c96118" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:output std:sid="output-9efa39ddc37f4a6898fba84fe063e6a6" id="output_132467d74c71449d81cf2a01d7f29edf" value="메시지 처리 현황(Top 10)" style="">
+                                    <cl:xylayoutdata top="0px" left="12px" width="162px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:output>
+                            </cl:group>
+                            <cl:group std:sid="group-6e9cf71dbf3c48d59b5b28044e12ea64" id="group_2be160a952e24f89b15e1e51a9a27cb3" style="">
+                                <cl:xylayoutdata top="2px" left="0px" width="4px" height="16px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-e7d4c7f2c02643ffa5d6841ebc461cd0" id="group_dbfb720eec6448e08d3c37599250c93d" style="">
+                    <cl:xylayoutdata top="656px" left="970px" width="430px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-769d6ca063b74ea9829921ff1f36e4f1" id="group_b9a9ff851cde469e945b8bf5bec6138b" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-7086d25555284317a6fae1a75d84605a" id="group_1cdc259f686549eb8a60e259040db0d3" style="">
+                            <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-025244a583c94a55ab4b03c0cbf609fd" id="group_5d554effd9ad4086ae3ff8cd28a73eb6" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:output std:sid="output-d8876d3068c040418fd6ac563a153fe5" id="output_5484cc68cc4e4d45b1598b9fdbaea027" value="단위시스템별 메시지 처리 현황(Top 10)" style="">
+                                    <cl:xylayoutdata top="0px" left="12px" width="246px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:output>
+                            </cl:group>
+                            <cl:group std:sid="group-3ff67531a3fa437c9b88492be0b2bb0e" id="group_cd4ed1f0e6d34872946fedbca6e75851" style="">
+                                <cl:xylayoutdata top="2px" left="0px" width="4px" height="16px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-f216181bf6c04744a398b0e35b7f73d4" id="group_4368ee1616044139bb2f880433a55bf9" style="">
+                    <cl:xylayoutdata top="428px" left="520px" width="655px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-0c5fdd92f7ba48449d4cc08f2304d917" id="group_ea77fc6638cd4820bf28f485be8836ca" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-89efc5deff884676893ede3caa62ceaf" id="group_9ed78010f3724d51b3c7582e68f49006" style="">
+                            <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-a271ba3353f84a41b61e57fdad196e8e" id="group_b7bb40cf84a5452b9dc094a6e81c5f3b" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:output std:sid="output-4f934a663c2b4f72a42436159bc552ab" id="output_94f369b289a841218c4ef03f3e0c33ed" value="메시지 송수진 현황(건)" style="">
+                                    <cl:xylayoutdata top="0px" left="12px" width="141px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:output>
+                            </cl:group>
+                            <cl:group std:sid="group-38402b3d1c3c4c338aee0b95a043978c" id="group_2ec7bbfdbcaf4628a7a17a3af59a1820" style="">
+                                <cl:xylayoutdata top="2px" left="0px" width="4px" height="16px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-ba75858cbb0346eba12c2f6b47b2622c" id="group_ca8a6c10b7db47e78b96d10a34bf136e" style="">
+                    <cl:xylayoutdata top="428px" left="1195px" width="655px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-998aadc302654ac49c3724d45de1cef4" id="group_beb82eed88c045f9a220350ce4c333a6" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-04e25d35bd7c492fa242e7636462efb3" id="group_75123e47e6d6492d99ff19f325a9f4df" style="">
+                            <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-2c5d635650f64df1b96132b19731e4f5" id="group_f00626738bc8429186c962181e19b0a8" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="580px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:output std:sid="output-04f002c8966142d5a9c9baaf4263e99e" id="output_50afd210577a4e80beb65a2da67b2eb8" value="API서비스 이용현황(건)" style="">
+                                    <cl:xylayoutdata top="0px" left="12px" width="148px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:output>
+                            </cl:group>
+                            <cl:group std:sid="group-49c6b5a647f440439c56cdcbc6323a9e" id="group_a2006f4a0c1148ca8451b062b4038f7f" style="">
+                                <cl:xylayoutdata top="2px" left="0px" width="4px" height="16px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-3766644938c44d2086bcf00afc6f2563" id="group_6d6fe4e09d4c4e118feac41d975a5f1c" style="">
+                    <cl:xylayoutdata top="171px" left="553px" width="180px" height="117px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-aa21b8355ee54ce6903e5859454b151c" id="group_dc3fffdc368341c0b97ff480eec1ff23" style="background-color: #00ABB3; ">
+                        <cl:xylayoutdata top="0px" left="0px" width="180px" height="53px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:group>
+                    <cl:group std:sid="group-f758d4dfc97745c1a3b9192f97876d19" id="group_103eb07c839241a3906123550e06eb6c" style="background-color: #5686C4; ">
+                        <cl:xylayoutdata top="63px" left="0px" width="180px" height="54px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:group>
+                    <cl:output std:sid="output-67093b84f93546989e77f7dc1f92ba24" id="output_ec5852f2c50a4e7187b097a9f7b99d6a" value="정보연계 신청" style="">
+                        <cl:xylayoutdata top="15px" left="14px" width="86px" height="23px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:output std:sid="output-dbe5a56d6dfe4fe88162ea9edc1d6dca" id="output_46c278c6c2d3455c9d97cce971468015" value="결재 대기함" style="">
+                        <cl:xylayoutdata top="78px" left="14px" width="72px" height="23px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:output std:sid="output-df819e23620f4f57bd06ae1edbd137e8" id="output_41d332ee0d654bc695b94eba71de1799" value="10건" style="">
+                        <cl:xylayoutdata top="9px" left="134px" width="32px" height="34px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:output std:sid="output-866a7180349d41d583cbe4c6a92eb205" id="output_94f3461b7e864178811dbfe9cfbd8a3f" value="30건" style="">
+                        <cl:xylayoutdata top="73px" left="134px" width="35px" height="34px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:grid std:sid="grid-233b5f0b78d54f708ecbd44970a64993" id="grde0ce3e00d3f543b98f4c623aaa404439">
+                    <cl:xylayoutdata top="171px" left="70px" width="472px" height="116px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                  <cl:gridcolumn std:sid="g-column-a268fcf80cf0494a91dc7024d8dc7778"/>
+                  <cl:gridcolumn std:sid="g-column-ff6e5591de9748279003d876a4975130"/>
+                  <cl:gridcolumn std:sid="g-column-5b3c37b150bd4489915dda9fc026e232"/>
+                  <cl:gridcolumn std:sid="g-column-bc1c8f3fa973490b9d6ff48610f00675"/>
+                  <cl:gridcolumn std:sid="g-column-0ec7b6e3f3364cde81841e83b73e9bf2"/>
+                  <cl:gridheader std:sid="gh-band-39a1612898e14fedab5024b6897b0468">
+                    <cl:gridrow std:sid="g-row-8be53da24f2b43da962787a141a3aa22"/>
+                    <cl:gridcell std:sid="gh-cell-86d283d0b7994ac49c14c3dd1358a501" rowindex="0" colindex="0"/>
+                    <cl:gridcell std:sid="gh-cell-c11a48b1ff064e6b940750fe20ceb311" rowindex="0" colindex="1"/>
+                    <cl:gridcell std:sid="gh-cell-e528e6f358f243b3b2ee1c76071b224f" rowindex="0" colindex="2"/>
+                    <cl:gridcell std:sid="gh-cell-4ea50d047b934715b8ebdc37674bd5e6" rowindex="0" colindex="3"/>
+                    <cl:gridcell std:sid="gh-cell-3383017265d14494958ef7438a2e0376" rowindex="0" colindex="4"/>
+                  </cl:gridheader>
+                  <cl:griddetail std:sid="gd-band-d6b8a99f5df447d5a2167332c3a208e5">
+                    <cl:gridrow std:sid="g-row-60e4e2c443544b9390784925217942d3"/>
+                    <cl:gridcell std:sid="gd-cell-b42402e7e5884c75af2781e4af158467" rowindex="0" colindex="0"/>
+                    <cl:gridcell std:sid="gd-cell-855dd663defd4190af7edcf189d197da" rowindex="0" colindex="1"/>
+                    <cl:gridcell std:sid="gd-cell-a8db3b8affe9455abbb6bb0f17261d6b" rowindex="0" colindex="2"/>
+                    <cl:gridcell std:sid="gd-cell-6267b5c955ca4ef5ada3f97f80b64dd1" rowindex="0" colindex="3"/>
+                    <cl:gridcell std:sid="gd-cell-6a051271f2cd41ed9a7933d468a2a0aa" rowindex="0" colindex="4"/>
+                  </cl:griddetail>
+                </cl:grid>
+                <cl:group std:sid="group-1af20a67cc0e405f9eec44787eb033d1" id="group_21cc28eafd044a84bb97f56a6f8bfa32" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="141px" left="783px" width="723px" height="192px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:output std:sid="output-4603ee657ac54fc0aafe416adadf98ec" id="output_31d887b00e4f49e791ac95d8cb83c736" value="120" style="">
+                    <cl:xylayoutdata top="259px" left="814px" width="109px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-7a94888f5d3d4fc7b33e31e2b0257ad1" id="output_1498655865614a3b91dd548829ce7dc8" value="30" style="">
+                    <cl:xylayoutdata top="259px" left="923px" width="109px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-83523e4e465e4bfea358ba9bb3d7edf0" id="output_f8dc8858fc1b41098fcec85e80de48fa" value="20" style="">
+                    <cl:xylayoutdata top="259px" left="1033px" width="110px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-4098f5231743476995c8b270e377b97a" id="output_5529267fafd3496f8ac594f26a9e9c2e" value="10" style="">
+                    <cl:xylayoutdata top="259px" left="1144px" width="110px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-e53b0abb9baf4ad1926b69d2a1d0231c" id="output_afc51eccd0e547c6a9394bd62ebe9c46" value="32" style="">
+                    <cl:xylayoutdata top="259px" left="1255px" width="110px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-8c9f255a0708425caf989781b82ad2dd" id="output_c9ef015e34f3449bafff3303762823b4" value="32" style="">
+                    <cl:xylayoutdata top="259px" left="1366px" width="110px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:grid std:sid="grid-0e7003e725554806978722ee7c3afe56" id="grd2cc8c0eee67145c58177e843a1b6e77c">
+                    <cl:xylayoutdata top="171px" left="813px" width="663px" height="117px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                  <cl:gridcolumn std:sid="g-column-cfdf0aa2fc24460f8619697ae905ba0d"/>
+                  <cl:gridcolumn std:sid="g-column-ada714b633234ce0848467858e6417b6"/>
+                  <cl:gridcolumn std:sid="g-column-4a90f1e2893349398a488be1cf748fc6"/>
+                  <cl:gridcolumn std:sid="g-column-8a6ded578925402da16ba6466e951584"/>
+                  <cl:gridcolumn std:sid="g-column-64b90bf6c2ce4f97b56509efaf450104"/>
+                  <cl:gridheader std:sid="gh-band-306c5a920df04a21810c14aa2b3f4595">
+                    <cl:gridrow std:sid="g-row-616ec9b93a6f4fd1a24547a7b6d9c9a3"/>
+                    <cl:gridcell std:sid="gh-cell-1b68152dd89a44cea14eb4dc23d58f8e" rowindex="0" colindex="0"/>
+                    <cl:gridcell std:sid="gh-cell-a920310e6ea8425ebb4d1c553b9cce3d" rowindex="0" colindex="1"/>
+                    <cl:gridcell std:sid="gh-cell-2874d13ece8540fda3cb9257d566fbfc" rowindex="0" colindex="2"/>
+                    <cl:gridcell std:sid="gh-cell-e6f93f0770304d68ab2976996b566d22" rowindex="0" colindex="3"/>
+                    <cl:gridcell std:sid="gh-cell-b469744e1436478d9e37d02eab14b5a5" rowindex="0" colindex="4"/>
+                  </cl:gridheader>
+                  <cl:griddetail std:sid="gd-band-d57e780ac7f04874be7382f34f587060">
+                    <cl:gridrow std:sid="g-row-c6d03fc9662e4d99831bd1c22455f7f8"/>
+                    <cl:gridcell std:sid="gd-cell-928cd1bb70274c4fa39dc644cdbe33b6" rowindex="0" colindex="0"/>
+                    <cl:gridcell std:sid="gd-cell-36020877bd7a47499c6359669c00a437" rowindex="0" colindex="1"/>
+                    <cl:gridcell std:sid="gd-cell-da98df16cfdd419396a8c6bdfae31b16" rowindex="0" colindex="2"/>
+                    <cl:gridcell std:sid="gd-cell-ade5dc4d334845379e4c79678771641c" rowindex="0" colindex="3"/>
+                    <cl:gridcell std:sid="gd-cell-557f11cf260342169f4217d7ad6ab06f" rowindex="0" colindex="4"/>
+                  </cl:griddetail>
+                </cl:grid>
+                <cl:group std:sid="group-5be29673b9a9451d81560324d287c6b4" id="group_2eee3abf8ce24f0bb52925339e2b7b7d" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="141px" left="1526px" width="354px" height="192px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-e57a46cc3a5c45979bfcf63be74df0c0" id="group_fda288e802ea46cbb61e0e4d45464bdd" style="">
+                    <cl:xylayoutdata top="171px" left="1556px" width="294px" height="132px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-eb077fa50df14ecdba6fbd62c74f1d2c" id="group_7b20d66d290a40a8bd68ddcb2db5908d" style="">
+                        <cl:xylayoutdata top="0px" left="9px" width="252px" height="132px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:output std:sid="output-47928be5584a452dabc3a74199cb8090" id="output_74a4851cbdfd46788268a770cce00928" value="협업포털 개인정보 파기공지(2024.11.01)" style="">
+                            <cl:xylayoutdata top="0px" left="0px" width="227px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-27b5d596ec924ce68f27b6179512cf6f" id="output_2854b630445340779c402ac62f9a9bac" value="협업포털 개인정보 파기공지(2024.09.03)" style="">
+                            <cl:xylayoutdata top="37px" left="0px" width="235px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-df341ddaa75d44ebb010d1b2d1e16fce" id="output_6bd4a5a0765940b997918e719d48b85a" value="[필독]Edge에서 협업포털 사용 조치방법" style="">
+                            <cl:xylayoutdata top="74px" left="0px" width="222px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-a78918fce1c44c36908b41948ff3d035" id="output_b3574fb0ae674379ac40633dd53bc895" value="협업포털 접속불가 및 지연 시 처리방법" style="">
+                            <cl:xylayoutdata top="111px" left="0px" width="212px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                    </cl:group>
+                    <cl:group std:sid="group-32e75d4c5200433f95a1dffb7fb0b7fb" id="group_cf722bb7e67a4e438e5d6bbba83327dd" style="">
+                        <cl:xylayoutdata top="4px" left="0px" width="9px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-13b978bc1df34953a12f879ae3afbbfb" id="group_d4f384664a5241fd881b32e78ad37216" style="background-color: #555555; ">
+                            <cl:xylayoutdata top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-918ec7af61fb4c7cb5f9fd0e8454730b" id="group_37b5366822024118b41dac58b426867e" style="">
+                        <cl:xylayoutdata top="41px" left="0px" width="9px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-2fd4ff4dbab84371b819e7520d948989" id="group_6eb1ea07ad9a4229a2fb811e49205e09" style="background-color: #555555; ">
+                            <cl:xylayoutdata top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-24ade034566a4e32952e405cad3b6030" id="group_63189779d73243c19599da2e9e8b35d7" style="">
+                        <cl:xylayoutdata top="78px" left="0px" width="9px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-61a6b3c0f997433e933fd179261bf2f7" id="group_ee9d4cc0252e49839691cc701390a667" style="background-color: #555555; ">
+                            <cl:xylayoutdata top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-2578028e6bfa4693a1baeb29cc4f26e5" id="group_2129e175966f473ba8727b573a836210" style="">
+                        <cl:xylayoutdata top="115px" left="0px" width="9px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-7817c8d49ee94c6889b8a2a7753433c9" id="group_c4620a040c4e48499c3997b6d5792347" style="background-color: #555555; ">
+                            <cl:xylayoutdata top="4px" left="0px" width="4px" height="4px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-35df5d1f6b1c43a3b39d6d5cff1b6672" id="group_b0b524305d9e4e039fe9ca3b196c0491" style="">
+                    <cl:xylayoutdata top="105px" left="40px" width="723px" height="26px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-441976ea4a5047ea9aa80f264c3200a6" id="output_7131173e5a2a42a8966166da3a7af39c" value="나의 업무 현황" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="639px" height="25px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:group std:sid="group-fbe3be618e50491c9d07df34ae9d012d" id="group_d7973fa7846e4635a10611a517a74460" style="background-color: #FFFFFF; border-color: #BBBBBE; ">
+                        <cl:xylayoutdata top="0px" left="649px" width="73px" height="26px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-b845507c460542b7b0c454e078fb1e16" id="group_38be39328e0e42c5ab9f01ce976c19a4" style="">
+                            <cl:xylayoutdata top="4px" left="9px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-a6b598efd1094423a7036d3f27a2ba88" id="group_4d91d068d01f4530b20e992c9bfdb477" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-f840d9ba07c842e0838dc2a0d5811f13" id="group_7c376a9b47d94bec91c415042bc79c31" style="">
+                                    <cl:xylayoutdata top="0px" left="0px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                        <cl:output std:sid="output-79194673b7f74469af864c34df06a4d5" id="output_0d1a0064c733434c84494ae4d5d08702" value="more" style="">
+                            <cl:xylayoutdata top="6px" left="31px" width="34px" height="13px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-d086d38079a845298101060c36622b62" id="group_c3cea098583743eba822fa6af7e21539" style="">
+                    <cl:xylayoutdata top="363px" left="40px" width="723px" height="25px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-e28c7d0fc55049b09fe62d6211e9cf7f" id="output_000f54476c3b465abf1a9d2b14fec9b2" value="정보연계 현황" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="723px" height="25px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:group std:sid="group-bf3c5eb992344c63a62aec65ff26e48a" id="group_1a2f1923aeac482db9c58f4c5bd266c0" style="">
+                    <cl:xylayoutdata top="105px" left="783px" width="723px" height="26px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-04378c2ba1594192b10f07fbca842a82" id="output_459d9ad011f240d1bcc191833d863b14" value="정보연계 진행 현황" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="639px" height="25px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:group std:sid="group-9f3331ae50c340bc8beeaa0958aaba4a" id="group_15da9d783f8a4ccdafa4d9bf4acd0d48" style="background-color: #FFFFFF; border-color: #BBBBBE; ">
+                        <cl:xylayoutdata top="0px" left="649px" width="73px" height="26px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-b96585463e394b58a2ed3ac276b3966f" id="group_a0a8842b4d024cde8fefda8bb9c88524" style="">
+                            <cl:xylayoutdata top="4px" left="9px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-87b0dcb90f3340f7882991a3c3a7032c" id="group_16dc12766ac8424c9c5733c031e54bb3" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-4e62b01d1b834e0987b6566b4b21f224" id="group_70310f21e8a64dff867fffce89e1d432" style="">
+                                    <cl:xylayoutdata top="0px" left="0px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                        <cl:output std:sid="output-d7d6e1edeb9a466c87b59aceedebe666" id="output_b4d1e21e1ddf4d39a33a8b4f7ecb95d2" value="more" style="">
+                            <cl:xylayoutdata top="6px" left="31px" width="34px" height="13px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-695e5ff3fc0d48a1ad0fdaf8844fccc5" id="group_4b22ef9bb2ed4875a5627b4bdace022a" style="">
+                    <cl:xylayoutdata top="105px" left="1526px" width="354px" height="26px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:output std:sid="output-862df2dca0ca401e94434f7780143fdd" id="output_c6e0e9e24e4f4c06bf73cbfdda285025" value="공지사항" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="270px" height="25px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                    <cl:group std:sid="group-ddf62027c702453b8b474388ba13a2d1" id="group_eec7223a08804239a7d99fa7c8a56197" style="background-color: #FFFFFF; border-color: #BBBBBE; ">
+                        <cl:xylayoutdata top="0px" left="280px" width="73px" height="26px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-a9056b0e76744b74928bcbda073742ad" id="group_6cad169c872e4315bce62a86d7bfbc58" style="">
+                            <cl:xylayoutdata top="4px" left="9px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-3d21b6c55dfc4216a1cb92b5b9dbef96" id="group_a2f6d5f41a2147398c15ad6e1223b64c" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-2c9090e440114dbe8a7e771150cba059" id="group_4a23732a83fd4ac39556e7bae1b44208" style="">
+                                    <cl:xylayoutdata top="0px" left="0px" width="18px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                        <cl:output std:sid="output-0b8a620360374df6b15f15bab956291e" id="output_ea419d954f514b579efcc611f10b3777" value="more" style="">
+                            <cl:xylayoutdata top="6px" left="31px" width="34px" height="13px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-4afaf9a8e59c4220af48042154b29950" id="group_cffde961295949bba1ee884293d0ac2c" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="456px" left="70px" width="430px" height="170px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-ad4a687813084d9b897104923486f1c8" id="group_102be0a5d6044953a6ba324aff300224" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="684px" left="70px" width="880px" height="186px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:output std:sid="output-151371a4b11847f49f3f9102a0ea7e98" id="output_259d911d64c14be7a98be688038de474" value="송신+수신" style="">
+                    <cl:xylayoutdata top="716px" left="106px" width="54px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-c8c646360f6343018f90633a615c36e6" id="output_0b9e279a7a594ff2a260c8fd92b16823" value="송신" style="">
+                    <cl:xylayoutdata top="744px" left="106px" width="23px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-fc539a9c9733484ea5201805c9c9e298" id="output_037d8a0a5a5b48d9bc40f847fa842efa" value="수신" style="">
+                    <cl:xylayoutdata top="772px" left="106px" width="23px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:group std:sid="group-7b43bbdfac1a471a950ee924a8dfe1ce" id="group_c0d688961fa04647b1d336836956cd32" style="background-color: #F6F6F7; ">
+                    <cl:xylayoutdata top="698px" left="202px" width="734px" height="158px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-fd4cfb840107449fa12af060ee07fb02" id="group_c64d3c87f0e6408ca42b197c6b7aaceb" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="684px" left="970px" width="880px" height="186px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-5f1d9fa292134dcfa5424324c7a3ba1c" id="group_a58f4369c2fb4bcbb70323c1eced3fff" style="background-color: #F6F6F7; ">
+                    <cl:xylayoutdata top="470px" left="84px" width="128px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-c4d450126fd6490db1822f6a9f0cd53e" id="group_e138578d0bab4fbb84d5b0d4aab18e82" style="background-color: #F6F6F7; ">
+                    <cl:xylayoutdata top="470px" left="222px" width="127px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-9aab9305b5994ab4a8f13b6369d3ce7c" id="group_aeec1378a37441a6881630b089f74859" style="background-color: #F6F6F7; ">
+                    <cl:xylayoutdata top="470px" left="359px" width="127px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-64138f185e144282991fe843d4cbcb2f" id="group_eed863e1a9984f4d93f1fdcd0bf4670f" style="background-color: #E4E8EB; ">
+                    <cl:xylayoutdata top="484px" left="98px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-22adc6cb5d9e487bb70e364f4f516d71" id="group_0fc55661cbc64784a2e0b705712ef7b2" style="background-color: #E4E8EB; ">
+                    <cl:xylayoutdata top="484px" left="236px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:group std:sid="group-313708fcdfbf40f89e56922f8f835876" id="group_4d254f3dd4da4233b052ff3602418954" style="background-color: #E4E8EB; ">
+                    <cl:xylayoutdata top="484px" left="373px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:output std:sid="output-629e40fe556c4c4694df43ecbe16d147" id="output_8a4365155d3942a8aea500ca2eab0269" value="송신+수신" style="">
+                    <cl:xylayoutdata top="716px" left="1006px" width="54px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-1f827724517141bfb4275560b60b3b7b" id="output_cd2768c52a1c4cc5bdf8c64394478961" value="송신" style="">
+                    <cl:xylayoutdata top="744px" left="1006px" width="23px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-24ada52b0fee4dcd95ecb644d6b17cd5" id="output_a274ea988ea849f598e39949b0c8a8b9" value="수신" style="">
+                    <cl:xylayoutdata top="772px" left="1006px" width="23px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:group std:sid="group-870fed70388543769830dae967e24e85" id="group_0fabeb52237b4288a83761b75db40827" style="background-color: #F6F6F7; ">
+                    <cl:xylayoutdata top="698px" left="1102px" width="734px" height="158px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:output std:sid="output-502793729732467f8025483847fd3af0" id="output_506b17b0376548afaae9a079374ff2e1" value="단위시스템" style="">
+                    <cl:xylayoutdata top="488px" left="118px" width="61px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-93da66274c6c4380bbbc02e857a2d100" id="output_6400983f4cc44150814ada11d8844e65" value="298" style="">
+                    <cl:xylayoutdata top="541px" left="126px" width="45px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-b7e9dcf5fbe64186ae9bfc8f5b7da7bb" id="output_56a7d4f8a0c54c708e03d49d757a47a7" value="155" style="">
+                    <cl:xylayoutdata top="541px" left="266px" width="41px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-1feec4f7d236419ea8709964ec4c1f5e" id="output_9bfa7b8f2b2848d58c5a377537a5326f" value="5" style="">
+                    <cl:xylayoutdata top="541px" left="415px" width="16px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-d9826e734dd24d76bfd8947594c4d9a6" id="output_c379b7e468ef428a9147d6525c0bf285" value="MDD" style="">
+                    <cl:xylayoutdata top="488px" left="270px" width="32px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-28c07cecc6ee45ffafd7c2773e74cdeb" id="output_28f0db51c72c4f64ad951c969b385a47" value="API" style="">
+                    <cl:xylayoutdata top="488px" left="413px" width="21px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:group std:sid="group-30895d69a1a24bbab593a33c84125edc" id="group_9a3ecde233b545ebbf183643cacf1c91" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="456px" left="520px" width="655px" height="170px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-17ea811f9df24b2abd3d0af2d7fbeac8" id="group_30cb162c795e488389a19051c773d0e7" style="">
+                        <cl:xylayoutdata top="14px" left="14px" width="627px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-0535a8811dc64cc78312dda1d69c17ac" id="group_bceb36fc4ab847e1be69e0ea9c97e223" style="background-color: #F6F6F7; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="204px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-99b53fcf4af74352b63dc2527b851962" id="group_0be370ec854b4c62a3f69643de8268bd" style="background-color: #F6F6F7; ">
+                            <cl:xylayoutdata top="0px" left="214px" width="201px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-8ac20c5e3f234272aa6ba832b31e3185" id="group_74b3ed87dd734c9b8342f24fbb4a8c5e" style="background-color: #F6F6F7; ">
+                            <cl:xylayoutdata top="0px" left="425px" width="202px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-49692bff37ab4f16814d4e25c9fa83f5" id="group_254003d58ec446a5b4cb86ed39a577a9" style="background-color: #E4E8EB; ">
+                            <cl:xylayoutdata top="14px" left="52px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-2f43fc5899904b389c5eb45c921ad8ec" id="group_59267ecb72a94ed5a737b967fec99671" style="background-color: #E4E8EB; ">
+                            <cl:xylayoutdata top="14px" left="265px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-18c0d8075d11455b870b24e8826351a1" id="group_d76ac8d6827041b1bd06ac7dce5ea2b2" style="background-color: #E4E8EB; ">
+                            <cl:xylayoutdata top="14px" left="476px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:output std:sid="output-86fdce9b5dcd4d26abb6cd923235a5d2" id="output_3c5369d633f34e6c9a3817aa2c35d656" value="일간" style="">
+                            <cl:xylayoutdata top="18px" left="90px" width="25px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-5761486967d641b2a7f3afa2f543d8ae" id="output_04b0c208ed344b4ba1f7e1f155a4c81b" value="월간" style="">
+                            <cl:xylayoutdata top="18px" left="303px" width="25px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-083a9bd0cfb04b7ab782f6fe5828679c" id="output_83ed4b1751694a7a9c7d5dbdc72292fe" value="연간" style="">
+                            <cl:xylayoutdata top="18px" left="514px" width="25px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-924c90ac3dcf4213b7c268dc052669c9" id="output_5b5a794eef124eeb91e041e0c6687150" value="11,763,720" style="">
+                            <cl:xylayoutdata top="64px" left="43px" width="118px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-f37a81b0726a400c9c282bf48d9e1339" id="output_c5149fb232db46e3bc70a190f1a02a36" value="364,675,320" style="">
+                            <cl:xylayoutdata top="64px" left="243px" width="144px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-de0002646c314d91891e13c203820d2a" id="output_efe918b6e90d42edaf989f9c1d5def46" value="4,293,757,800" style="">
+                            <cl:xylayoutdata top="64px" left="446px" width="161px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:group std:sid="group-436a5f4f808c401aa9e800be09da4b5a" id="group_b078501eb8714b92b9ca3b0b2183cd3c" style="">
+                            <cl:xylayoutdata top="102px" left="49px" width="107px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:output std:sid="output-c6e2bee91b5745dcbae0f76a8ac2bf41" id="output_9ad8f7d572a9493f8b11fc785b42cbb0" value="전일 대비" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="52px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                            <cl:output std:sid="output-be6d36a700f24b97bd74646a36d954d2" id="output_70fab01ab0ee4e3a87898caa84785e81" value="8,451" style="">
+                                <cl:xylayoutdata top="1px" left="70px" width="37px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                        </cl:group>
+                        <cl:group std:sid="group-d340942b9e7c4352b327c1fb4bc1f65d" id="group_3f4818351df2487fbd44b29d3f51851e" style="">
+                            <cl:xylayoutdata top="101px" left="254px" width="122px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:output std:sid="output-1b2659fc397748b0a01e0a0c23870a10" id="output_cb7ed8e229bc4b9fbfa6a2e2d902b86e" value="전월 대비" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="52px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                            <cl:output std:sid="output-226c74c98f3a43cc976ab360b321dd48" id="output_ae514edb06294f4e811680574e457160" value="561,541" style="">
+                                <cl:xylayoutdata top="1px" left="70px" width="52px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-525693700a6a4a49877a25ab0fe596a3" id="group_aed66f89fffd4423b9949e6cc08e9446" style="background-color: #FFFFFF; border-color: #E2E2E3; ">
+                    <cl:xylayoutdata top="456px" left="1195px" width="655px" height="170px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-2f03631cdef94331bd5a02bb02da196f" id="group_ceead03477dd4684a8ad9015f613f990" style="">
+                        <cl:xylayoutdata top="14px" left="14px" width="627px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-cd22a2d76df7496c857a74045df3c4dc" id="group_da7cd1e2238c4e1aa737eef8d9d3f52c" style="background-color: #F6F6F7; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="204px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-b41bb1f22fd647c8a2898d683f79f411" id="group_ea0945a9903d4021a016a9ea27d81642" style="background-color: #F6F6F7; ">
+                            <cl:xylayoutdata top="0px" left="214px" width="201px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-9ed02a06af6040058c32c959441b3955" id="group_c9cda5518e104f12bd3af2d3b473201a" style="background-color: #F6F6F7; ">
+                            <cl:xylayoutdata top="0px" left="425px" width="202px" height="142px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-4718460645d74adfabb68c757c54260d" id="group_84d33b1227d9448984a0877bfbc64b33" style="background-color: #E4E8EB; ">
+                            <cl:xylayoutdata top="14px" left="52px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-181dbfdad503492fbacd56ebe44e649a" id="group_f857d3e9ee23430cbadaae101e2a016d" style="background-color: #E4E8EB; ">
+                            <cl:xylayoutdata top="14px" left="265px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:group std:sid="group-d7bfec7b38db4364912e75a66220f840" id="group_5493f58cba154d3d802eaf53519073bb" style="background-color: #E4E8EB; ">
+                            <cl:xylayoutdata top="14px" left="476px" width="100px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                        <cl:output std:sid="output-70bcac9aa4ba42329c176bc8bd127364" id="output_20e7d7961a6e44079ffefe7b14eae8ea" value="일간" style="">
+                            <cl:xylayoutdata top="18px" left="90px" width="25px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-99a4782d1f0141589399ca89a6be1b35" id="output_457a736b7d7f4dd393b050134f864734" value="월간" style="">
+                            <cl:xylayoutdata top="18px" left="303px" width="25px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-97323fbe865c4e6280264bb8d13bb420" id="output_eee85c5d21d94e9a81a09594f68112b9" value="연간" style="">
+                            <cl:xylayoutdata top="18px" left="514px" width="25px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-f94e89a59c40461f8e1cb969125b25a9" id="output_139afd6a54c443f4a2dc796ee09b147b" value="63,570" style="">
+                            <cl:xylayoutdata top="64px" left="63px" width="79px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:output std:sid="output-784bdd5c38ea4acba6cb36a976cfec4e" id="output_c47a30b8cc9b4f888ddb19d73129ab36" value="175,320" style="">
+                            <cl:xylayoutdata top="64px" left="270px" width="89px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                        <cl:group std:sid="group-e3fd27421d7e4371ac2d246b4ab8a6a3" id="group_8c61a0871f2147eaafd1f0d46001e733" style="">
+                            <cl:xylayoutdata top="102px" left="55px" width="95px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:output std:sid="output-8bf758340c314c6b9cac7d581907f532" id="output_5b1a5288322744e8b5398d46bf2dc569" value="전일 대비" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="52px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                            <cl:output std:sid="output-4eb54f06ba61483da66ddeae1e0306c9" id="output_197c04b673544032aa8a74e0f04ef370" value="451" style="">
+                                <cl:xylayoutdata top="1px" left="70px" width="25px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                        </cl:group>
+                        <cl:group std:sid="group-2760fa9b61fe436b87279493bf3581e1" id="group_81d9b9fb80954c8ba1bd5fb2e1c1ea42" style="">
+                            <cl:xylayoutdata top="102px" left="267px" width="104px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:output std:sid="output-8f71758872054a5aa2191a48b9dca991" id="output_07f03dd3704e45ff94ffa7828431385f" value="전월 대비" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="52px" height="21px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                            <cl:output std:sid="output-9590811a28774629b64e064289e2227b" id="output_59183715965f46dbaab88aa6009c1633" value="1,541" style="">
+                                <cl:xylayoutdata top="1px" left="70px" width="34px" height="18px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            </cl:output>
+                        </cl:group>
+                        <cl:output std:sid="output-36f0f2edf4f4410d97fbd240726b0c54" id="output_0ad204ed6e6b4d5897150ff4dac3913e" value="33,757,800" style="">
+                            <cl:xylayoutdata top="64px" left="464px" width="125px" height="30px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:output>
+                    </cl:group>
+                </cl:group>
+            </cl:group>
+    <cl:xylayout std:sid="xylayout-d479ed23"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
