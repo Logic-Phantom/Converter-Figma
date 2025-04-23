@@ -41,16 +41,28 @@ public class JsonDiffAnalyzerService {
         List<String> removed = new ArrayList<>();
         List<String> modified = new ArrayList<>();
 
+//        for (String id : allIds) {
+//            JsonNode oldNode = oldMap.get(id);
+//            JsonNode newNode = newMap.get(id);
+//
+//            if (oldNode == null) {
+//                added.add(id); // 새로 추가된 항목
+//            } else if (newNode == null) {
+//                removed.add(id); // 삭제된 항목
+//            } else if (!oldNode.equals(newNode)) {
+//                modified.add(id); // 수정된 항목
+//            }
+//        }
         for (String id : allIds) {
             JsonNode oldNode = oldMap.get(id);
             JsonNode newNode = newMap.get(id);
 
             if (oldNode == null) {
-                added.add(id); // 새로 추가된 항목
+                added.add(id);
             } else if (newNode == null) {
-                removed.add(id); // 삭제된 항목
-            } else if (!oldNode.equals(newNode)) {
-                modified.add(id); // 수정된 항목
+                removed.add(id);
+            } else if (isNodeActuallyModified(oldNode, newNode)) {
+                modified.add(id);
             }
         }
 
@@ -60,6 +72,36 @@ public class JsonDiffAnalyzerService {
         printModifiedDiff(modified, oldMap, newMap);
     }
 
+    private boolean isNodeActuallyModified(JsonNode oldNode, JsonNode newNode) {
+        // 자식 요소는 무시하고 자기 자신만 비교
+        Set<String> skipFields = Set.of("children"); // 하위 노드는 무시
+
+        Iterator<String> fieldNames = oldNode.fieldNames();
+        while (fieldNames.hasNext()) {
+            String field = fieldNames.next();
+            if (skipFields.contains(field)) continue;
+
+            JsonNode oldField = oldNode.get(field);
+            JsonNode newField = newNode.get(field);
+            if (newField == null || !oldField.equals(newField)) {
+                return true;
+            }
+        }
+
+        // newNode에만 있는 필드도 체크
+        Iterator<String> newFieldNames = newNode.fieldNames();
+        while (newFieldNames.hasNext()) {
+            String field = newFieldNames.next();
+            if (skipFields.contains(field)) continue;
+
+            if (!oldNode.has(field)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     private void flattenJsonById(JsonNode node, Map<String, JsonNode> result) {
         if (node.isObject()) {
             if (node.has("id")) {
