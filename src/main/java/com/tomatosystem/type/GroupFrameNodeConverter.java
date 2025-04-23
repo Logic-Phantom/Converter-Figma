@@ -89,7 +89,7 @@ public class GroupFrameNodeConverter {
 			        // 라디오 자체 레이아웃 (내부 위치는 추후 계산 가능)
 			        //writer.write(indent + "    <cl:xylayoutdata std:sid=\"xyl-data-" + generateId() + "\" top=\"3px\" left=\"4px\" width=\"100px\" height=\"15px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
 	     		     // 라디오 자체 레이아웃
-			        writer.write(indent + "    <cl:xylayoutdata std:sid=\"xyl-data-" + generateId() + "\" top=\"3px\" left=\"4px\" width=\"" + width + "px\" height=\"15px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
+			        writer.write(indent + "    <cl:xylayoutdata std:sid=\"xyl-data-" + generateId() + "\" top=\"3px\" left=\"4px\" width=\"" + width + "px\" height=\"" + height +  "px\" horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
 
 
 			        for (Map<String, Object> radioChild : children) {

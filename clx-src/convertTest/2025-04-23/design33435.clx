@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-599507f8" version="1.0.5538">
+  <head std:sid="head-9eda5fed">
+    <screen std:sid="screen-91cd3353" id="default" name="default" width="1654px" height="940px"/>
+    <cl:model std:sid="model-63a6d6dd"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-0a3e1899">
+            <cl:group std:sid="group-ed02d91f8c4749e3961ebb1b33420f54" id="group_86fffa0940f54e98aa3e61973e138b67" style="background-color: #FFFFFF; border-color: #666666; ">
+                <cl:xylayoutdata top="0px" left="0px" width="1654px" height="940px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:group std:sid="group-10fd4d3944834531a28f21494e4ddd09" id="group_a87d1b8458da41f7b8335692fe2804b3" style="background-color: #FFF2CE; ">
+                    <cl:xylayoutdata top="76px" left="30px" width="1594px" height="180px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-773c85b9097d481a916afebaeb322168" id="group_391cc0d1e87d405a9c7e5b60827d782c" style="">
+                        <cl:xylayoutdata top="20px" left="40px" width="1514px" height="140px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:group std:sid="group-c12a3b1e3a0f47a896f6d707d973d62e" id="group_b46c7192788b435e84362f2a933d7659" style="">
+                            <cl:xylayoutdata top="0px" left="0px" width="1514px" height="90px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-0bdb9fcce11941ba8c9a76421f322145" id="group_4c0881038a2149e2a2c0584c118a3f48" style="">
+                                <cl:xylayoutdata top="0px" left="0px" width="1514px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-4314c60f2f154494ba9a9684f8504e2f" id="group_5415213665ea4fe69686c2cb5e92eec3" style="">
+                                    <cl:xylayoutdata top="0px" left="0px" width="253px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-c990f2ded57245d5891c369db7642dee" id="group_c2c866c72e794e2188009c78678a1b0c" style="">
+                                        <cl:xylayoutdata top="14px" left="0px" width="59px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-64a470d4d0694475ab42d6f954f89d71" id="output_42dc9f3b57a343ab971a10ab0b2acc93" value="예산연도" style="">
+                                            <cl:xylayoutdata top="0px" left="0px" width="59px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-5a642bd937f246a4839606cd78b03271" id="group_1e4c0bdd02d5469db5cedf10caaca715" style="">
+                                        <cl:xylayoutdata top="0px" left="71px" width="182px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:combobox std:sid="c-box-4ba56c82e3d34aa9a2ee75d0a9b36483" id="instance_93fb9c4093e447f8b44dfa43bd4bf1f6" style="background-color: #FFFFFF; border-color: #717171; background-image: none; ">
+                                            <cl:xylayoutdata top="0px" left="0px" width="182px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:combobox>
+                                    </cl:group>
+                                </cl:group>
+                                <cl:group std:sid="group-059ac4364af04ca08bb9f2e347f89bce" id="group_b0aff5f497dd475e818fa6048396517d" style="">
+                                    <cl:xylayoutdata top="0px" left="553px" width="761px" height="39px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                  <cl:radiobutton std:sid="r-button-9dcca73cf67748e790dbd453f3359d2a" id="rdb54315fc648414125a852e5bcc5590647">
+                                    <cl:xylayoutdata std:sid="xyl-data-170b716875244106abbe72a19518188d" top="3px" left="4px" width="761.0850830078125px" height="39.402984619140625px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:item std:sid="item-f9455c4461514a14af803a69364db4c3" label="전체" value="전체"/>
+                                    <cl:item std:sid="item-f25ac069867046f195430fd37ebd3336" label="성인 건강보험" value="성인 건강보험"/>
+                                    <cl:item std:sid="item-c499a906a42f4287bf7c7b69b4c5b46b" label="성인 의료급여" value="성인 의료급여"/>
+                                    <cl:item std:sid="item-36dafdef0f084c61be48f841fa82887c" label="소아 의료급여" value="소아 의료급여"/>
+                                    <cl:item std:sid="item-fb04a9b574664b069c67d477190cc01d" label="소아 건강보험" value="소아 건강보험"/>
+                                  </cl:radiobutton>
+                                  <cl:xylayout std:sid="xylayout-22787b07db1d4995abc009d4681a574a"/>
+                                </cl:group>
+                            </cl:group>
+                            <cl:group std:sid="group-60aa0a8acddf46d9b76fca7cec973689" id="group_bb095551f405421b96f988e506328da2" style="">
+                                <cl:xylayoutdata top="50px" left="0px" width="1514px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-1cb365d566f8422383b06d44aa8dcbdd" id="group_64eb3cbb282a444ba8a4458d993555a0" style="">
+                                    <cl:xylayoutdata top="0px" left="0px" width="255px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-2d711c61739d49a4a87b4d44fec41c70" id="group_a7f9912f612b4f8aa0030777eac0cc80" style="">
+                                        <cl:xylayoutdata top="14px" left="0px" width="30px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-e1587ef69ca54157849ef78c44cd7d28" id="output_1ef25184b1864a769f64b03bea441c38" value="성명" style="">
+                                            <cl:xylayoutdata top="0px" left="0px" width="30px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-eda61459f2f94aa19c666d90ec0e2827" id="group_472967a60ec443c38483c9eb328362b0" style="">
+                                        <cl:xylayoutdata top="83px" left="0px" width="94px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:button std:sid="button-21d85701e478401e93daca0abd504216" id="instance_1d80a155cc5c40deb7e153d3422b0ea3" value="Button" style="">
+                                            <cl:xylayoutdata top="0px" left="0px" width="20px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:button>
+                                        <cl:output std:sid="output-3272df61326e49608637c7f82a0ddfc5" id="output_072958888f994bda848e85459ef56f5c" value="힌트 메시지" style="">
+                                            <cl:xylayoutdata top="4px" left="24px" width="70px" height="11px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-a5d2c708292d4fe3aea672d3f4fa13be" id="group_42174e747e574386b56c06735506b0a9" style="">
+                                        <cl:xylayoutdata top="0px" left="73px" width="182px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:combobox std:sid="c-box-ac6a79b57bd54644a07acaf0e69df695" id="instance_275ebbff9a8f4cadbaeaee7867c1780d" style="background-color: #FFFFFF; border-color: #717171; background-image: none; ">
+                                            <cl:xylayoutdata top="0px" left="0px" width="182px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:combobox>
+                                    </cl:group>
+                                </cl:group>
+                                <cl:group std:sid="group-66274bab56164661ad197e4d265e96ae" id="group_ab2dcbecbd2d4e87946735cf112fbfcc" style="">
+                                    <cl:xylayoutdata top="0px" left="555px" width="466px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-3f98f6ba23d44bc3a8b89960328a9469" id="group_4d02aab0e8634bbe9da8cf3f3a985187" style="">
+                                        <cl:xylayoutdata top="14px" left="0px" width="150px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-5db37f729ec644bcb36926d25df36aa6" id="output_4b742c87c7b340deba5d3fab48f682f5" value="주민등록번호" style="">
+                                            <cl:xylayoutdata top="0px" left="0px" width="150px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-dac1be1b7ad942c08b5854405cd8cbd7" id="group_4809ef9bcf094e4b9bcd32b071b80b7c" style="">
+                                        <cl:xylayoutdata top="83px" left="0px" width="94px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:button std:sid="button-9ba4b23ee6e948e6a6f9ba75327da72b" id="instance_25b338ece92143a0b80e7cbbdb23a711" value="Button" style="">
+                                            <cl:xylayoutdata top="0px" left="0px" width="20px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:button>
+                                        <cl:output std:sid="output-915e037371ac4c74b7ecfd3c75f69d8a" id="output_8a883e83607245ddb241932320f3e310" value="힌트 메시지" style="">
+                                            <cl:xylayoutdata top="4px" left="24px" width="70px" height="11px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-1fa8596d207145b1b90231f79bdf2d5d" id="group_d4cbb674d2d44010b0e1815495211c67" style="">
+                                        <cl:xylayoutdata top="0px" left="162px" width="345px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:inputbox std:sid="inputbox-e760c5dda8504d679a5294ebefed6f4a" id="instance_396ffb399b3f4b9eaee93393bd29dd6b" style="background-color: #FFFFFF; border-color: #717171; background-image: none; ">
+                                            <cl:xylayoutdata top="0px" left="0px" width="160px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:inputbox>
+                                        <cl:output std:sid="output-de2aa836c82f4e419b480297555b6809" id="output_5422debb4e664ad5a71f5321ba3a9153" value="-" style="">
+                                            <cl:xylayoutdata top="15px" left="166px" width="12px" height="11px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                        <cl:inputbox std:sid="inputbox-4d7d4aff26b84fe8994549fbf38e3610" id="instance_1a229d97167d43e9899bfe5b59cd6d7a" style="background-color: #FFFFFF; border-color: #717171; background-image: none; ">
+                                            <cl:xylayoutdata top="0px" left="185px" width="160px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:inputbox>
+                                    </cl:group>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                        <cl:group std:sid="group-926ed0c3eb9e4c178fa1a043b5860e1f" id="group_4f7bd28bfb07424287673d4090dac0f0" style="">
+                            <cl:xylayoutdata top="100px" left="0px" width="1514px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                            <cl:group std:sid="group-412a3c493f254523a47b205b71266f8e" id="group_c61371d61c6741019de93482d6ee8a85" style="">
+                                <cl:xylayoutdata top="10px" left="0px" width="253px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-c8c1aa4e71b64af78d0bf0020d20467c" id="group_afef1878482f473fa3164b9688ceab1f" style="">
+                                    <cl:xylayoutdata top="0px" left="0px" width="253px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:group std:sid="group-a3c40f59d579447aa3ada849b603566b" id="group_d03889a2ca92485a96a11c51037025d5" style="">
+                                        <cl:xylayoutdata top="4px" left="0px" width="59px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:output std:sid="output-f75b51fb43ec4f5e80e227787223cc38" id="output_0b6d511567434d6c9f0d3300a5d01a88" value="퇴록여부" style="">
+                                            <cl:xylayoutdata top="0px" left="0px" width="59px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        </cl:output>
+                                    </cl:group>
+                                    <cl:group std:sid="group-8318497a9cf042b0bf1edb9ee9e069be" id="group_fdc8c2b9fb924ea58923c8bf4764900f" style="">
+                                        <cl:xylayoutdata top="0px" left="71px" width="182px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                      <cl:radiobutton std:sid="r-button-0809d7a8e5c9466f982dd0566d612b4d" id="rdbdc0ca6ae211b4125bf7f2b62a4ff812d">
+                                        <cl:xylayoutdata std:sid="xyl-data-e18426691d6746f0bdfda3f8994273e3" top="3px" left="4px" width="182.0px" height="20.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                        <cl:item std:sid="item-4fea4042f487472abcd277448df0c2aa" label="ALL" value="ALL"/>
+                                        <cl:item std:sid="item-961713876597462f94f0b7c962332b3f" label="YES" value="YES"/>
+                                        <cl:item std:sid="item-e93e60a0c31f46aca6b5c123441eef9c" label="NO" value="NO"/>
+                                      </cl:radiobutton>
+                                      <cl:xylayout std:sid="xylayout-49ad5efd18ba48509e71364c88edb9f6"/>
+                                    </cl:group>
+                                </cl:group>
+                            </cl:group>
+                            <cl:group std:sid="group-66f38e5c48a8487b96b9aace5d08fee6" id="group_6df9d081d1434d288bb2a033c383969b" style="">
+                                <cl:xylayoutdata top="-4px" left="553px" width="961px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                <cl:group std:sid="group-ee43fcc2422e49288732427e40f9647e" id="group_a7728feb9ede417daa36dd529039008a" style="">
+                                    <cl:xylayoutdata top="14px" left="0px" width="305px" height="20px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                  <cl:radiobutton std:sid="r-button-367eaf15422b47a69768e657b8de66ef" id="rdb64b0767541174681be227f12b2e2e4b4">
+                                    <cl:xylayoutdata std:sid="xyl-data-832a407bd0f848d38cf8f3b2ea3ef026" top="3px" left="4px" width="305.0px" height="20.0px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:item std:sid="item-c260a0f0d0424540b5d4edb36549d489" label="NO" value="NO"/>
+                                    <cl:item std:sid="item-34e0b11f51bd48c082a5c116f624eb63" label="ALL" value="ALL"/>
+                                    <cl:item std:sid="item-1ac26e46efbc49d8b7bca8e702005dfc" label="YES" value="YES"/>
+                                  </cl:radiobutton>
+                                  <cl:xylayout std:sid="xylayout-6c25fbac2a504c0ab6e0c84637d71b0d"/>
+                                </cl:group>
+                                <cl:group std:sid="group-4e9fd152137940139c02b180c46e46fe" id="group_3fc263a44a7140eaa257d60c0a484ef3" style="">
+                                    <cl:xylayoutdata top="0px" left="785px" width="169px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    <cl:button std:sid="button-b25841253fe84d6ab27adb1c7d1a6396" id="instance_e6cc78041aae4e9abec60cf0646d416f" value="초기화" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                                        <cl:xylayoutdata top="0px" left="0px" width="91px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:button>
+                                    <cl:button std:sid="button-fc50465476904b81bb7ea9709e4237e4" id="instance_f1dcb84715f149ab880c8d0426aa4239" value="조회" style="background-color: #FFC20E; background-image: none; ">
+                                        <cl:xylayoutdata top="0px" left="99px" width="91px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                                    </cl:button>
+                                </cl:group>
+                            </cl:group>
+                        </cl:group>
+                    </cl:group>
+                </cl:group>
+                <cl:group std:sid="group-616ac9538f7446e5860a14e5b64761c1" id="group_1d066365fa4d4794ac5ca2cd57e27e59" style="">
+                    <cl:xylayoutdata top="335px" left="30px" width="1594px" height="510px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:grid std:sid="grid-e3a4f3324f794a7f8935f1ce77c5b7ed" id="grd8b77ce2b9350462f9336f244ec02995c">
+                        <cl:xylayoutdata top="0px" left="0px" width="1594px" height="430px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                      <cl:gridcolumn std:sid="g-column-dc3518e8ac324e0a8774e8816bf8cd9d"/>
+                      <cl:gridcolumn std:sid="g-column-ed8896b125a74415be8a87092a41f5ed"/>
+                      <cl:gridcolumn std:sid="g-column-71f9ccd4581e4206a083edcfbf84428b"/>
+                      <cl:gridcolumn std:sid="g-column-70dd687174904fca9f603226a6cf3110"/>
+                      <cl:gridcolumn std:sid="g-column-8df42adbe2234f33aab45fb9c032d6fa"/>
+                      <cl:gridheader std:sid="gh-band-35d32f4c606944349c0eee9611d06b69">
+                        <cl:gridrow std:sid="g-row-7132a22696a549448b343db92421a52b"/>
+                        <cl:gridcell std:sid="gh-cell-8052307355374040b260dd7cb4c4f7a3" rowindex="0" colindex="0"/>
+                        <cl:gridcell std:sid="gh-cell-ce7e10b97dac41179c2df23529c41bf9" rowindex="0" colindex="1"/>
+                        <cl:gridcell std:sid="gh-cell-0a0e4384792841e68c79fae63ab85236" rowindex="0" colindex="2"/>
+                        <cl:gridcell std:sid="gh-cell-296b8ddf11f740b58534bdabb31c49f6" rowindex="0" colindex="3"/>
+                        <cl:gridcell std:sid="gh-cell-9effa0472ee341e2809b1f6a2922ebd6" rowindex="0" colindex="4"/>
+                      </cl:gridheader>
+                      <cl:griddetail std:sid="gd-band-2179ce71348947b3ba3033c20414e1fd">
+                        <cl:gridrow std:sid="g-row-eafe0928b8434a52a6b4bd29f40cdb0c"/>
+                        <cl:gridcell std:sid="gd-cell-0c8d5f8a905041e99ddf2f15bc7258ec" rowindex="0" colindex="0"/>
+                        <cl:gridcell std:sid="gd-cell-8b2e050033eb4976bafd9ba6803829bf" rowindex="0" colindex="1"/>
+                        <cl:gridcell std:sid="gd-cell-7eaf4928741c4122a4e37663facd44e2" rowindex="0" colindex="2"/>
+                        <cl:gridcell std:sid="gd-cell-7333473b03b641b78ac431e16ff727a7" rowindex="0" colindex="3"/>
+                        <cl:gridcell std:sid="gd-cell-caa4da7d5f844e7f9bce19e1e853e0a0" rowindex="0" colindex="4"/>
+                      </cl:griddetail>
+                    </cl:grid>
+                    <cl:pageindexer std:sid="pageindexer-7e09b6a8e5a848b7980c4d2d01f15d2f" id="instance_b00534054d4f470b969b609aa5d255e2" style="">
+                        <cl:xylayoutdata top="450px" left="467px" width="660px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:pageindexer>
+                </cl:group>
+                <cl:udc std:sid="ud-control-5d2bde75397a423d83a1d3f87290d72d" type="udc.udcComAppHeader">
+                  <cl:xylayoutdata std:sid="xyl-data-28cfe3478f4146bc86768e50b2af2122" top="30px" left="30px" width="1592px" height="44px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                  <cl:property name="title" value="우리보건소 등록카드 " type="string"/>
+                </cl:udc>
+                <cl:group std:sid="group-9e0dfd5b375c4415b8ff09fe518ae872" id="group_ef6ba7f6d56f45d09f66c47dd72f47c5" style="">
+                    <cl:xylayoutdata top="286px" left="30px" width="1594px" height="49px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-4f0abb43b3994e628c9978ff738a41a9" id="group_c551646c94b5443a98225e3eb2c248b2" style="">
+                        <cl:xylayoutdata top="6px" left="1476px" width="118px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:button std:sid="button-ef2731e1b1294ac6a580b17227d50fa3" id="instance_37fcb822e0c347a29a334cdeb6727839" value="엑셀다운로드" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="118px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:button>
+                        <cl:group std:sid="group-d0a8276fd30d47e69a42d15ccbb863d1" id="group_e4305afa91df4444b94c1b2b130ebf37" style="">
+                            <cl:xylayoutdata top="9px" left="11px" width="14px" height="14px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:output std:sid="output-75ee93a6929d430cac4ada0628bb187b" id="output_b5c9e17fae624e039d5a1a33bc524180" value="총 123회" style="">
+                        <cl:xylayoutdata top="18px" left="0px" width="1594px" height="12px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:output>
+                </cl:group>
+                <cl:group std:sid="group-edc7a5368ce54c8ca2a66a23e934f543" id="group_730e7bb1bd4a4b4f8749e363c2753b0d" style="">
+                    <cl:xylayoutdata top="292px" left="1395px" width="102px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:button std:sid="button-c3c817f44cc34903b440ca65352a5635" id="instance_6375fef8dfab4119b6c5283058e3e37f" value="삭제" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                        <cl:xylayoutdata top="0px" left="0px" width="46px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:button>
+                    <cl:button std:sid="button-7afad1a02a6648569690d766ca9da224" id="instance_5c29e74fd50545258e21204296a749a1" value="퇴록" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                        <cl:xylayoutdata top="0px" left="56px" width="46px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    </cl:button>
+                </cl:group>
+                <cl:group std:sid="group-23ac22254bb74eff803f9ac132e98bfe" id="group_912242a0882046adbc0dff7b9ba844ea" style="">
+                    <cl:xylayoutdata top="845px" left="632px" width="982px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                    <cl:group std:sid="group-c2bb78fe0c6140eaab8674236b9adf16" id="group_d55d39a46e694ead9273081bb2039e4a" style="">
+                        <cl:xylayoutdata top="0px" left="744px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:button std:sid="button-fd4e82030b1343f4b56c5b8e9784c6d2" id="instance_e76617ff4d2146d39ae2df07b5a7f615" value="소아의료급여카드 등록" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:button>
+                        <cl:group std:sid="group-29cf16c58acb4d91a4a3e956b5d83277" id="group_616726e50b3244ec954c083c0498ee85" style="">
+                            <cl:xylayoutdata top="14px" left="198px" width="23px" height="23px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-ce1aafca55ee40fd99024bfb1784fc29" id="group_d6ab5fa959ca451598ad3c6fb650ceb2" style="">
+                        <cl:xylayoutdata top="0px" left="496px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:button std:sid="button-41f0fd06edbe46b0875ff3ffb1f1f4a9" id="instance_030c67a077454bfbb168b75230df4aee" value="소아건강보험카드 등록" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:button>
+                        <cl:group std:sid="group-235d2e80fc8642c09d521704c150d1eb" id="group_45dc6d4d170c422fa89c99dc5ec7958c" style="">
+                            <cl:xylayoutdata top="14px" left="198px" width="23px" height="23px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:group>
+                    </cl:group>
+                    <cl:group std:sid="group-787a3a088e384309ac819b542d423b28" id="group_e149449a77fc4ab19d95d394c08caac8" style="">
+                        <cl:xylayoutdata top="0px" left="248px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:button std:sid="button-3730a599a7544956bfd3bf8c5e104dfc" id="instance_f1310266a05c4902af43d8e7e291f825" value="성인의료급여카드 등록" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:button>
+                    </cl:group>
+                    <cl:group std:sid="group-285c6d9fc4d64a5c9f9dda7cc7a87543" id="group_b7970575454c4004ba315ff29698e2c9" style="">
+                        <cl:xylayoutdata top="0px" left="0px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        <cl:button std:sid="button-cf0f38bbeb9d489ca4f660b3310cd710" id="instance_e65f849fce544ebdb504b5a7091176b1" value="성인건강보험카드 등록" style="background-color: #FFFFFF; border-color: #1D1D1D; background-image: none; ">
+                            <cl:xylayoutdata top="0px" left="0px" width="238px" height="56px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                        </cl:button>
+                    </cl:group>
+                </cl:group>
+            </cl:group>
+    <cl:xylayout std:sid="xylayout-a7e9db5a"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
