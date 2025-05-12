@@ -18,10 +18,150 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class JsonDiffAnalyzerService {
 
+//    public void analyzeJsonData(Map<String, Object> rawData, Map<String, Object> uploadedJsonData) throws IOException {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode oldJson = objectMapper.convertValue(uploadedJsonData, JsonNode.class); // 업로드된 JSON을 기준
+//        JsonNode newJson = objectMapper.convertValue(rawData, JsonNode.class); // 최신 Figma JSON을 비교 대상으로 처리
+//
+//        performJsonDiffAnalysis(oldJson, newJson);
+//    }
+//
+//    private void performJsonDiffAnalysis(JsonNode oldJson, JsonNode newJson) {
+//        Map<String, JsonNode> oldMap = new HashMap<>();
+//        Map<String, JsonNode> newMap = new HashMap<>();
+//
+//        flattenJsonById(oldJson, oldMap); // 업로드된 JSON을 기준으로 처리
+//        flattenJsonById(newJson, newMap); // 최신 JSON을 비교 대상으로 처리
+//
+//        Set<String> allIds = new HashSet<>();
+//        allIds.addAll(oldMap.keySet());
+//        allIds.addAll(newMap.keySet());
+//
+//        List<String> added = new ArrayList<>();
+//        List<String> removed = new ArrayList<>();
+//        List<String> modified = new ArrayList<>();
+//
+////        for (String id : allIds) {
+////            JsonNode oldNode = oldMap.get(id);
+////            JsonNode newNode = newMap.get(id);
+////
+////            if (oldNode == null) {
+////                added.add(id); // 새로 추가된 항목
+////            } else if (newNode == null) {
+////                removed.add(id); // 삭제된 항목
+////            } else if (!oldNode.equals(newNode)) {
+////                modified.add(id); // 수정된 항목
+////            }
+////        }
+//        for (String id : allIds) {
+//            JsonNode oldNode = oldMap.get(id);
+//            JsonNode newNode = newMap.get(id);
+//
+//            if (oldNode == null) {
+//                added.add(id);
+//            } else if (newNode == null) {
+//                removed.add(id);
+//            } else if (isNodeActuallyModified(oldNode, newNode)) {
+//                modified.add(id);
+//            }
+//        }
+//
+//        printDiffSummary(added, removed, modified);
+//        printDetailedDiff("추가된 항목", added, newMap);
+//        printDetailedDiff("삭제된 항목", removed, oldMap);
+//        printModifiedDiff(modified, oldMap, newMap);
+//    }
+//
+//    private boolean isNodeActuallyModified(JsonNode oldNode, JsonNode newNode) {
+//        // 자식 요소는 무시하고 자기 자신만 비교
+//        Set<String> skipFields = Set.of("children"); // 하위 노드는 무시
+//
+//        Iterator<String> fieldNames = oldNode.fieldNames();
+//        while (fieldNames.hasNext()) {
+//            String field = fieldNames.next();
+//            if (skipFields.contains(field)) continue;
+//
+//            JsonNode oldField = oldNode.get(field);
+//            JsonNode newField = newNode.get(field);
+//            if (newField == null || !oldField.equals(newField)) {
+//                return true;
+//            }
+//        }
+//
+//        // newNode에만 있는 필드도 체크
+//        Iterator<String> newFieldNames = newNode.fieldNames();
+//        while (newFieldNames.hasNext()) {
+//            String field = newFieldNames.next();
+//            if (skipFields.contains(field)) continue;
+//
+//            if (!oldNode.has(field)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+//    
+//    private void flattenJsonById(JsonNode node, Map<String, JsonNode> result) {
+//        if (node.isObject()) {
+//            if (node.has("id")) {
+//                result.put(node.get("id").asText(), node); // id를 기준으로 Map에 저장
+//            }
+//            for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
+//                Map.Entry<String, JsonNode> field = it.next();
+//                flattenJsonById(field.getValue(), result); // 재귀 호출
+//            }
+//            // 'children' 필드가 있는 경우 이를 재귀적으로 처리
+//            if (node.has("children")) {
+//                for (JsonNode child : node.get("children")) {
+//                    flattenJsonById(child, result);
+//                }
+//            }
+//        } else if (node.isArray()) {
+//            for (JsonNode item : node) {
+//                flattenJsonById(item, result); // 배열 처리
+//            }
+//        }
+//    }
+//
+//    private void printDiffSummary(List<String> added, List<String> removed, List<String> modified) {
+//        System.out.println("📌 비교 결과 요약:");
+//        System.out.println(" - 추가된 항목 수 = " + added.size());
+//        System.out.println(" - 삭제된 항목 수 = " + removed.size());
+//        System.out.println(" - 수정된 항목 수 = " + modified.size());
+//    }
+//
+//    private void printDetailedDiff(String title, List<String> ids, Map<String, JsonNode> nodeMap) {
+//        System.out.println("\n📌 " + title + ":");
+//        for (String id : ids) {
+//            JsonNode node = nodeMap.get(id);
+//            printNodeSummary("+", node);
+//            printStyleInfo(node, node); // 스타일을 추가로 출력
+//        }
+//    }
+//
+//    private void printModifiedDiff(List<String> modified, Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap) {
+//        System.out.println("\n📌 수정된 항목:");
+//        for (String id : modified) {
+//            JsonNode oldNode = oldMap.get(id);
+//            JsonNode newNode = newMap.get(id);
+//            printNodeSummary("*", oldNode);
+//            System.out.println("  → 변경 후: " + newNode.path("type").asText() + " Name: " + newNode.path("name").asText());
+//            printStyleInfo(oldNode, newNode);
+//        }
+//    }
+//
+//    private void printNodeSummary(String prefix, JsonNode node) {
+//        String type = node.path("type").asText();
+//        String name = node.path("name").asText();
+//        System.out.println(prefix + " Type: " + type + " Name: " + name);
+//    }
+
+	//2025-05-12
     public void analyzeJsonData(Map<String, Object> rawData, Map<String, Object> uploadedJsonData) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode oldJson = objectMapper.convertValue(uploadedJsonData, JsonNode.class); // 업로드된 JSON을 기준
-        JsonNode newJson = objectMapper.convertValue(rawData, JsonNode.class); // 최신 Figma JSON을 비교 대상으로 처리
+        JsonNode oldJson = objectMapper.convertValue(uploadedJsonData, JsonNode.class); // 업로드된 JSON
+        JsonNode newJson = objectMapper.convertValue(rawData, JsonNode.class);         // Figma 최신 JSON
 
         performJsonDiffAnalysis(oldJson, newJson);
     }
@@ -30,8 +170,11 @@ public class JsonDiffAnalyzerService {
         Map<String, JsonNode> oldMap = new HashMap<>();
         Map<String, JsonNode> newMap = new HashMap<>();
 
-        flattenJsonById(oldJson, oldMap); // 업로드된 JSON을 기준으로 처리
-        flattenJsonById(newJson, newMap); // 최신 JSON을 비교 대상으로 처리
+        Set<String> visitedOldIds = new HashSet<>();
+        Set<String> visitedNewIds = new HashSet<>();
+
+        flattenJsonById(oldJson, oldMap, visitedOldIds);
+        flattenJsonById(newJson, newMap, visitedNewIds);
 
         Set<String> allIds = new HashSet<>();
         allIds.addAll(oldMap.keySet());
@@ -41,28 +184,21 @@ public class JsonDiffAnalyzerService {
         List<String> removed = new ArrayList<>();
         List<String> modified = new ArrayList<>();
 
-//        for (String id : allIds) {
-//            JsonNode oldNode = oldMap.get(id);
-//            JsonNode newNode = newMap.get(id);
-//
-//            if (oldNode == null) {
-//                added.add(id); // 새로 추가된 항목
-//            } else if (newNode == null) {
-//                removed.add(id); // 삭제된 항목
-//            } else if (!oldNode.equals(newNode)) {
-//                modified.add(id); // 수정된 항목
-//            }
-//        }
         for (String id : allIds) {
             JsonNode oldNode = oldMap.get(id);
             JsonNode newNode = newMap.get(id);
 
-            if (oldNode == null) {
+            if (oldNode == null && newNode != null) {
+                // 새로 추가된 항목
                 added.add(id);
-            } else if (newNode == null) {
+            } else if (oldNode != null && newNode == null) {
+                // 삭제된 항목
                 removed.add(id);
-            } else if (isNodeActuallyModified(oldNode, newNode)) {
-                modified.add(id);
+            } else if (oldNode != null && newNode != null) {
+                // 기존 항목이 수정된 경우만 체크
+                if (isNodeActuallyModified(oldNode, newNode)) {
+                    modified.add(id);
+                }
             }
         }
 
@@ -72,57 +208,68 @@ public class JsonDiffAnalyzerService {
         printModifiedDiff(modified, oldMap, newMap);
     }
 
-    private boolean isNodeActuallyModified(JsonNode oldNode, JsonNode newNode) {
-        // 자식 요소는 무시하고 자기 자신만 비교
-        Set<String> skipFields = Set.of("children"); // 하위 노드는 무시
-
-        Iterator<String> fieldNames = oldNode.fieldNames();
-        while (fieldNames.hasNext()) {
-            String field = fieldNames.next();
-            if (skipFields.contains(field)) continue;
-
-            JsonNode oldField = oldNode.get(field);
-            JsonNode newField = newNode.get(field);
-            if (newField == null || !oldField.equals(newField)) {
-                return true;
-            }
-        }
-
-        // newNode에만 있는 필드도 체크
-        Iterator<String> newFieldNames = newNode.fieldNames();
-        while (newFieldNames.hasNext()) {
-            String field = newFieldNames.next();
-            if (skipFields.contains(field)) continue;
-
-            if (!oldNode.has(field)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-    
-    private void flattenJsonById(JsonNode node, Map<String, JsonNode> result) {
+    private void flattenJsonById(JsonNode node, Map<String, JsonNode> result, Set<String> visitedIds) {
         if (node.isObject()) {
             if (node.has("id")) {
-                result.put(node.get("id").asText(), node); // id를 기준으로 Map에 저장
+                String id = node.get("id").asText();
+                // VARIABLE_ALIAS를 가진 노드는 처리하지 않음
+                if (node.has("type") && node.get("type").asText().equals("VARIABLE_ALIAS")) {
+                    return;  // VARIABLE_ALIAS 항목은 무시
+                }
+                if (visitedIds.contains(id)) return;
+                visitedIds.add(id);
+                result.put(id, node);
             }
+
             for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
                 Map.Entry<String, JsonNode> field = it.next();
-                flattenJsonById(field.getValue(), result); // 재귀 호출
+                if (!"children".equals(field.getKey())) {
+                    flattenJsonById(field.getValue(), result, visitedIds);
+                }
             }
-            // 'children' 필드가 있는 경우 이를 재귀적으로 처리
+
+            // children 별도 처리
             if (node.has("children")) {
                 for (JsonNode child : node.get("children")) {
-                    flattenJsonById(child, result);
+                    flattenJsonById(child, result, visitedIds);
                 }
             }
         } else if (node.isArray()) {
             for (JsonNode item : node) {
-                flattenJsonById(item, result); // 배열 처리
+                flattenJsonById(item, result, visitedIds);
             }
         }
     }
+
+    private boolean isNodeActuallyModified(JsonNode oldNode, JsonNode newNode) {
+        Set<String> skipFields = Set.of("children", "VARIABLE_ALIAS"); // "VARIABLE_ALIAS" 필드를 무시
+        Iterator<String> fields = oldNode.fieldNames();
+
+        // oldNode와 newNode의 실제 차이점을 체크합니다.
+        while (fields.hasNext()) {
+            String field = fields.next();
+            if (skipFields.contains(field)) continue;
+
+            JsonNode oldVal = oldNode.get(field);
+            JsonNode newVal = newNode.get(field);
+
+            // 값이 다르면 수정된 항목으로 판단
+            if (newVal == null || !oldVal.equals(newVal)) {
+                return true; // 차이가 있으면 수정된 항목으로 판단
+            }
+        }
+
+        // newNode에만 있는 필드 확인
+        fields = newNode.fieldNames();
+        while (fields.hasNext()) {
+            String field = fields.next();
+            if (skipFields.contains(field)) continue;
+            if (!oldNode.has(field)) return true; // 새로운 필드가 있으면 수정된 항목으로 판단
+        }
+
+        return false;
+    }
+
 
     private void printDiffSummary(List<String> added, List<String> removed, List<String> modified) {
         System.out.println("📌 비교 결과 요약:");
@@ -136,7 +283,7 @@ public class JsonDiffAnalyzerService {
         for (String id : ids) {
             JsonNode node = nodeMap.get(id);
             printNodeSummary("+", node);
-            printStyleInfo(node, node); // 스타일을 추가로 출력
+            printStyleInfo(node, node);
         }
     }
 
@@ -175,38 +322,6 @@ public class JsonDiffAnalyzerService {
 
         // 스타일 외부의 속성들 (배경색, 선 색 등) 비교
         printAdditionalStyleInfo(oldNode, newNode);
-
-        // styleOverrideTable 비교
-        JsonNode oldStyleOverrideTableNode = oldNode.path("styleOverrideTable");
-        JsonNode newStyleOverrideTableNode = newNode.path("styleOverrideTable");
-
-        if (!oldStyleOverrideTableNode.equals(newStyleOverrideTableNode)) {
-            System.out.println("    - 스타일 테이블 변경:");
-            Iterator<String> fieldNames = oldStyleOverrideTableNode.fieldNames();
-            while (fieldNames.hasNext()) {
-                String key = fieldNames.next();
-                JsonNode oldOverrideStyle = oldStyleOverrideTableNode.get(key);
-                JsonNode newOverrideStyle = newStyleOverrideTableNode.get(key);
-
-                if (!oldOverrideStyle.equals(newOverrideStyle)) {
-                    System.out.println("      - " + key + " 변경:");
-                    compareStyleProperties(oldOverrideStyle, newOverrideStyle);
-                }
-            }
-        }
-
-        // characterStyleOverrides 비교
-        JsonNode oldCharStyleOverrides = oldNode.path("characterStyleOverrides");
-        JsonNode newCharStyleOverrides = newNode.path("characterStyleOverrides");
-
-        if (!oldCharStyleOverrides.equals(newCharStyleOverrides)) {
-            System.out.println("    - 문자 스타일 변경:");
-            for (int i = 0; i < oldCharStyleOverrides.size(); i++) {
-                JsonNode oldCharStyle = oldCharStyleOverrides.get(i);
-                JsonNode newCharStyle = newCharStyleOverrides.get(i);
-                compareStyleProperties(oldCharStyle, newCharStyle);
-            }
-        }
     }
 
     private void printAdditionalStyleInfo(JsonNode oldNode, JsonNode newNode) {
@@ -236,16 +351,12 @@ public class JsonDiffAnalyzerService {
     }
 
     private void compareFills(JsonNode oldFills, JsonNode newFills) {
-        if (oldFills.size() == newFills.size()) {
-            for (int i = 0; i < oldFills.size(); i++) {
-                JsonNode oldFill = oldFills.get(i);
-                JsonNode newFill = newFills.get(i);
-                if (!oldFill.equals(newFill)) {
-                    System.out.println("      - " + convertToHexColor(oldFill.path("color")) + " → " + convertToHexColor(newFill.path("color")));
-                }
+        for (int i = 0; i < oldFills.size(); i++) {
+            JsonNode oldFill = oldFills.get(i);
+            JsonNode newFill = newFills.get(i);
+            if (!oldFill.equals(newFill)) {
+                System.out.println("      - " + convertToHexColor(oldFill.path("color")) + " → " + convertToHexColor(newFill.path("color")));
             }
-        } else {
-            System.out.println("      - 필드의 개수 차이로 비교가 필요합니다.");
         }
     }
 
