@@ -142,9 +142,10 @@ public class JsonDiffAnalyzerController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("버전 데이터 가져오기 실패");
             }
 
-            // 3. 비교 분석 실행
-            //jsonDiffAnalyzerService.analyzeJsonData(latestData, previousData);
-            jsonDiffAnalyzerService.analyzeJsonData(previousData, latestData);
+            // 3. 비교 분석 실행 (직전의 버전) 2025-05-12(최신버전과 직전버전 차이)
+            jsonDiffAnalyzerService.analyzeJsonData(latestData, previousData);
+            // lastModified 메타데이터 활용
+            //jsonDiffAnalyzerService.analyzeJsonDataDiff(previousData, latestData,fileKey);
 
             return ResponseEntity.ok("Figma 최신 버전과 직전 버전 비교 완료");
 

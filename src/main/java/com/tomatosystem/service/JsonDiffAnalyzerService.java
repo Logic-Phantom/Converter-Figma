@@ -2,7 +2,10 @@ package com.tomatosystem.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -157,7 +160,7 @@ public class JsonDiffAnalyzerService {
 //        System.out.println(prefix + " Type: " + type + " Name: " + name);
 //    }
 
-	//2025-05-12
+	//2025-05-12(최신버전과 직전버전 차이)
     public void analyzeJsonData(Map<String, Object> rawData, Map<String, Object> uploadedJsonData) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode oldJson = objectMapper.convertValue(uploadedJsonData, JsonNode.class); // 업로드된 JSON
@@ -166,6 +169,45 @@ public class JsonDiffAnalyzerService {
         performJsonDiffAnalysis(oldJson, newJson);
     }
 
+    //json 데이터 비교 로직 추가(메타 데이터 lastModified 기준으로) 개발필요
+    private FigmaApiService figmaApiService;
+
+    public JsonDiffAnalyzerService(FigmaApiService figmaApiService) {
+        this.figmaApiService = figmaApiService;
+    }
+
+    public void analyzeJsonDataDiff(Map<String, Object> rawData, Map<String, Object> uploadedJsonData, String fileId) throws IOException, ParseException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode oldJson = objectMapper.convertValue(uploadedJsonData, JsonNode.class); // 업로드된 JSON
+        JsonNode newJson = objectMapper.convertValue(rawData, JsonNode.class);         // Figma 최신 JSON
+
+        // Figma에서 마지막 수정 시간을 확인
+        long lastModifiedTimeFromFigma = figmaApiService.getLastModifiedTime(fileId);
+        
+        // 업로드된 데이터에서 lastModified 값을 가져오고, 이를 long으로 변환
+        long lastModifiedTimeFromUploadedData = getLastModifiedTimeFromUploadedData(uploadedJsonData);
+
+        if (lastModifiedTimeFromFigma > lastModifiedTimeFromUploadedData) {
+            // Figma에서 마지막 수정 시간이 업로드된 데이터보다 최신이면 비교
+            performJsonDiffAnalysis(oldJson, newJson);
+        } else {
+            System.out.println("변경 사항이 없습니다. 최신 데이터와 동일합니다.");
+        }
+    }
+
+
+    private long getLastModifiedTimeFromUploadedData(Map<String, Object> uploadedJsonData) throws ParseException {
+        // 업로드된 JSON 데이터에서 lastModified 값을 String으로 가져옴
+        String lastModifiedStr = (String) uploadedJsonData.get("lastModified");
+        
+        // 날짜 형식에 맞는 SimpleDateFormat을 사용하여 문자열을 Date로 변환
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = sdf.parse(lastModifiedStr);
+        
+        // Date 객체에서 타임스탬프를 밀리초 단위로 반환
+        return date.getTime();
+    }
+    
     private void performJsonDiffAnalysis(JsonNode oldJson, JsonNode newJson) {
         Map<String, JsonNode> oldMap = new HashMap<>();
         Map<String, JsonNode> newMap = new HashMap<>();

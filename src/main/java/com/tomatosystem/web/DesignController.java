@@ -133,7 +133,8 @@ public class DesignController {
     @GetMapping("/convertDirect.do")
     public ResponseEntity<String> convertAndSaveClxDirect() {
         String token = "사용자 토큰";
-        String fileKey = "kSWLpqp877HduvBHA9EZnp";
+        //lR8UApS86cMUi3ExqkbPpK,x5gR79q0HUZ567W3CjCuCJ
+        String fileKey = "rXU0zhKF2HjzFsND9njYbq";
         String url = "https://api.figma.com/v1/files/" + fileKey;
 
         try {
@@ -141,7 +142,7 @@ public class DesignController {
             if (rawData == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch Figma data.");
             }
-
+            //JSON 파일 저장
             saveJsonToFile(rawData);
 
             // token, fileKey 함께 전달
@@ -256,7 +257,11 @@ public class DesignController {
             //JSON 작성
             saveJsonToFile(rawData);
 
-            File clxFile = figmaToHtmlService.convertToClx(rawData);
+            //File clxFile = figmaToHtmlService.convertToClx(rawData);
+            
+            //이미지 활용(변환)
+            File clxFile = figmaToClxService.convertToClxImg(rawData, token, fileKey);
+            
             if (clxFile == null || !clxFile.exists()) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CLX file creation failed.");
             }
@@ -365,7 +370,11 @@ public class DesignController {
                         saveJsonToFile(rawData);
                         
 
-                        File clxFile = figmaToHtmlService.convertToClx(rawData);
+                        //File clxFile = figmaToHtmlService.convertToClx(rawData);
+                        
+                        //이미지 활용(변환)
+                        File clxFile = figmaToClxService.convertToClxImg(rawData, token, fileKey);
+                        
                         if (clxFile == null || !clxFile.exists()) {
                             resultLog.append("    ❌ CLX file creation failed.\n");
                             continue;
