@@ -304,25 +304,25 @@ public class JsonDiffAnalyzerService {
         System.out.println(prefix + " Type: " + type + " Name: " + name);
     }
 
-    private void printStyleInfo(JsonNode oldNode, JsonNode newNode) {
-        JsonNode oldStyleNode = oldNode.path("style");
-        JsonNode newStyleNode = newNode.path("style");
-
-        // 스타일이 달라진 경우
-        if (!oldStyleNode.equals(newStyleNode)) {
-            System.out.println("  → 스타일 변경:");
-            oldStyleNode.fieldNames().forEachRemaining(field -> {
-                JsonNode oldVal = oldStyleNode.get(field);
-                JsonNode newVal = newStyleNode.get(field);
-                if (newVal != null && !oldVal.equals(newVal)) {
-                    System.out.println("    - " + field + " 변경: " + oldVal.asText() + " → " + newVal.asText());
-                }
-            });
-        }
-
-        // 스타일 외부의 속성들 (배경색, 선 색 등) 비교
-        printAdditionalStyleInfo(oldNode, newNode);
-    }
+//    private void printStyleInfo(JsonNode oldNode, JsonNode newNode) {
+//        JsonNode oldStyleNode = oldNode.path("style");
+//        JsonNode newStyleNode = newNode.path("style");
+//
+//        // 스타일이 달라진 경우
+//        if (!oldStyleNode.equals(newStyleNode)) {
+//            System.out.println("  → 스타일 변경:");
+//            oldStyleNode.fieldNames().forEachRemaining(field -> {
+//                JsonNode oldVal = oldStyleNode.get(field);
+//                JsonNode newVal = newStyleNode.get(field);
+//                if (newVal != null && !oldVal.equals(newVal)) {
+//                    System.out.println("    - " + field + " 변경: " + oldVal.asText() + " → " + newVal.asText());
+//                }
+//            });
+//        }
+//
+//        // 스타일 외부의 속성들 (배경색, 선 색 등) 비교
+//        printAdditionalStyleInfo(oldNode, newNode);
+//    }
 
     private void printAdditionalStyleInfo(JsonNode oldNode, JsonNode newNode) {
         // 배경색 비교
@@ -404,6 +404,40 @@ public class JsonDiffAnalyzerService {
         }
     }
 
+    private void printStyleInfo(JsonNode oldNode, JsonNode newNode) {
+        JsonNode oldStyleNode = oldNode.path("style");
+        JsonNode newStyleNode = newNode.path("style");
+
+        // 스타일이 달라진 경우
+        if (!oldStyleNode.equals(newStyleNode)) {
+            System.out.println("  → 스타일 변경:");
+
+            // 두 스타일 노드의 필드를 비교
+            Iterator<String> fieldNames = oldStyleNode.fieldNames();
+            while (fieldNames.hasNext()) {
+                String field = fieldNames.next();
+                JsonNode oldVal = oldStyleNode.get(field);
+                JsonNode newVal = newStyleNode.get(field);
+
+                if (newVal != null && !oldVal.equals(newVal)) {
+                    System.out.println("    - " + field + " 변경: " + oldVal.asText() + " → " + newVal.asText());
+                }
+            }
+
+            // newStyleNode에만 있는 새로운 필드도 체크
+            Iterator<String> newFieldNames = newStyleNode.fieldNames();
+            while (newFieldNames.hasNext()) {
+                String field = newFieldNames.next();
+                if (!oldStyleNode.has(field)) {
+                    System.out.println("    - " + field + " 추가됨: " + newStyleNode.get(field).asText());
+                }
+            }
+        }
+
+        // 스타일 외부의 속성들 (배경색, 선 색 등) 비교
+        printAdditionalStyleInfo(oldNode, newNode);
+    }
+    
     private String convertToHexColor(JsonNode colorNode) {
         int r = colorNode.path("r").asInt();
         int g = colorNode.path("g").asInt();
