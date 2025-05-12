@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-2bb53849" version="1.0.5538">
+  <head std:sid="head-ea8d717f">
+    <screen std:sid="screen-b1ea8b0b" id="default" name="default" width="1654px" height="768px"/>
+    <cl:model std:sid="model-335f44b8"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-5337cf9b">
+            <cl:group std:sid="group-e165d09ab6c14f80a17c54e28e39f3f6" id="group_41c3fc2041404ae3bba7656cc3c24a8d" style="">
+                <cl:xylayoutdata top="-121px" left="-72px" width="180px" height="75px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:group std:sid="group-c93ff86d21e946d3adbcdd73d2fbf16c" id="group_e167a818526747cfbc29cab63a827c70" style="background-color: #FF2D55; ">
+                    <cl:xylayoutdata top="0px" left="0px" width="180px" height="75px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:group>
+                <cl:output std:sid="output-72a6e1c347b543589e8359d1dbcca59e" id="output_f1ff5dbde8e34bd1ac760296d8e81b44" value="10건" style="">
+                    <cl:xylayoutdata top="12px" left="134px" width="32px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+            </cl:group>
+            <cl:output std:sid="output-ea3d49f67d424d6ea11d6362755774fd" id="output_a2e798cebef44e94808f3c6d9689456c" value="10건" style="">
+                <cl:xylayoutdata top="-231px" left="-290px" width="32px" height="48px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:output>
+    <cl:xylayout std:sid="xylayout-d0b8f4c0"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
