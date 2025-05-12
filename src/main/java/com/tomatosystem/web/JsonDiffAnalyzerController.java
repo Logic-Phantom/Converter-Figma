@@ -2,6 +2,7 @@ package com.tomatosystem.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -115,6 +116,77 @@ public class JsonDiffAnalyzerController {
             }
         } catch (Exception e) {
             throw new RuntimeException("Figma 데이터 가져오기 실패", e);
+        }
+    }
+    
+    //최신 버전과 직전버전의 차이
+    @RequestMapping("/analyzeRecentVersions.do")
+    public ResponseEntity<String> analyzeRecentFigmaVersions(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) {
+        String token = "사용자 토큰";
+        String fileKey = "rXU0zhKF2HjzFsND9njYbq";
+        try {
+            // 1. 파일 버전 목록 가져오기
+            List<Map<String, Object>> versions = fetchFileVersionsDiff(fileKey, token);
+            if (versions == null || versions.size() < 2) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비교할 수 있는 두 개 이상의 파일 버전이 없습니다.");
+            }
+
+            String latestVersionId = (String) versions.get(0).get("id");
+            String previousVersionId = (String) versions.get(1).get("id");
+
+            // 2. 각 버전의 JSON 데이터 가져오기
+            Map<String, Object> latestData = fetchFigmaFileVersionDiff(fileKey, token, latestVersionId);
+            Map<String, Object> previousData = fetchFigmaFileVersionDiff(fileKey, token, previousVersionId);
+
+            if (latestData == null || previousData == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("버전 데이터 가져오기 실패");
+            }
+
+            // 3. 비교 분석 실행
+            //jsonDiffAnalyzerService.analyzeJsonData(latestData, previousData);
+            jsonDiffAnalyzerService.analyzeJsonData(previousData, latestData);
+
+            return ResponseEntity.ok("Figma 최신 버전과 직전 버전 비교 완료");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생: " + e.getMessage());
+        }
+    }
+
+    private List<Map<String, Object>> fetchFileVersionsDiff(String fileKey, String token) throws IOException {
+        String versionUrl = "https://api.figma.com/v1/files/" + fileKey + "/versions";
+        HttpGet getRequest = new HttpGet(versionUrl);
+        getRequest.addHeader("X-Figma-Token", token);
+
+        try (CloseableHttpClient client = HttpClients.createDefault();
+             CloseableHttpResponse response = client.execute(getRequest)) {
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String body = EntityUtils.toString(response.getEntity());
+                ObjectMapper objectMapper = new ObjectMapper();
+                Map<String, Object> json = objectMapper.readValue(body, Map.class);
+                return (List<Map<String, Object>>) json.get("versions");
+            } else {
+                throw new RuntimeException("버전 정보 가져오기 실패: " + response.getStatusLine());
+            }
+        }
+    }
+
+    private Map<String, Object> fetchFigmaFileVersionDiff(String fileKey, String token, String versionId) throws IOException {
+        String url = "https://api.figma.com/v1/files/" + fileKey + "?version=" + versionId;
+        HttpGet getRequest = new HttpGet(url);
+        getRequest.addHeader("X-Figma-Token", token);
+
+        try (CloseableHttpClient client = HttpClients.createDefault();
+             CloseableHttpResponse response = client.execute(getRequest)) {
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String body = EntityUtils.toString(response.getEntity());
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.readValue(body, Map.class);
+            } else {
+                throw new RuntimeException("Figma 파일 버전 호출 실패: " + response.getStatusLine());
+            }
         }
     }
 }
