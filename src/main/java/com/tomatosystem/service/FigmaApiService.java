@@ -3,6 +3,9 @@ package com.tomatosystem.service;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
@@ -30,13 +33,44 @@ public class FigmaApiService {
 	        ObjectMapper objectMapper = new ObjectMapper();
 	        return objectMapper.readTree(connection.getInputStream());
 	    }
-
+//	    public long getLastModifiedTime(String fileId) throws IOException {
+//	        JsonNode metadata = getFileMetadata(fileId);
+//	        
+//	        // 'lastModified'가 meta 노드에 있을 경우
+//	        JsonNode metaNode = metadata.path("meta");
+//	        if (metaNode.has("lastModified")) {
+//	            return metaNode.path("lastModified").asLong();
+//	        } else {
+//	            System.out.println("lastModified 값이 없습니다. 파일 ID: " + fileId);
+//	            return 0;  // 또는 적절한 기본값을 설정
+//	        }
+//	    }
 	    // Figma 파일의 마지막 수정 시간(lastModified) 가져오기
 	    public long getLastModifiedTime(String fileId) throws IOException {
 	        JsonNode metadata = getFileMetadata(fileId);
-	        JsonNode documentNode = metadata.path("document");
-	        // lastModified 정보는 API에서 문서의 메타데이터에 포함되어 있어야 합니다.
-	        return documentNode.path("lastModified").asLong(); // 예시로 lastModified를 long으로 반환
+
+	        // API 응답 데이터 로그로 확인
+	        System.out.println("Figma metadata response: " + metadata.toString());
+
+	        // 'lastModified' 값이 metadata에 있는지 확인
+	        JsonNode lastModifiedNode = metadata.get("lastModified");
+
+	        if (lastModifiedNode != null) {
+	            String lastModifiedStr = lastModifiedNode.asText(); // 문자열로 변환
+
+	            // 날짜 형식에 맞는 SimpleDateFormat을 사용하여 문자열을 Date로 변환
+	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	            try {
+	                Date date = sdf.parse(lastModifiedStr);
+	                return date.getTime(); // 밀리초 단위로 반환
+	            } catch (ParseException e) {
+	                System.out.println("날짜 파싱 오류: " + e.getMessage());
+	                return 0;  // 파싱 실패 시 0 반환
+	            }
+	        } else {
+	            System.out.println("lastModified 값이 없습니다. 파일 ID: " + fileId);
+	            return 0;  // 적절한 기본값을 설정
+	        }
 	    }
 	}
 
