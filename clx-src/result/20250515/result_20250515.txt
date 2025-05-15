@@ -1,0 +1,65 @@
+📌 비교 결과 요약:
+ - 추가된 항목 수 = 9
+ - 삭제된 항목 수 = 0
+ - 수정된 항목 수 = 19
+
+📌 추가된 항목:
++ Type: RECTANGLE Name: live area
++ Type: RECTANGLE Name: live area
++ Type: INSTANCE Name: Button
++ Type: TEXT Name: 생성
++ Type:  Name: 
++ Type: INSTANCE Name: icon20
++ Type: INSTANCE Name: icon20
++ Type: RECTANGLE Name: 20*20
++ Type: RECTANGLE Name: 20*20
+
+📌 삭제된 항목:
+
+📌 수정된 항목:
+* Type: INSTANCE Name: Button
+  → 변경 후: INSTANCE Name: Button
+    - 배경색(fills) 변경:
+      - #FFFFFF → #000000
+    - 배경(background) 변경:
+      - #FFFFFF → #000000
+* Type: INSTANCE Name: icon16
+  → 변경 후: INSTANCE Name: icon16
+* Type: TEXT Name: 버튼
+  → 변경 후: TEXT Name: 버튼
+* Type: INSTANCE Name: icon16
+  → 변경 후: INSTANCE Name: icon16
+* Type: INSTANCE Name: Button
+  → 변경 후: INSTANCE Name: Button
+* Type: INSTANCE Name: Button
+  → 변경 후: INSTANCE Name: Button
+* Type: GROUP Name: Group 815468
+  → 변경 후: GROUP Name: Group 815468
+* Type: RECTANGLE Name: Rectangle 97
+  → 변경 후: RECTANGLE Name: Rectangle 97
+* Type: RECTANGLE Name: Rectangle 98
+  → 변경 후: RECTANGLE Name: Rectangle 98
+* Type: INSTANCE Name: Button
+  → 변경 후: INSTANCE Name: Button
+    - 배경색(fills) 변경:
+      - #FF0000 → #00FF00
+    - 배경(background) 변경:
+      - #FF0000 → #00FF00
+* Type: RECTANGLE Name: Rectangle 98
+  → 변경 후: RECTANGLE Name: Rectangle 98
+* Type: RECTANGLE Name: Rectangle 97
+  → 변경 후: RECTANGLE Name: Rectangle 97
+* Type: TEXT Name: 버튼
+  → 변경 후: TEXT Name: 버튼
+* Type: INSTANCE Name: icon16
+  → 변경 후: INSTANCE Name: icon16
+* Type: INSTANCE Name: icon16
+  → 변경 후: INSTANCE Name: icon16
+* Type: RECTANGLE Name: Rectangle 98
+  → 변경 후: RECTANGLE Name: Rectangle 98
+* Type: RECTANGLE Name: Rectangle 97
+  → 변경 후: RECTANGLE Name: Rectangle 97
+* Type: RECTANGLE Name: Rectangle 97
+  → 변경 후: RECTANGLE Name: Rectangle 97
+* Type: RECTANGLE Name: Rectangle 98
+  → 변경 후: RECTANGLE Name: Rectangle 98
