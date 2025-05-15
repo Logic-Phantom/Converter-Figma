@@ -17,6 +17,17 @@ public class TextNodeConverter {
         String textId = "output_" + generateId();
         String textValue = getTextValue(element);
 
+        // 텍스트 크기 계산
+        double[] minSize = calculateTextMinSize(textValue, element);
+        width = Math.max(width, minSize[0]);
+        height = Math.max(height, minSize[1]);
+
+        // 부모 컨테이너를 벗어나지 않도록 조정
+        if (parentX > 0 && parentY > 0) {
+            width = Math.min(width, parentX);
+            height = Math.min(height, parentY);
+        }
+
         writer.write(indent + "<cl:output std:sid=\"output-" + generateId() + "\" id=\"" + textId + "\" value=\"" +
                 escapeXml(textValue) + "\" style=\"" + escapeXml(style) + "\">\n");
         writeLayoutData(writer, x, y, width, height, parentX, parentY, depth + 1);
