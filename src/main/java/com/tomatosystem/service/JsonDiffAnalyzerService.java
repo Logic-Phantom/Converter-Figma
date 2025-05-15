@@ -231,23 +231,24 @@ public class JsonDiffAnalyzerService {
             JsonNode newNode = newMap.get(id);
 
             if (oldNode == null && newNode != null) {
-                // 새로 추가된 항목
                 added.add(id);
             } else if (oldNode != null && newNode == null) {
-                // 삭제된 항목
                 removed.add(id);
             } else if (oldNode != null && newNode != null) {
-                // 기존 항목이 수정된 경우만 체크
                 if (isNodeActuallyModified(oldNode, newNode)) {
                     modified.add(id);
                 }
             }
         }
 
+        // 콘솔에 출력
         printDiffSummary(added, removed, modified);
         printDetailedDiff("추가된 항목", added, newMap);
         printDetailedDiff("삭제된 항목", removed, oldMap);
         printModifiedDiff(modified, oldMap, newMap);
+
+        // 파일로 저장
+        saveDiffResultToFile(added, removed, modified, oldMap, newMap);
     }
 
     private void flattenJsonById(JsonNode node, Map<String, JsonNode> result, Set<String> visitedIds) {
@@ -485,5 +486,101 @@ public class JsonDiffAnalyzerService {
         int g = colorNode.path("g").asInt();
         int b = colorNode.path("b").asInt();
         return String.format("#%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255));
+    }
+
+    private void saveDiffResultToFile(List<String> added, List<String> removed, List<String> modified,
+                                    Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String today = dateFormat.format(new Date());
+            
+            // 디렉토리 생성
+            File directory = new File("C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\" + today);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // 파일 생성
+            String fileName = "result_" + today + ".txt";
+            File file = new File(directory, fileName);
+            StringBuilder content = new StringBuilder();
+
+            // 요약 정보 작성
+            content.append("📌 비교 결과 요약:\n");
+            content.append(" - 추가된 항목 수 = ").append(added.size()).append("\n");
+            content.append(" - 삭제된 항목 수 = ").append(removed.size()).append("\n");
+            content.append(" - 수정된 항목 수 = ").append(modified.size()).append("\n\n");
+
+            // 추가된 항목
+            content.append("📌 추가된 항목:\n");
+            for (String id : added) {
+                JsonNode node = newMap.get(id);
+                content.append("+ Type: ").append(node.path("type").asText())
+                      .append(" Name: ").append(node.path("name").asText()).append("\n");
+            }
+
+            // 삭제된 항목
+            content.append("\n📌 삭제된 항목:\n");
+            for (String id : removed) {
+                JsonNode node = oldMap.get(id);
+                content.append("- Type: ").append(node.path("type").asText())
+                      .append(" Name: ").append(node.path("name").asText()).append("\n");
+            }
+
+            // 수정된 항목
+            content.append("\n📌 수정된 항목:\n");
+            for (String id : modified) {
+                JsonNode oldNode = oldMap.get(id);
+                JsonNode newNode = newMap.get(id);
+                content.append("* Type: ").append(oldNode.path("type").asText())
+                      .append(" Name: ").append(oldNode.path("name").asText()).append("\n");
+                content.append("  → 변경 후: ").append(newNode.path("type").asText())
+                      .append(" Name: ").append(newNode.path("name").asText()).append("\n");
+
+                // 스타일 변경 정보 추가
+                appendStyleChanges(content, oldNode, newNode);
+            }
+
+            // 파일 쓰기
+            java.nio.file.Files.write(file.toPath(), content.toString().getBytes());
+            System.out.println("\n결과가 다음 파일에 저장되었습니다: " + file.getAbsolutePath());
+
+        } catch (IOException e) {
+            System.err.println("파일 저장 중 오류 발생: " + e.getMessage());
+        }
+    }
+
+    private void appendStyleChanges(StringBuilder content, JsonNode oldNode, JsonNode newNode) {
+        // fills 변경 확인
+        JsonNode oldFills = oldNode.path("fills");
+        JsonNode newFills = newNode.path("fills");
+        if (!oldFills.equals(newFills)) {
+            content.append("    - 배경색(fills) 변경:\n");
+            for (int i = 0; i < Math.max(oldFills.size(), newFills.size()); i++) {
+                if (i < oldFills.size() && i < newFills.size()) {
+                    content.append("      - ")
+                          .append(convertToHexColor(oldFills.get(i).path("color")))
+                          .append(" → ")
+                          .append(convertToHexColor(newFills.get(i).path("color")))
+                          .append("\n");
+                }
+            }
+        }
+
+        // background 변경 확인
+        JsonNode oldBackground = oldNode.path("background");
+        JsonNode newBackground = newNode.path("background");
+        if (!oldBackground.equals(newBackground)) {
+            content.append("    - 배경(background) 변경:\n");
+            for (int i = 0; i < Math.max(oldBackground.size(), newBackground.size()); i++) {
+                if (i < oldBackground.size() && i < newBackground.size()) {
+                    content.append("      - ")
+                          .append(convertToHexColor(oldBackground.get(i).path("color")))
+                          .append(" → ")
+                          .append(convertToHexColor(newBackground.get(i).path("color")))
+                          .append("\n");
+                }
+            }
+        }
     }
 }
