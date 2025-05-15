@@ -199,7 +199,20 @@ public class JsonDiffAnalyzerService {
             JsonNode oldNode = oldMap.get(id);
             JsonNode newNode = newMap.get(id);
             printNodeSummary("*", oldNode);
-            System.out.println("  → 변경 후: " + newNode.path("type").asText() + " Name: " + newNode.path("name").asText());
+            
+            // Check for position changes
+            double oldX = oldNode.path("x").asDouble();
+            double oldY = oldNode.path("y").asDouble();
+            double newX = newNode.path("x").asDouble();
+            double newY = newNode.path("y").asDouble();
+            
+            if (!oldNode.path("x").isMissingNode() && !oldNode.path("y").isMissingNode() &&
+                !newNode.path("x").isMissingNode() && !newNode.path("y").isMissingNode() &&
+                (oldX != newX || oldY != newY)) {
+                System.out.println("  - 위치 변경: (" + String.format("%.1f", oldX) + ", " + String.format("%.1f", oldY) + 
+                                 ") → (" + String.format("%.1f", newX) + ", " + String.format("%.1f", newY) + ")");
+            }
+            
             printStyleInfo(oldNode, newNode);
         }
     }
@@ -496,7 +509,13 @@ public class JsonDiffAnalyzerService {
         }
 
         // 좌표 정보 추가
-        appendPositionInfo(content, node);
+        if (!node.path("x").isMissingNode() && !node.path("y").isMissingNode()) {
+            double x = node.path("x").asDouble();
+            double y = node.path("y").asDouble();
+            content.append(" Position: (").append(String.format("%.1f", x))
+                  .append(", ").append(String.format("%.1f", y)).append(")");
+        }
+
         content.append("\n");
     }
 
