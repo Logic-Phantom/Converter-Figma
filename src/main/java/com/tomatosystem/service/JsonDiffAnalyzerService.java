@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -500,8 +501,12 @@ public class JsonDiffAnalyzerService {
                 directory.mkdirs();
             }
 
+            // 난수 생성 (100~999)
+            Random random = new Random();
+            int randomNum = random.nextInt(900) + 100;
+
             // 파일 생성
-            String fileName = "result_" + today + ".txt";
+            String fileName = String.format("result_%s_%d.txt", today, randomNum);
             File file = new File(directory, fileName);
             StringBuilder content = new StringBuilder();
 
@@ -509,36 +514,86 @@ public class JsonDiffAnalyzerService {
             content.append("📌 비교 결과 요약:\n");
             content.append(" - 추가된 항목 수 = ").append(added.size()).append("\n");
             content.append(" - 삭제된 항목 수 = ").append(removed.size()).append("\n");
-            content.append(" - 수정된 항목 수 = ").append(modified.size()).append("\n\n");
+            content.append(" - 수정된 항목 수 = ").append(getActualModifiedCount(modified, oldMap, newMap)).append("\n\n");
 
             // 추가된 항목
-            content.append("📌 추가된 항목:\n");
-            for (String id : added) {
-                JsonNode node = newMap.get(id);
-                content.append("+ Type: ").append(node.path("type").asText())
-                      .append(" Name: ").append(node.path("name").asText()).append("\n");
+            if (!added.isEmpty()) {
+                content.append("📌 추가된 항목:\n");
+                for (String id : added) {
+                    JsonNode node = newMap.get(id);
+                    String type = node.path("type").asText();
+                    String name = node.path("name").asText();
+                    if (!type.isEmpty()) {
+                        content.append("+ Type: ").append(type);
+                        if (!name.isEmpty()) {
+                            content.append(" Name: ").append(name);
+                        }
+                        // 좌표 정보 추가
+                        appendPositionInfo(content, node);
+                        content.append("\n");
+                    }
+                }
+                content.append("\n");
             }
 
             // 삭제된 항목
-            content.append("\n📌 삭제된 항목:\n");
-            for (String id : removed) {
-                JsonNode node = oldMap.get(id);
-                content.append("- Type: ").append(node.path("type").asText())
-                      .append(" Name: ").append(node.path("name").asText()).append("\n");
+            if (!removed.isEmpty()) {
+                content.append("📌 삭제된 항목:\n");
+                for (String id : removed) {
+                    JsonNode node = oldMap.get(id);
+                    String type = node.path("type").asText();
+                    String name = node.path("name").asText();
+                    if (!type.isEmpty()) {
+                        content.append("- Type: ").append(type);
+                        if (!name.isEmpty()) {
+                            content.append(" Name: ").append(name);
+                        }
+                        // 좌표 정보 추가
+                        appendPositionInfo(content, node);
+                        content.append("\n");
+                    }
+                }
+                content.append("\n");
             }
 
             // 수정된 항목
-            content.append("\n📌 수정된 항목:\n");
-            for (String id : modified) {
-                JsonNode oldNode = oldMap.get(id);
-                JsonNode newNode = newMap.get(id);
-                content.append("* Type: ").append(oldNode.path("type").asText())
-                      .append(" Name: ").append(oldNode.path("name").asText()).append("\n");
-                content.append("  → 변경 후: ").append(newNode.path("type").asText())
-                      .append(" Name: ").append(newNode.path("name").asText()).append("\n");
-
-                // 스타일 변경 정보 추가
-                appendStyleChanges(content, oldNode, newNode);
+            if (!modified.isEmpty()) {
+                content.append("📌 수정된 항목:\n");
+                for (String id : modified) {
+                    JsonNode oldNode = oldMap.get(id);
+                    JsonNode newNode = newMap.get(id);
+                    
+                    Map<String, String> changes = findActualChanges(oldNode, newNode);
+                    if (!changes.isEmpty()) {
+                        content.append("* Type: ").append(oldNode.path("type").asText());
+                        String name = oldNode.path("name").asText();
+                        if (!name.isEmpty()) {
+                            content.append(" Name: ").append(name);
+                        }
+                        content.append("\n");
+                        
+                        // 변경된 속성들 표시
+                        for (Map.Entry<String, String> change : changes.entrySet()) {
+                            String key = change.getKey();
+                            String value = change.getValue();
+                            
+                            // 좌표/크기 관련 변경사항은 특별히 처리
+                            if (key.equals("position")) {
+                                content.append("  - 위치 변경: ").append(value).append("\n");
+                            } else if (key.equals("size")) {
+                                content.append("  - 크기 변경: ").append(value).append("\n");
+                            } else if (key.equals("rotation")) {
+                                content.append("  - 회전 변경: ").append(value).append("°\n");
+                            } else {
+                                content.append("  - ").append(key).append(": ").append(value).append("\n");
+                            }
+                        }
+                        
+                        // 스타일 변경 정보 추가
+                        appendStyleChanges(content, oldNode, newNode);
+                        content.append("\n");
+                    }
+                }
             }
 
             // 파일 쓰기
@@ -550,37 +605,132 @@ public class JsonDiffAnalyzerService {
         }
     }
 
+    private void appendPositionInfo(StringBuilder content, JsonNode node) {
+        double x = node.path("x").asDouble();
+        double y = node.path("y").asDouble();
+        if (!node.path("x").isMissingNode() && !node.path("y").isMissingNode()) {
+            content.append(" (x: ").append(String.format("%.1f", x))
+                  .append(", y: ").append(String.format("%.1f", y)).append(")");
+        }
+    }
+
+    private Map<String, String> findActualChanges(JsonNode oldNode, JsonNode newNode) {
+        Map<String, String> changes = new HashMap<>();
+        Set<String> skipFields = Set.of("children", "id", "key", "VARIABLE_ALIAS");
+        
+        // 위치 변경 확인
+        double oldX = oldNode.path("x").asDouble();
+        double oldY = oldNode.path("y").asDouble();
+        double newX = newNode.path("x").asDouble();
+        double newY = newNode.path("y").asDouble();
+        
+        if (!oldNode.path("x").isMissingNode() && !oldNode.path("y").isMissingNode() &&
+            !newNode.path("x").isMissingNode() && !newNode.path("y").isMissingNode() &&
+            (oldX != newX || oldY != newY)) {
+            changes.put("position", String.format("(%.1f, %.1f) → (%.1f, %.1f)", oldX, oldY, newX, newY));
+        }
+
+        // 크기 변경 확인
+        double oldWidth = oldNode.path("width").asDouble();
+        double oldHeight = oldNode.path("height").asDouble();
+        double newWidth = newNode.path("width").asDouble();
+        double newHeight = newNode.path("height").asDouble();
+        
+        if (!oldNode.path("width").isMissingNode() && !oldNode.path("height").isMissingNode() &&
+            !newNode.path("width").isMissingNode() && !newNode.path("height").isMissingNode() &&
+            (oldWidth != newWidth || oldHeight != newHeight)) {
+            changes.put("size", String.format("%.1f x %.1f → %.1f x %.1f", oldWidth, oldHeight, newWidth, newHeight));
+        }
+
+        // 회전 변경 확인
+        if (!oldNode.path("rotation").isMissingNode() && !newNode.path("rotation").isMissingNode() &&
+            oldNode.path("rotation").asDouble() != newNode.path("rotation").asDouble()) {
+            changes.put("rotation", String.format("%.1f → %.1f", 
+                oldNode.path("rotation").asDouble(),
+                newNode.path("rotation").asDouble()));
+        }
+
+        // fills 변경 확인
+        if (!oldNode.path("fills").equals(newNode.path("fills"))) {
+            String colorChange = getColorChangeSummary(oldNode.path("fills"), newNode.path("fills"));
+            if (!colorChange.isEmpty()) {
+                changes.put("배경색", colorChange);
+            }
+        }
+
+        // background 변경 확인
+        if (!oldNode.path("background").equals(newNode.path("background"))) {
+            String colorChange = getColorChangeSummary(oldNode.path("background"), newNode.path("background"));
+            if (!colorChange.isEmpty()) {
+                changes.put("배경", colorChange);
+            }
+        }
+
+        return changes;
+    }
+
+    private String getColorChangeSummary(JsonNode oldColors, JsonNode newColors) {
+        if (oldColors.size() > 0 && newColors.size() > 0) {
+            return convertToHexColor(oldColors.get(0).path("color")) + 
+                   " → " + 
+                   convertToHexColor(newColors.get(0).path("color"));
+        }
+        return "";
+    }
+
     private void appendStyleChanges(StringBuilder content, JsonNode oldNode, JsonNode newNode) {
         // fills 변경 확인
         JsonNode oldFills = oldNode.path("fills");
         JsonNode newFills = newNode.path("fills");
-        if (!oldFills.equals(newFills)) {
-            content.append("    - 배경색(fills) 변경:\n");
-            for (int i = 0; i < Math.max(oldFills.size(), newFills.size()); i++) {
-                if (i < oldFills.size() && i < newFills.size()) {
-                    content.append("      - ")
-                          .append(convertToHexColor(oldFills.get(i).path("color")))
-                          .append(" → ")
-                          .append(convertToHexColor(newFills.get(i).path("color")))
-                          .append("\n");
-                }
-            }
+        if (!oldFills.equals(newFills) && oldFills.size() > 0 && newFills.size() > 0) {
+            content.append("    - 배경색 변경: ")
+                  .append(convertToHexColor(oldFills.get(0).path("color")))
+                  .append(" → ")
+                  .append(convertToHexColor(newFills.get(0).path("color")))
+                  .append("\n");
         }
 
         // background 변경 확인
         JsonNode oldBackground = oldNode.path("background");
         JsonNode newBackground = newNode.path("background");
-        if (!oldBackground.equals(newBackground)) {
-            content.append("    - 배경(background) 변경:\n");
-            for (int i = 0; i < Math.max(oldBackground.size(), newBackground.size()); i++) {
-                if (i < oldBackground.size() && i < newBackground.size()) {
-                    content.append("      - ")
-                          .append(convertToHexColor(oldBackground.get(i).path("color")))
+        if (!oldBackground.equals(newBackground) && oldBackground.size() > 0 && newBackground.size() > 0) {
+            content.append("    - 배경 변경: ")
+                  .append(convertToHexColor(oldBackground.get(0).path("color")))
+                  .append(" → ")
+                  .append(convertToHexColor(newBackground.get(0).path("color")))
+                  .append("\n");
+        }
+
+        // 추가 스타일 속성 비교
+        compareStyleProperties(content, oldNode.path("style"), newNode.path("style"));
+    }
+
+    private void compareStyleProperties(StringBuilder content, JsonNode oldStyle, JsonNode newStyle) {
+        if (!oldStyle.isMissingNode() && !newStyle.isMissingNode()) {
+            String[] styleProps = {"fontFamily", "fontSize", "fontWeight", "textAlignHorizontal", "textAlignVertical"};
+            for (String prop : styleProps) {
+                JsonNode oldVal = oldStyle.path(prop);
+                JsonNode newVal = newStyle.path(prop);
+                if (!oldVal.isMissingNode() && !newVal.isMissingNode() && !oldVal.equals(newVal)) {
+                    content.append("    - ").append(prop).append(" 변경: ")
+                          .append(oldVal.asText())
                           .append(" → ")
-                          .append(convertToHexColor(newBackground.get(i).path("color")))
+                          .append(newVal.asText())
                           .append("\n");
                 }
             }
         }
+    }
+
+    private int getActualModifiedCount(List<String> modified, Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap) {
+        int count = 0;
+        for (String id : modified) {
+            JsonNode oldNode = oldMap.get(id);
+            JsonNode newNode = newMap.get(id);
+            if (!findActualChanges(oldNode, newNode).isEmpty()) {
+                count++;
+            }
+        }
+        return count;
     }
 }
