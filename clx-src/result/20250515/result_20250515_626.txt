@@ -1,0 +1,28 @@
+📌 비교 결과 요약:
+ - 추가된 항목 수 = 9
+ - 삭제된 항목 수 = 0
+ - 수정된 항목 수 = 2
+
+📌 추가된 항목:
++ Type: RECTANGLE Name: live area
++ Type: RECTANGLE Name: live area
++ Type: INSTANCE Name: Button
++ Type: TEXT Name: 생성
++ Type: INSTANCE Name: icon20
++ Type: INSTANCE Name: icon20
++ Type: RECTANGLE Name: 20*20
++ Type: RECTANGLE Name: 20*20
+
+📌 수정된 항목:
+* Type: INSTANCE Name: Button
+  - 배경색: #FFFFFF → #8C7A7A
+  - 배경: #FFFFFF → #8C7A7A
+    - 배경색 변경: #FFFFFF → #8C7A7A
+    - 배경 변경: #FFFFFF → #8C7A7A
+
+* Type: INSTANCE Name: Button
+  - 배경색: #FFC20E → #0EFFAB
+  - 배경: #FFC20E → #0EFFAB
+    - 배경색 변경: #FFC20E → #0EFFAB
+    - 배경 변경: #FFC20E → #0EFFAB
+
