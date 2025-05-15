@@ -483,10 +483,35 @@ public class JsonDiffAnalyzerService {
     }
     
     private String convertToHexColor(JsonNode colorNode) {
-        int r = colorNode.path("r").asInt();
-        int g = colorNode.path("g").asInt();
-        int b = colorNode.path("b").asInt();
-        return String.format("#%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255));
+        if (colorNode == null || colorNode.isMissingNode()) {
+            return "";
+        }
+
+        try {
+            // Figma의 색상값은 0~1 사이의 실수로 표현됨
+            double r = colorNode.path("r").asDouble();
+            double g = colorNode.path("g").asDouble();
+            double b = colorNode.path("b").asDouble();
+
+            // 알파값이 있는 경우 처리
+            double a = colorNode.has("a") ? colorNode.path("a").asDouble() : 1.0;
+
+            // 0~1 사이의 값을 0~255 사이의 정수로 변환
+            int rInt = Math.min(255, Math.max(0, (int)(r * 255 + 0.5)));
+            int gInt = Math.min(255, Math.max(0, (int)(g * 255 + 0.5)));
+            int bInt = Math.min(255, Math.max(0, (int)(b * 255 + 0.5)));
+
+            // 알파값이 1이 아닌 경우 RGBA 형식으로 반환
+            if (a < 1.0) {
+                int aInt = Math.min(255, Math.max(0, (int)(a * 255 + 0.5)));
+                return String.format("#%02X%02X%02X%02X", rInt, gInt, bInt, aInt);
+            }
+
+            return String.format("#%02X%02X%02X", rInt, gInt, bInt);
+        } catch (Exception e) {
+            System.err.println("색상 변환 중 오류 발생: " + e.getMessage());
+            return "";
+        }
     }
 
     private void saveDiffResultToFile(List<String> added, List<String> removed, List<String> modified,
@@ -671,9 +696,11 @@ public class JsonDiffAnalyzerService {
 
     private String getColorChangeSummary(JsonNode oldColors, JsonNode newColors) {
         if (oldColors.size() > 0 && newColors.size() > 0) {
-            return convertToHexColor(oldColors.get(0).path("color")) + 
-                   " → " + 
-                   convertToHexColor(newColors.get(0).path("color"));
+            JsonNode oldColor = oldColors.get(0).path("color");
+            JsonNode newColor = newColors.get(0).path("color");
+            if (!oldColor.isMissingNode() && !newColor.isMissingNode()) {
+                return convertToHexColor(oldColor) + " → " + convertToHexColor(newColor);
+            }
         }
         return "";
     }
@@ -683,22 +710,30 @@ public class JsonDiffAnalyzerService {
         JsonNode oldFills = oldNode.path("fills");
         JsonNode newFills = newNode.path("fills");
         if (!oldFills.equals(newFills) && oldFills.size() > 0 && newFills.size() > 0) {
-            content.append("    - 배경색 변경: ")
-                  .append(convertToHexColor(oldFills.get(0).path("color")))
-                  .append(" → ")
-                  .append(convertToHexColor(newFills.get(0).path("color")))
-                  .append("\n");
+            JsonNode oldColor = oldFills.get(0).path("color");
+            JsonNode newColor = newFills.get(0).path("color");
+            if (!oldColor.isMissingNode() && !newColor.isMissingNode()) {
+                content.append("    - 배경색 변경: ")
+                      .append(convertToHexColor(oldColor))
+                      .append(" → ")
+                      .append(convertToHexColor(newColor))
+                      .append("\n");
+            }
         }
 
         // background 변경 확인
         JsonNode oldBackground = oldNode.path("background");
         JsonNode newBackground = newNode.path("background");
         if (!oldBackground.equals(newBackground) && oldBackground.size() > 0 && newBackground.size() > 0) {
-            content.append("    - 배경 변경: ")
-                  .append(convertToHexColor(oldBackground.get(0).path("color")))
-                  .append(" → ")
-                  .append(convertToHexColor(newBackground.get(0).path("color")))
-                  .append("\n");
+            JsonNode oldColor = oldBackground.get(0).path("color");
+            JsonNode newColor = newBackground.get(0).path("color");
+            if (!oldColor.isMissingNode() && !newColor.isMissingNode()) {
+                content.append("    - 배경 변경: ")
+                      .append(convertToHexColor(oldColor))
+                      .append(" → ")
+                      .append(convertToHexColor(newColor))
+                      .append("\n");
+            }
         }
 
         // 추가 스타일 속성 비교
