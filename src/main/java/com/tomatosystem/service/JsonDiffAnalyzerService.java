@@ -212,8 +212,11 @@ public class JsonDiffAnalyzerService {
         Map<String, JsonNode> oldMap = new HashMap<>();
         Map<String, JsonNode> newMap = new HashMap<>();
 
-        flattenJsonById(oldJson, oldMap);
-        flattenJsonById(newJson, newMap);
+        Set<String> visitedOldIds = new HashSet<>();
+        Set<String> visitedNewIds = new HashSet<>();
+
+        flattenJsonById(oldJson, oldMap, visitedOldIds);
+        flattenJsonById(newJson, newMap, visitedNewIds);
 
         Set<String> allIds = new HashSet<>();
         allIds.addAll(oldMap.keySet());
@@ -247,7 +250,7 @@ public class JsonDiffAnalyzerService {
         printModifiedDiff(modified, oldMap, newMap);
     }
 
-    private void flattenJsonById(JsonNode node, Map<String, JsonNode> result) {
+    private void flattenJsonById(JsonNode node, Map<String, JsonNode> result, Set<String> visitedIds) {
         if (node.isObject()) {
             if (node.has("id")) {
                 String id = node.get("id").asText();
@@ -255,72 +258,60 @@ public class JsonDiffAnalyzerService {
                 if (node.has("type") && node.get("type").asText().equals("VARIABLE_ALIAS")) {
                     return;  // VARIABLE_ALIAS 항목은 무시
                 }
-                // 중복 ID가 있더라도 최신 버전으로 업데이트
+                if (visitedIds.contains(id)) return;
+                visitedIds.add(id);
                 result.put(id, node);
             }
-            
-            // children을 먼저 처리
-            if (node.has("children")) {
-                for (JsonNode child : node.get("children")) {
-                    flattenJsonById(child, result);
-                }
-            }
 
-            // 다른 필드들 처리
             for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
                 Map.Entry<String, JsonNode> field = it.next();
                 if (!"children".equals(field.getKey())) {
-                    flattenJsonById(field.getValue(), result);
+                    flattenJsonById(field.getValue(), result, visitedIds);
+                }
+            }
+
+            // children 별도 처리
+            if (node.has("children")) {
+                for (JsonNode child : node.get("children")) {
+                    flattenJsonById(child, result, visitedIds);
                 }
             }
         } else if (node.isArray()) {
             for (JsonNode item : node) {
-                flattenJsonById(item, result);
+                flattenJsonById(item, result, visitedIds);
             }
         }
     }
 
     private boolean isNodeActuallyModified(JsonNode oldNode, JsonNode newNode) {
-        Set<String> skipFields = Set.of("children", "VARIABLE_ALIAS");
-        
-        // 타입이 다르면 수정된 것으로 간주
-        if (!oldNode.getNodeType().equals(newNode.getNodeType())) {
-            return true;
-        }
-        
-        if (oldNode.isObject()) {
-            Iterator<String> fields = oldNode.fieldNames();
-            while (fields.hasNext()) {
-                String field = fields.next();
-                if (skipFields.contains(field)) continue;
-                
-                JsonNode oldVal = oldNode.get(field);
-                JsonNode newVal = newNode.get(field);
-                
-                if (newVal == null || !oldVal.equals(newVal)) {
-                    // 객체인 경우 재귀적으로 비교
-                    if (oldVal != null && newVal != null && 
-                        oldVal.isObject() && newVal.isObject()) {
-                        if (isNodeActuallyModified(oldVal, newVal)) {
-                            return true;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            }
-            
-            // newNode에만 있는 필드 확인
-            fields = newNode.fieldNames();
-            while (fields.hasNext()) {
-                String field = fields.next();
-                if (skipFields.contains(field)) continue;
-                if (!oldNode.has(field)) return true;
+        Set<String> skipFields = Set.of("children", "VARIABLE_ALIAS"); // "VARIABLE_ALIAS" 필드를 무시
+        Iterator<String> fields = oldNode.fieldNames();
+
+        // oldNode와 newNode의 실제 차이점을 체크합니다.
+        while (fields.hasNext()) {
+            String field = fields.next();
+            if (skipFields.contains(field)) continue;
+
+            JsonNode oldVal = oldNode.get(field);
+            JsonNode newVal = newNode.get(field);
+
+            // 값이 다르면 수정된 항목으로 판단
+            if (newVal == null || !oldVal.equals(newVal)) {
+                return true; // 차이가 있으면 수정된 항목으로 판단
             }
         }
-        
+
+        // newNode에만 있는 필드 확인
+        fields = newNode.fieldNames();
+        while (fields.hasNext()) {
+            String field = fields.next();
+            if (skipFields.contains(field)) continue;
+            if (!oldNode.has(field)) return true; // 새로운 필드가 있으면 수정된 항목으로 판단
+        }
+
         return false;
     }
+
 
     private void printDiffSummary(List<String> added, List<String> removed, List<String> modified) {
         System.out.println("📌 비교 결과 요약:");
