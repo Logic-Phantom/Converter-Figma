@@ -449,34 +449,42 @@ public class JsonDiffAnalyzerService {
                     
                     Map<String, String> changes = findActualChanges(oldNode, newNode);
                     if (!changes.isEmpty()) {
-                        appendNodeInfo(content, "* ", oldNode);
+                        String type = getComponentType(oldNode);
+                        String name = oldNode.path("name").asText();
+                        String value = getComponentValue(oldNode);
                         
-                        // 새로운 값이 다른 경우 표시
-                        String oldValue = getComponentValue(oldNode);
-                        String newValue = getComponentValue(newNode);
-                        if (oldValue != null && newValue != null && !oldValue.equals(newValue)) {
-                            content.append("  - 텍스트 변경: ").append(oldValue)
-                                  .append(" → ").append(newValue).append("\n");
+                        content.append("* Type: ").append(type)
+                              .append(" Name: ").append(name);
+                        if (value != null) {
+                            content.append(" Value: ").append(value);
+                        }
+                        content.append("\n");
+                        
+                        // 위치 변경 표시
+                        if (changes.containsKey("position")) {
+                            content.append("  - 위치 변경: ").append(changes.get("position")).append("\n");
                         }
                         
-                        // 변경된 속성들 표시
-                        for (Map.Entry<String, String> change : changes.entrySet()) {
-                            String key = change.getKey();
-                            String value = change.getValue();
-                            
-                            if (key.equals("position")) {
-                                content.append("  - 위치 변경: ").append(value).append("\n");
-                            } else if (key.equals("size")) {
-                                content.append("  - 크기 변경: ").append(value).append("\n");
-                            } else if (key.equals("rotation")) {
-                                content.append("  - 회전 변경: ").append(value).append("°\n");
-                            } else {
-                                content.append("  - ").append(key).append(": ").append(value).append("\n");
-                            }
+                        // 크기 변경 표시
+                        if (changes.containsKey("size")) {
+                            content.append("  - 크기 변경: ").append(changes.get("size")).append("\n");
                         }
                         
-                        // 스타일 변경 정보 추가
-                        appendStyleChanges(content, oldNode, newNode);
+                        // 회전 변경 표시
+                        if (changes.containsKey("rotation")) {
+                            content.append("  - 회전 변경: ").append(changes.get("rotation")).append("°\n");
+                        }
+                        
+                        // 배경색 변경 표시 (중복 제거)
+                        if (changes.containsKey("배경색")) {
+                            content.append("  - 배경색: ").append(changes.get("배경색")).append("\n");
+                        }
+                        
+                        // 배경 변경 표시 (중복 제거)
+                        if (changes.containsKey("배경")) {
+                            content.append("  - 배경: ").append(changes.get("배경")).append("\n");
+                        }
+                        
                         content.append("\n");
                     }
                 }
