@@ -3,7 +3,6 @@ package com.tomatosystem.utill;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.Map;
 
 public class NodeConverterUtils {
 
@@ -21,13 +20,8 @@ public class NodeConverterUtils {
     public static void writeLayoutData(FileWriter writer, double x, double y, double width, double height,
                                        double parentX, double parentY, int depth) throws IOException {
         String indent = "    ".repeat(depth);
-        
-        // 부모 컴포넌트 크기를 벗어나지 않도록 조정
-        width = Math.min(width, parentX > 0 ? parentX : width);
-        height = Math.min(height, parentY > 0 ? parentY : height);
-        
-        writer.write(indent + "<cl:xylayoutdata top=\"" + (int) (y - parentY) + "px\" " +
-                     "left=\"" + (int) (x - parentX) + "px\" " +
+        writer.write(indent + "<cl:xylayoutdata top=\"" + (int) y + "px\" " +
+                     "left=\"" + (int) x + "px\" " +
                      "width=\"" + (int) width + "px\" height=\"" + (int) height + "px\" " +
                      "horizontalAnchor=\"LEFT\" verticalAnchor=\"TOP\"/>\n");
     }
