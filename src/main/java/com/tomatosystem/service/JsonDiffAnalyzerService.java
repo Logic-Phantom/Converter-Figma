@@ -395,50 +395,22 @@ public class JsonDiffAnalyzerService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String today = dateFormat.format(new Date());
             
-            // 디렉토리 생성
             File directory = new File("C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\" + today);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
 
-            // 난수 생성 (100~999)
             Random random = new Random();
             int randomNum = random.nextInt(900) + 100;
-
-            // 파일 생성
             String fileName = String.format("result_%s_%d.txt", today, randomNum);
             File file = new File(directory, fileName);
             StringBuilder content = new StringBuilder();
 
-            // 요약 정보 작성
+            // 요약 정보
             content.append("📌 비교 결과 요약:\n");
             content.append(" - 추가된 항목 수 = ").append(added.size()).append("\n");
             content.append(" - 삭제된 항목 수 = ").append(removed.size()).append("\n");
             content.append(" - 수정된 항목 수 = ").append(getActualModifiedCount(modified, oldMap, newMap)).append("\n\n");
-
-            // 추가된 항목
-            if (!added.isEmpty()) {
-                content.append("📌 추가된 항목:\n");
-                for (String id : added) {
-                    JsonNode node = newMap.get(id);
-                    if (!node.path("type").asText().isEmpty()) {
-                        appendNodeInfo(content, "+ ", node);
-                    }
-                }
-                content.append("\n");
-            }
-
-            // 삭제된 항목
-            if (!removed.isEmpty()) {
-                content.append("📌 삭제된 항목:\n");
-                for (String id : removed) {
-                    JsonNode node = oldMap.get(id);
-                    if (!node.path("type").asText().isEmpty()) {
-                        appendNodeInfo(content, "- ", node);
-                    }
-                }
-                content.append("\n");
-            }
 
             // 수정된 항목
             if (!modified.isEmpty()) {
@@ -446,51 +418,34 @@ public class JsonDiffAnalyzerService {
                 for (String id : modified) {
                     JsonNode oldNode = oldMap.get(id);
                     JsonNode newNode = newMap.get(id);
-                    
                     Map<String, String> changes = findActualChanges(oldNode, newNode);
+                    
                     if (!changes.isEmpty()) {
-                        String type = getComponentType(oldNode);
-                        String name = oldNode.path("name").asText();
-                        String value = getComponentValue(oldNode);
+                        // 기본 정보 출력
+                        content.append("* Type: ").append(getComponentType(oldNode))
+                              .append(" Name: ").append(oldNode.path("name").asText());
                         
-                        content.append("* Type: ").append(type)
-                              .append(" Name: ").append(name);
+                        String value = getComponentValue(oldNode);
                         if (value != null) {
                             content.append(" Value: ").append(value);
                         }
                         content.append("\n");
-                        
-                        // 위치 변경 표시
+
+                        // 변경 사항 출력
                         if (changes.containsKey("position")) {
                             content.append("  - 위치 변경: ").append(changes.get("position")).append("\n");
                         }
-                        
-                        // 크기 변경 표시
-                        if (changes.containsKey("size")) {
-                            content.append("  - 크기 변경: ").append(changes.get("size")).append("\n");
-                        }
-                        
-                        // 회전 변경 표시
-                        if (changes.containsKey("rotation")) {
-                            content.append("  - 회전 변경: ").append(changes.get("rotation")).append("°\n");
-                        }
-                        
-                        // 배경색 변경 표시 (중복 제거)
                         if (changes.containsKey("배경색")) {
                             content.append("  - 배경색: ").append(changes.get("배경색")).append("\n");
                         }
-                        
-                        // 배경 변경 표시 (중복 제거)
                         if (changes.containsKey("배경")) {
                             content.append("  - 배경: ").append(changes.get("배경")).append("\n");
                         }
-                        
                         content.append("\n");
                     }
                 }
             }
 
-            // 파일 쓰기
             java.nio.file.Files.write(file.toPath(), content.toString().getBytes());
             System.out.println("\n결과가 다음 파일에 저장되었습니다: " + file.getAbsolutePath());
 
@@ -538,38 +493,19 @@ public class JsonDiffAnalyzerService {
 
     private Map<String, String> findActualChanges(JsonNode oldNode, JsonNode newNode) {
         Map<String, String> changes = new HashMap<>();
-        Set<String> skipFields = Set.of("children", "id", "key", "VARIABLE_ALIAS");
         
         // 위치 변경 확인
-        double oldX = oldNode.path("x").asDouble();
-        double oldY = oldNode.path("y").asDouble();
-        double newX = newNode.path("x").asDouble();
-        double newY = newNode.path("y").asDouble();
-        
         if (!oldNode.path("x").isMissingNode() && !oldNode.path("y").isMissingNode() &&
-            !newNode.path("x").isMissingNode() && !newNode.path("y").isMissingNode() &&
-            (oldX != newX || oldY != newY)) {
-            changes.put("position", String.format("(%.1f, %.1f) → (%.1f, %.1f)", oldX, oldY, newX, newY));
-        }
-
-        // 크기 변경 확인
-        double oldWidth = oldNode.path("width").asDouble();
-        double oldHeight = oldNode.path("height").asDouble();
-        double newWidth = newNode.path("width").asDouble();
-        double newHeight = newNode.path("height").asDouble();
-        
-        if (!oldNode.path("width").isMissingNode() && !oldNode.path("height").isMissingNode() &&
-            !newNode.path("width").isMissingNode() && !newNode.path("height").isMissingNode() &&
-            (oldWidth != newWidth || oldHeight != newHeight)) {
-            changes.put("size", String.format("%.1f x %.1f → %.1f x %.1f", oldWidth, oldHeight, newWidth, newHeight));
-        }
-
-        // 회전 변경 확인
-        if (!oldNode.path("rotation").isMissingNode() && !newNode.path("rotation").isMissingNode() &&
-            oldNode.path("rotation").asDouble() != newNode.path("rotation").asDouble()) {
-            changes.put("rotation", String.format("%.1f → %.1f", 
-                oldNode.path("rotation").asDouble(),
-                newNode.path("rotation").asDouble()));
+            !newNode.path("x").isMissingNode() && !newNode.path("y").isMissingNode()) {
+            
+            double oldX = oldNode.path("x").asDouble();
+            double oldY = oldNode.path("y").asDouble();
+            double newX = newNode.path("x").asDouble();
+            double newY = newNode.path("y").asDouble();
+            
+            if (oldX != newX || oldY != newY) {
+                changes.put("position", String.format("(%.1f, %.1f) → (%.1f, %.1f)", oldX, oldY, newX, newY));
+            }
         }
 
         // fills 변경 확인
