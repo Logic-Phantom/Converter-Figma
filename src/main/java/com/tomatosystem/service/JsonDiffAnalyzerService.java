@@ -494,14 +494,15 @@ public class JsonDiffAnalyzerService {
     private Map<String, String> findActualChanges(JsonNode oldNode, JsonNode newNode) {
         Map<String, String> changes = new HashMap<>();
         
-        // 위치 변경 확인
-        if (!oldNode.path("x").isMissingNode() && !oldNode.path("y").isMissingNode() &&
-            !newNode.path("x").isMissingNode() && !newNode.path("y").isMissingNode()) {
-            
-            double oldX = oldNode.path("x").asDouble();
-            double oldY = oldNode.path("y").asDouble();
-            double newX = newNode.path("x").asDouble();
-            double newY = newNode.path("y").asDouble();
+        // 위치 변경 확인 (absoluteBoundingBox 사용)
+        JsonNode oldBox = oldNode.path("absoluteBoundingBox");
+        JsonNode newBox = newNode.path("absoluteBoundingBox");
+        
+        if (!oldBox.isMissingNode() && !newBox.isMissingNode()) {
+            double oldX = oldBox.path("x").asDouble();
+            double oldY = oldBox.path("y").asDouble();
+            double newX = newBox.path("x").asDouble();
+            double newY = newBox.path("y").asDouble();
             
             if (oldX != newX || oldY != newY) {
                 changes.put("position", String.format("(%.1f, %.1f) → (%.1f, %.1f)", oldX, oldY, newX, newY));
