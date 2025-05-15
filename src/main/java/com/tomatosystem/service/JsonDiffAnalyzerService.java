@@ -546,16 +546,8 @@ public class JsonDiffAnalyzerService {
                 content.append("📌 추가된 항목:\n");
                 for (String id : added) {
                     JsonNode node = newMap.get(id);
-                    String type = node.path("type").asText();
-                    String name = node.path("name").asText();
-                    if (!type.isEmpty()) {
-                        content.append("+ Type: ").append(type);
-                        if (!name.isEmpty()) {
-                            content.append(" Name: ").append(name);
-                        }
-                        // 좌표 정보 추가
-                        appendPositionInfo(content, node);
-                        content.append("\n");
+                    if (!node.path("type").asText().isEmpty()) {
+                        appendNodeInfo(content, "+ ", node);
                     }
                 }
                 content.append("\n");
@@ -566,16 +558,8 @@ public class JsonDiffAnalyzerService {
                 content.append("📌 삭제된 항목:\n");
                 for (String id : removed) {
                     JsonNode node = oldMap.get(id);
-                    String type = node.path("type").asText();
-                    String name = node.path("name").asText();
-                    if (!type.isEmpty()) {
-                        content.append("- Type: ").append(type);
-                        if (!name.isEmpty()) {
-                            content.append(" Name: ").append(name);
-                        }
-                        // 좌표 정보 추가
-                        appendPositionInfo(content, node);
-                        content.append("\n");
+                    if (!node.path("type").asText().isEmpty()) {
+                        appendNodeInfo(content, "- ", node);
                     }
                 }
                 content.append("\n");
@@ -590,19 +574,21 @@ public class JsonDiffAnalyzerService {
                     
                     Map<String, String> changes = findActualChanges(oldNode, newNode);
                     if (!changes.isEmpty()) {
-                        content.append("* Type: ").append(oldNode.path("type").asText());
-                        String name = oldNode.path("name").asText();
-                        if (!name.isEmpty()) {
-                            content.append(" Name: ").append(name);
+                        appendNodeInfo(content, "* ", oldNode);
+                        
+                        // 새로운 값이 다른 경우 표시
+                        String oldValue = getComponentValue(oldNode);
+                        String newValue = getComponentValue(newNode);
+                        if (oldValue != null && newValue != null && !oldValue.equals(newValue)) {
+                            content.append("  - 텍스트 변경: ").append(oldValue)
+                                  .append(" → ").append(newValue).append("\n");
                         }
-                        content.append("\n");
                         
                         // 변경된 속성들 표시
                         for (Map.Entry<String, String> change : changes.entrySet()) {
                             String key = change.getKey();
                             String value = change.getValue();
                             
-                            // 좌표/크기 관련 변경사항은 특별히 처리
                             if (key.equals("position")) {
                                 content.append("  - 위치 변경: ").append(value).append("\n");
                             } else if (key.equals("size")) {
@@ -628,6 +614,28 @@ public class JsonDiffAnalyzerService {
         } catch (IOException e) {
             System.err.println("파일 저장 중 오류 발생: " + e.getMessage());
         }
+    }
+
+    private void appendNodeInfo(StringBuilder content, String prefix, JsonNode node) {
+        String type = getComponentType(node);
+        String name = node.path("name").asText();
+        
+        content.append(prefix).append("Type: ").append(type);
+        if (!name.isEmpty()) {
+            content.append(" Name: ").append(name);
+        }
+
+        // 컴포넌트 값 추가
+        if ("INSTANCE".equals(node.path("type").asText()) || "COMPONENT".equals(node.path("type").asText())) {
+            String componentValue = getComponentValue(node);
+            if (componentValue != null) {
+                content.append(" Value: ").append(componentValue);
+            }
+        }
+
+        // 좌표 정보 추가
+        appendPositionInfo(content, node);
+        content.append("\n");
     }
 
     private void appendPositionInfo(StringBuilder content, JsonNode node) {
@@ -767,5 +775,83 @@ public class JsonDiffAnalyzerService {
             }
         }
         return count;
+    }
+
+    private String getComponentValue(JsonNode element) {
+        String type = element.path("type").asText();
+        String name = element.path("name").asText().toLowerCase();
+
+        // 1. characters 속성 확인
+        String textValue = element.path("characters").asText(null);
+        if (textValue != null && !textValue.trim().isEmpty()) {
+            return textValue.trim();
+        }
+
+        // 2. componentProperties 확인
+        JsonNode componentProperties = element.path("componentProperties");
+        if (!componentProperties.isMissingNode()) {
+            Iterator<Map.Entry<String, JsonNode>> fields = componentProperties.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> entry = fields.next();
+                JsonNode prop = entry.getValue();
+                if ("TEXT".equalsIgnoreCase(prop.path("type").asText()) && 
+                    !prop.path("value").isMissingNode()) {
+                    textValue = prop.path("value").asText();
+                    if (!textValue.trim().isEmpty()) {
+                        return textValue.trim();
+                    }
+                }
+            }
+        }
+
+        // 3. mainComponent 확인
+        JsonNode mainComponent = element.path("mainComponent");
+        if (!mainComponent.isMissingNode()) {
+            textValue = mainComponent.path("characters").asText(null);
+            if (textValue != null && !textValue.trim().isEmpty()) {
+                return textValue.trim();
+            }
+        }
+
+        // 4. children에서 TEXT 타입 확인
+        JsonNode children = element.path("children");
+        if (!children.isMissingNode() && children.isArray()) {
+            for (JsonNode child : children) {
+                if ("TEXT".equalsIgnoreCase(child.path("type").asText())) {
+                    textValue = child.path("characters").asText(null);
+                    if (textValue != null && !textValue.trim().isEmpty()) {
+                        return textValue.trim();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private String getComponentType(JsonNode node) {
+        String type = node.path("type").asText();
+        String name = node.path("name").asText().toLowerCase();
+
+        if ("INSTANCE".equals(type) || "COMPONENT".equals(type)) {
+            if (name.contains("button") || name.contains("btn")) {
+                return "Button";
+            } else if (name.contains("inputbox")) {
+                return "Input";
+            } else if (name.contains("output") || name.contains("display")) {
+                return "Output";
+            } else if (name.contains("label") || name.contains("text")) {
+                return "Label";
+            } else if (name.contains("checkbox")) {
+                return "Checkbox";
+            } else if (name.contains("radio")) {
+                return "Radio";
+            } else if (name.contains("combobox") || name.contains("combo")) {
+                return "Select";
+            } else if (name.contains("textarea")) {
+                return "TextArea";
+            }
+        }
+        return type;
     }
 }
