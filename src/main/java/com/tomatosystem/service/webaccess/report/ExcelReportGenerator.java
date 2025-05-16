@@ -37,6 +37,25 @@ public class ExcelReportGenerator {
             for (Sheet sheet : new Sheet[]{summarySheet, detailSheet, wcagSheet, componentSheet}) {
                 sheet.setDefaultRowHeight((short) 400); // 기본 행 높이
                 sheet.setDisplayGridlines(false); // 눈금선 숨기기
+                
+                // 모든 행과 열에 대해 테두리 스타일 재적용
+                for (Row row : sheet) {
+                    for (Cell cell : row) {
+                        CellStyle style = cell.getCellStyle();
+                        if (style != null) {
+                            CellStyle newStyle = workbook.createCellStyle();
+                            newStyle.cloneStyleFrom(style);
+                            // 모든 테두리를 명시적으로 설정
+                            newStyle.setBorderTop(style.getBorderTopEnum());
+                            newStyle.setBorderBottom(style.getBorderBottomEnum());
+                            newStyle.setBorderLeft(style.getBorderLeftEnum());
+                            newStyle.setBorderRight(style.getBorderRightEnum());
+                            // 배경색 제거
+                            newStyle.setFillPattern(FillPatternType.NO_FILL);
+                            cell.setCellStyle(newStyle);
+                        }
+                    }
+                }
             }
 
             // 출력 디렉토리 생성
@@ -210,7 +229,7 @@ public class ExcelReportGenerator {
         style.setBorderRight(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
         
-        // 배경색 명시적으로 없음 설정
+        // 배경색 명시적으로 제거
         style.setFillPattern(FillPatternType.NO_FILL);
         
         Font font = workbook.createFont();
@@ -230,7 +249,7 @@ public class ExcelReportGenerator {
         style.setBorderRight(BorderStyle.MEDIUM);
         style.setBorderLeft(BorderStyle.MEDIUM);
         
-        // 배경색 명시적으로 없음 설정
+        // 배경색 명시적으로 제거
         style.setFillPattern(FillPatternType.NO_FILL);
         
         style.setAlignment(HorizontalAlignment.CENTER);
@@ -256,7 +275,7 @@ public class ExcelReportGenerator {
         style.setBorderRight(BorderStyle.MEDIUM);
         style.setBorderLeft(BorderStyle.MEDIUM);
         
-        // 배경색 명시적으로 없음 설정
+        // 배경색 명시적으로 제거
         style.setFillPattern(FillPatternType.NO_FILL);
         
         Font font = workbook.createFont();
