@@ -39,12 +39,18 @@ public class ExcelDiffReportService {
             CellStyle headerStyle = createHeaderStyle(workbook);
             CellStyle dataStyle = createDataStyle(workbook);
             CellStyle summaryStyle = createSummaryStyle(workbook);
+            CellStyle pageHeaderStyle = createPageHeaderStyle(workbook);
 
-            // 요약 시트 생성
-            createSummarySheet(workbook, added.size(), removed.size(), modified.size(), headerStyle, dataStyle);
+            // 전체 요약 시트 생성
+            createSummarySheet(workbook, added.size(), removed.size(), modified.size(), headerStyle, summaryStyle);
 
-            // 상세 시트 생성 (페이지별로)
-            createDetailSheet(workbook, pageName, added, removed, modified, oldMap, newMap, headerStyle, dataStyle);
+            // 페이지별 통계 및 상세 정보 시트 생성
+            Map<String, List<ComponentChange>> pageChanges = groupChangesByPage(added, removed, modified, oldMap, newMap);
+            for (Map.Entry<String, List<ComponentChange>> entry : pageChanges.entrySet()) {
+                String currentPage = entry.getKey();
+                List<ComponentChange> changes = entry.getValue();
+                createPageDetailSheet(workbook, currentPage, changes, headerStyle, dataStyle, pageHeaderStyle);
+            }
 
             // 파일 저장
             try (FileOutputStream fileOut = new FileOutputStream(file)) {
@@ -130,51 +136,100 @@ public class ExcelDiffReportService {
         return style;
     }
 
-    private void createSummarySheet(XSSFWorkbook workbook, int addedCount, int removedCount, 
-                                  int modifiedCount, CellStyle headerStyle, CellStyle dataStyle) {
-        XSSFSheet sheet = workbook.createSheet("변경 요약");
+    private CellStyle createPageHeaderStyle(XSSFWorkbook workbook) {
+        CellStyle style = workbook.createCellStyle();
         
-        // 컬럼 너비 설정
-        sheet.setColumnWidth(0, 15 * COLUMN_WIDTH_UNIT);  // 구분
-        sheet.setColumnWidth(1, 10 * COLUMN_WIDTH_UNIT);  // 개수
-        sheet.setColumnWidth(2, 40 * COLUMN_WIDTH_UNIT);  // 상세 내용
+        // 배경색 설정 (연한 녹색)
+        style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        
+        // 테두리 설정
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        
+        // 폰트 설정
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 12);
+        style.setFont(font);
+        
+        // 정렬 설정
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        
+        return style;
+    }
 
-        // 헤더 행 생성
-        Row headerRow = sheet.createRow(0);
-        for (int i = 0; i < SUMMARY_HEADERS.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(SUMMARY_HEADERS[i]);
-            cell.setCellStyle(headerStyle);
+    private static class ComponentChange {
+        String id;
+        String type;
+        JsonNode oldNode;
+        JsonNode newNode;
+        String changeType;
+        String pageName;
+
+        ComponentChange(String id, String type, JsonNode oldNode, JsonNode newNode, String changeType, String pageName) {
+            this.id = id;
+            this.type = type;
+            this.oldNode = oldNode;
+            this.newNode = newNode;
+            this.changeType = changeType;
+            this.pageName = pageName;
+        }
+    }
+
+    private Map<String, List<ComponentChange>> groupChangesByPage(
+            List<String> added, List<String> removed, List<String> modified,
+            Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap) {
+        
+        Map<String, List<ComponentChange>> pageChanges = new HashMap<>();
+
+        // 추가된 항목 처리
+        for (String id : added) {
+            JsonNode node = newMap.get(id);
+            String pageName = getPageName(node);
+            pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
+                      .add(new ComponentChange(id, "추가", null, node, "추가", pageName));
         }
 
-        // 데이터 행 생성
-        createSummaryRow(sheet, 1, "추가", addedCount, "새로 추가된 컴포넌트", dataStyle);
-        createSummaryRow(sheet, 2, "삭제", removedCount, "삭제된 컴포넌트", dataStyle);
-        createSummaryRow(sheet, 3, "수정", modifiedCount, "속성이 변경된 컴포넌트", dataStyle);
+        // 삭제된 항목 처리
+        for (String id : removed) {
+            JsonNode node = oldMap.get(id);
+            String pageName = getPageName(node);
+            pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
+                      .add(new ComponentChange(id, "삭제", node, null, "삭제", pageName));
+        }
+
+        // 수정된 항목 처리
+        for (String id : modified) {
+            JsonNode oldNode = oldMap.get(id);
+            JsonNode newNode = newMap.get(id);
+            String pageName = getPageName(oldNode);
+            if (!findActualChanges(oldNode, newNode).isEmpty()) {
+                pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
+                          .add(new ComponentChange(id, "수정", oldNode, newNode, "수정", pageName));
+            }
+        }
+
+        return pageChanges;
     }
 
-    private void createSummaryRow(XSSFSheet sheet, int rowNum, String category, 
-                                int count, String description, CellStyle style) {
-        Row row = sheet.createRow(rowNum);
-        
-        Cell categoryCell = row.createCell(0);
-        categoryCell.setCellValue(category);
-        categoryCell.setCellStyle(style);
-
-        Cell countCell = row.createCell(1);
-        countCell.setCellValue(count);
-        countCell.setCellStyle(style);
-
-        Cell descCell = row.createCell(2);
-        descCell.setCellValue(description);
-        descCell.setCellStyle(style);
+    private String getPageName(JsonNode node) {
+        // 노드의 상위 계층을 탐색하여 페이지 이름을 찾음
+        JsonNode current = node;
+        while (current != null && !current.path("type").asText().equals("PAGE")) {
+            current = current.path("parent");
+        }
+        return current != null ? current.path("name").asText("기본 페이지") : "기본 페이지";
     }
 
-    private void createDetailSheet(XSSFWorkbook workbook, String pageName, 
-                                 List<String> added, List<String> removed, List<String> modified,
-                                 Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap,
-                                 CellStyle headerStyle, CellStyle dataStyle) {
-        XSSFSheet sheet = workbook.createSheet(pageName != null ? pageName : "상세 변경 내역");
+    private void createPageDetailSheet(XSSFWorkbook workbook, String pageName, 
+                                     List<ComponentChange> changes,
+                                     CellStyle headerStyle, CellStyle dataStyle,
+                                     CellStyle pageHeaderStyle) {
+        XSSFSheet sheet = workbook.createSheet(pageName);
         
         // 컬럼 너비 설정
         sheet.setColumnWidth(0, 15 * COLUMN_WIDTH_UNIT);  // 컴포넌트 타입
@@ -184,42 +239,67 @@ public class ExcelDiffReportService {
         sheet.setColumnWidth(4, 25 * COLUMN_WIDTH_UNIT);  // 이전 값
         sheet.setColumnWidth(5, 25 * COLUMN_WIDTH_UNIT);  // 변경 값
 
+        int currentRow = 0;
+
+        // 페이지 통계 추가
+        currentRow = addPageStatistics(sheet, changes, currentRow, pageHeaderStyle);
+        
+        // 빈 행 추가
+        currentRow += 2;
+
         // 헤더 행 생성
-        Row headerRow = sheet.createRow(0);
+        Row headerRow = sheet.createRow(currentRow++);
         for (int i = 0; i < DETAIL_HEADERS.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(DETAIL_HEADERS[i]);
             cell.setCellStyle(headerStyle);
         }
 
-        int rowNum = 1;
-
-        // 추가된 항목
-        for (String id : added) {
-            JsonNode node = newMap.get(id);
-            rowNum = addDetailRow(sheet, rowNum, node, null, "추가", dataStyle);
-        }
-
-        // 삭제된 항목
-        for (String id : removed) {
-            JsonNode node = oldMap.get(id);
-            rowNum = addDetailRow(sheet, rowNum, node, null, "삭제", dataStyle);
-        }
-
-        // 수정된 항목
-        for (String id : modified) {
-            JsonNode oldNode = oldMap.get(id);
-            JsonNode newNode = newMap.get(id);
-            Map<String, String> changes = findActualChanges(oldNode, newNode);
-            if (!changes.isEmpty()) {
-                rowNum = addDetailRow(sheet, rowNum, oldNode, newNode, "수정", dataStyle);
-            }
+        // 상세 정보 추가
+        for (ComponentChange change : changes) {
+            currentRow = addDetailRow(sheet, currentRow, change, dataStyle);
+            // 각 항목 사이에 빈 행 추가
+            currentRow++;
         }
     }
 
-    private int addDetailRow(XSSFSheet sheet, int rowNum, JsonNode node, JsonNode newNode, 
-                           String changeType, CellStyle style) {
+    private int addPageStatistics(XSSFSheet sheet, List<ComponentChange> changes, int startRow, CellStyle headerStyle) {
+        int currentRow = startRow;
+        
+        // 통계 헤더
+        Row headerRow = sheet.createRow(currentRow++);
+        Cell headerCell = headerRow.createCell(0);
+        headerCell.setCellValue("페이지 변경 통계");
+        headerCell.setCellStyle(headerStyle);
+        sheet.addMergedRegion(new CellRangeAddress(startRow, startRow, 0, 5));
+
+        // 각 유형별 개수 계산
+        long addedCount = changes.stream().filter(c -> "추가".equals(c.changeType)).count();
+        long removedCount = changes.stream().filter(c -> "삭제".equals(c.changeType)).count();
+        long modifiedCount = changes.stream().filter(c -> "수정".equals(c.changeType)).count();
+
+        // 통계 정보 추가
+        String[] stats = {"추가된 항목", "삭제된 항목", "수정된 항목"};
+        long[] counts = {addedCount, removedCount, modifiedCount};
+        
+        for (int i = 0; i < stats.length; i++) {
+            Row row = sheet.createRow(currentRow++);
+            Cell typeCell = row.createCell(0);
+            Cell countCell = row.createCell(1);
+            
+            typeCell.setCellValue(stats[i]);
+            countCell.setCellValue(counts[i]);
+            
+            typeCell.setCellStyle(headerStyle);
+            countCell.setCellStyle(headerStyle);
+        }
+
+        return currentRow;
+    }
+
+    private int addDetailRow(XSSFSheet sheet, int rowNum, ComponentChange change, CellStyle style) {
         Row row = sheet.createRow(rowNum);
+        JsonNode node = change.oldNode != null ? change.oldNode : change.newNode;
         
         // 컴포넌트 타입
         Cell typeCell = row.createCell(0);
@@ -239,12 +319,12 @@ public class ExcelDiffReportService {
 
         // 변경 유형
         Cell changeTypeCell = row.createCell(3);
-        changeTypeCell.setCellValue(changeType);
+        changeTypeCell.setCellValue(change.changeType);
         changeTypeCell.setCellStyle(style);
 
         // 변경 전/후 값
-        if ("수정".equals(changeType) && newNode != null) {
-            Map<String, String> changes = findActualChanges(node, newNode);
+        if ("수정".equals(change.changeType) && change.newNode != null) {
+            Map<String, String> changes = findActualChanges(change.oldNode, change.newNode);
             
             Cell oldValueCell = row.createCell(4);
             Cell newValueCell = row.createCell(5);
@@ -252,11 +332,11 @@ public class ExcelDiffReportService {
             StringBuilder oldValue = new StringBuilder();
             StringBuilder newValue = new StringBuilder();
             
-            for (Map.Entry<String, String> change : changes.entrySet()) {
-                String[] parts = change.getValue().split(" → ");
+            for (Map.Entry<String, String> entry : changes.entrySet()) {
+                String[] parts = entry.getValue().split(" → ");
                 if (parts.length == 2) {
-                    oldValue.append(change.getKey()).append(": ").append(parts[0]).append("\n");
-                    newValue.append(change.getKey()).append(": ").append(parts[1]).append("\n");
+                    oldValue.append(entry.getKey()).append(": ").append(parts[0]).append("\n");
+                    newValue.append(entry.getKey()).append(": ").append(parts[1]).append("\n");
                 }
             }
             
