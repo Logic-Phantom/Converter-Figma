@@ -3,6 +3,7 @@ package com.tomatosystem.service.webaccess.report;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -38,8 +39,14 @@ public class ExcelReportGenerator {
                 sheet.setDisplayGridlines(false); // 눈금선 숨기기
             }
 
+            // 출력 디렉토리 생성
+            File outputDir = new File(outputPath);
+            if (!outputDir.exists()) {
+                outputDir.mkdirs();
+            }
+
             // Excel 파일 저장
-            String excelFile = outputPath + "/accessibility-report.xlsx";
+            String excelFile = outputPath + File.separator + "accessibility-report.xlsx";
             try (FileOutputStream fileOut = new FileOutputStream(excelFile)) {
                 workbook.write(fileOut);
             }
@@ -231,8 +238,23 @@ public class ExcelReportGenerator {
     }
 
     private void createDetailSheet(Sheet sheet, List<Map<String, Object>> issues, CellStyle titleStyle, CellStyle headerStyle, CellStyle defaultStyle) {
+        // 제목 행
+        Row titleRow = sheet.createRow(0);
+        Cell titleCell = titleRow.createCell(0);
+        titleCell.setCellValue("웹 접근성 상세 분석 결과");
+        titleCell.setCellStyle(titleStyle);
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
+        titleRow.setHeight((short) 900);
+
+        // 분석 시간
+        Row infoRow = sheet.createRow(1);
+        Cell infoCell = infoRow.createCell(0);
+        infoCell.setCellValue("분석 시간: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        infoCell.setCellStyle(defaultStyle);
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 5));
+        
         // 상세 분석 헤더
-        Row headerRow = sheet.createRow(0);
+        Row headerRow = sheet.createRow(3);
         String[] headers = {"유형", "경로", "요소", "현재 값", "권장사항", "WCAG 기준"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
@@ -241,135 +263,212 @@ public class ExcelReportGenerator {
         }
         
         // 상세 데이터 추가
-        int rowNum = 1;
-        for (Map<String, Object> issue : issues) {
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(getKoreanTypeName((String) issue.get("type")));
-            row.createCell(1).setCellValue((String) issue.get("path"));
-            row.createCell(2).setCellValue((String) issue.get("elementName"));
-            
-            // 현재 값 설정 (유형별로 다르게 처리)
-            String currentValue = "";
-            if ("ColorContrast".equals(issue.get("type"))) {
-                currentValue = "대비율: " + issue.get("contrastRatio");
-            } else if ("FontSize".equals(issue.get("type"))) {
-                currentValue = "크기: " + issue.get("value");
+        int rowNum = 4;
+        if (!issues.isEmpty()) {
+            for (Map<String, Object> issue : issues) {
+                Row row = sheet.createRow(rowNum++);
+                
+                // 유형
+                Cell typeCell = row.createCell(0);
+                typeCell.setCellValue(getKoreanTypeName((String) issue.get("type")));
+                typeCell.setCellStyle(defaultStyle);
+                
+                // 경로
+                Cell pathCell = row.createCell(1);
+                pathCell.setCellValue((String) issue.get("path"));
+                pathCell.setCellStyle(defaultStyle);
+                
+                // 요소
+                Cell elementCell = row.createCell(2);
+                elementCell.setCellValue((String) issue.get("elementName"));
+                elementCell.setCellStyle(defaultStyle);
+                
+                // 현재 값
+                Cell valueCell = row.createCell(3);
+                String currentValue = "";
+                if ("ColorContrast".equals(issue.get("type"))) {
+                    currentValue = "대비율: " + issue.get("contrastRatio");
+                } else if ("FontSize".equals(issue.get("type"))) {
+                    currentValue = "크기: " + issue.get("value");
+                }
+                valueCell.setCellValue(currentValue);
+                valueCell.setCellStyle(defaultStyle);
+                
+                // 권장사항
+                Cell recCell = row.createCell(4);
+                recCell.setCellValue((String) issue.get("recommendation"));
+                recCell.setCellStyle(defaultStyle);
+                
+                // WCAG 기준
+                Cell wcagCell = row.createCell(5);
+                wcagCell.setCellValue((String) issue.get("wcagCriteria"));
+                wcagCell.setCellStyle(defaultStyle);
             }
-            row.createCell(3).setCellValue(currentValue);
-            
-            row.createCell(4).setCellValue((String) issue.get("recommendation"));
-            row.createCell(5).setCellValue((String) issue.get("wcagCriteria"));
+        } else {
+            Row row = sheet.createRow(rowNum);
+            Cell noDataCell = row.createCell(0);
+            noDataCell.setCellValue("발견된 접근성 문제가 없습니다.");
+            noDataCell.setCellStyle(defaultStyle);
+            sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 5));
         }
         
-        // 열 너비 자동 조정
-        for (int i = 0; i < headers.length; i++) {
-            sheet.autoSizeColumn(i);
-        }
+        // 열 너비 설정
+        sheet.setColumnWidth(0, 20 * 256); // 유형
+        sheet.setColumnWidth(1, 40 * 256); // 경로
+        sheet.setColumnWidth(2, 30 * 256); // 요소
+        sheet.setColumnWidth(3, 20 * 256); // 현재 값
+        sheet.setColumnWidth(4, 50 * 256); // 권장사항
+        sheet.setColumnWidth(5, 30 * 256); // WCAG 기준
     }
 
     private void createWCAGAnalysisSheet(Sheet sheet, List<Map<String, Object>> issues, CellStyle titleStyle, CellStyle headerStyle, CellStyle defaultStyle) {
-        CellStyle headerStyle = createHeaderStyle(sheet.getWorkbook());
+        // 제목 행
+        Row titleRow = sheet.createRow(0);
+        Cell titleCell = titleRow.createCell(0);
+        titleCell.setCellValue("WCAG 기준별 분석");
+        titleCell.setCellStyle(titleStyle);
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2));
+        titleRow.setHeight((short) 900);
         
         // WCAG 기준별 분석 헤더
-        Row headerRow = sheet.createRow(0);
-        createHeaderCell(headerRow, 0, "WCAG 기준", headerStyle);
-        createHeaderCell(headerRow, 1, "위반 수", headerStyle);
-        createHeaderCell(headerRow, 2, "주요 문제점", headerStyle);
+        Row headerRow = sheet.createRow(2);
+        String[] headers = {"WCAG 기준", "위반 수", "주요 문제점"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
         
         // WCAG 기준별 이슈 집계
         Map<String, List<Map<String, Object>>> wcagIssues = new HashMap<>();
-        for (Map<String, Object> issue : issues) {
-            String wcagCriteria = (String) issue.get("wcagCriteria");
-            wcagIssues.computeIfAbsent(wcagCriteria, k -> new ArrayList<>()).add(issue);
+        if (!issues.isEmpty()) {
+            for (Map<String, Object> issue : issues) {
+                String wcagCriteria = (String) issue.get("wcagCriteria");
+                wcagIssues.computeIfAbsent(wcagCriteria, k -> new ArrayList<>()).add(issue);
+            }
         }
         
         // 데이터 행 추가
-        int rowNum = 1;
-        for (Map.Entry<String, List<Map<String, Object>>> entry : wcagIssues.entrySet()) {
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(entry.getKey());
-            row.createCell(1).setCellValue(entry.getValue().size());
-            
-            // 주요 문제점 요약
-            StringBuilder issues_summary = new StringBuilder();
-            entry.getValue().stream()
-                .map(issue -> (String) issue.get("recommendation"))
-                .distinct()
-                .limit(3)
-                .forEach(rec -> issues_summary.append("- ").append(rec).append("\n"));
-            
-            row.createCell(2).setCellValue(issues_summary.toString());
+        int rowNum = 3;
+        if (!wcagIssues.isEmpty()) {
+            for (Map.Entry<String, List<Map<String, Object>>> entry : wcagIssues.entrySet()) {
+                Row row = sheet.createRow(rowNum++);
+                
+                // WCAG 기준
+                Cell criteriaCell = row.createCell(0);
+                criteriaCell.setCellValue(entry.getKey());
+                criteriaCell.setCellStyle(defaultStyle);
+                
+                // 위반 수
+                Cell countCell = row.createCell(1);
+                countCell.setCellValue(entry.getValue().size());
+                countCell.setCellStyle(defaultStyle);
+                
+                // 주요 문제점
+                Cell issuesCell = row.createCell(2);
+                StringBuilder issues_summary = new StringBuilder();
+                entry.getValue().stream()
+                    .map(issue -> (String) issue.get("recommendation"))
+                    .distinct()
+                    .limit(3)
+                    .forEach(rec -> issues_summary.append("- ").append(rec).append("\n"));
+                issuesCell.setCellValue(issues_summary.toString());
+                issuesCell.setCellStyle(defaultStyle);
+            }
+        } else {
+            Row row = sheet.createRow(rowNum);
+            Cell noDataCell = row.createCell(0);
+            noDataCell.setCellValue("WCAG 기준 위반 사항이 없습니다.");
+            noDataCell.setCellStyle(defaultStyle);
+            sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 2));
         }
         
-        // 열 너비 자동 조정
-        for (int i = 0; i < 3; i++) {
-            sheet.autoSizeColumn(i);
-        }
+        // 열 너비 설정
+        sheet.setColumnWidth(0, 40 * 256); // WCAG 기준
+        sheet.setColumnWidth(1, 15 * 256); // 위반 수
+        sheet.setColumnWidth(2, 60 * 256); // 주요 문제점
     }
 
     private void createComponentAnalysisSheet(Sheet sheet, List<Map<String, Object>> issues, CellStyle titleStyle, CellStyle headerStyle, CellStyle defaultStyle) {
-        CellStyle headerStyle = createHeaderStyle(sheet.getWorkbook());
+        // 제목 행
+        Row titleRow = sheet.createRow(0);
+        Cell titleCell = titleRow.createCell(0);
+        titleCell.setCellValue("컴포넌트별 접근성 분석");
+        titleCell.setCellStyle(titleStyle);
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
+        titleRow.setHeight((short) 900);
         
         // 컴포넌트별 분석 헤더
-        Row headerRow = sheet.createRow(0);
-        createHeaderCell(headerRow, 0, "컴포넌트", headerStyle);
-        createHeaderCell(headerRow, 1, "총 문제 수", headerStyle);
-        createHeaderCell(headerRow, 2, "대비율 문제", headerStyle);
-        createHeaderCell(headerRow, 3, "키보드 접근성", headerStyle);
-        createHeaderCell(headerRow, 4, "대체 텍스트", headerStyle);
-        createHeaderCell(headerRow, 5, "헤딩 구조", headerStyle);
+        Row headerRow = sheet.createRow(2);
+        String[] headers = {"컴포넌트", "총 문제 수", "대비율 문제", "키보드 접근성", "대체 텍스트", "헤딩 구조"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
         
         // 컴포넌트별 이슈 집계
         Map<String, Map<String, Integer>> componentIssues = new HashMap<>();
-        for (Map<String, Object> issue : issues) {
-            String path = (String) issue.get("path");
-            String component = path.split(" > ")[0];
-            String type = (String) issue.get("type");
-            
-            componentIssues.computeIfAbsent(component, k -> new HashMap<>())
-                .merge(type, 1, Integer::sum);
+        if (!issues.isEmpty()) {
+            for (Map<String, Object> issue : issues) {
+                String path = (String) issue.get("path");
+                String component = path.split(" > ")[0];
+                String type = (String) issue.get("type");
+                
+                componentIssues.computeIfAbsent(component, k -> new HashMap<>())
+                    .merge(type, 1, Integer::sum);
+            }
         }
         
         // 데이터 행 추가
-        int rowNum = 1;
-        for (Map.Entry<String, Map<String, Integer>> entry : componentIssues.entrySet()) {
-            Row row = sheet.createRow(rowNum++);
-            Map<String, Integer> typeCounts = entry.getValue();
-            
-            row.createCell(0).setCellValue(entry.getKey());
-            row.createCell(1).setCellValue(typeCounts.values().stream().mapToInt(Integer::intValue).sum());
-            row.createCell(2).setCellValue(typeCounts.getOrDefault("ColorContrast", 0));
-            row.createCell(3).setCellValue(typeCounts.getOrDefault("KeyboardAccessibility", 0));
-            row.createCell(4).setCellValue(typeCounts.getOrDefault("AlternativeText", 0));
-            row.createCell(5).setCellValue(typeCounts.getOrDefault("HeadingStructure", 0));
+        int rowNum = 3;
+        if (!componentIssues.isEmpty()) {
+            for (Map.Entry<String, Map<String, Integer>> entry : componentIssues.entrySet()) {
+                Row row = sheet.createRow(rowNum++);
+                Map<String, Integer> typeCounts = entry.getValue();
+                
+                // 컴포넌트
+                Cell componentCell = row.createCell(0);
+                componentCell.setCellValue(entry.getKey());
+                componentCell.setCellStyle(defaultStyle);
+                
+                // 총 문제 수
+                Cell totalCell = row.createCell(1);
+                totalCell.setCellValue(typeCounts.values().stream().mapToInt(Integer::intValue).sum());
+                totalCell.setCellStyle(defaultStyle);
+                
+                // 유형별 문제 수
+                Cell contrastCell = row.createCell(2);
+                contrastCell.setCellValue(typeCounts.getOrDefault("ColorContrast", 0));
+                contrastCell.setCellStyle(defaultStyle);
+                
+                Cell keyboardCell = row.createCell(3);
+                keyboardCell.setCellValue(typeCounts.getOrDefault("KeyboardAccessibility", 0));
+                keyboardCell.setCellStyle(defaultStyle);
+                
+                Cell altTextCell = row.createCell(4);
+                altTextCell.setCellValue(typeCounts.getOrDefault("AlternativeText", 0));
+                altTextCell.setCellStyle(defaultStyle);
+                
+                Cell headingCell = row.createCell(5);
+                headingCell.setCellValue(typeCounts.getOrDefault("HeadingStructure", 0));
+                headingCell.setCellStyle(defaultStyle);
+            }
+        } else {
+            Row row = sheet.createRow(rowNum);
+            Cell noDataCell = row.createCell(0);
+            noDataCell.setCellValue("컴포넌트별 접근성 문제가 없습니다.");
+            noDataCell.setCellStyle(defaultStyle);
+            sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 5));
         }
         
-        // 열 너비 자동 조정
-        for (int i = 0; i < 6; i++) {
-            sheet.autoSizeColumn(i);
-        }
-    }
-
-    private CellStyle createHeaderStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        
-        Font font = workbook.createFont();
-        font.setBold(true);
-        style.setFont(font);
-        
-        return style;
-    }
-
-    private void createHeaderCell(Row row, int column, String value, CellStyle style) {
-        Cell cell = row.createCell(column);
-        cell.setCellValue(value);
-        cell.setCellStyle(style);
+        // 열 너비 설정
+        sheet.setColumnWidth(0, 40 * 256); // 컴포넌트
+        sheet.setColumnWidth(1, 15 * 256); // 총 문제 수
+        sheet.setColumnWidth(2, 15 * 256); // 대비율 문제
+        sheet.setColumnWidth(3, 15 * 256); // 키보드 접근성
+        sheet.setColumnWidth(4, 15 * 256); // 대체 텍스트
+        sheet.setColumnWidth(5, 15 * 256); // 헤딩 구조
     }
 
     private String getKoreanTypeName(String type) {
