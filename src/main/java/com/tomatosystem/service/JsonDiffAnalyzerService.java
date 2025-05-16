@@ -120,8 +120,26 @@ public class JsonDiffAnalyzerService {
         saveDiffResultToFile(added, removed, modified, oldMap, newMap, randomNum);
         
         // Excel 파일로 저장
-        String pageName = oldJson.path("name").asText("Unknown Page");
+        String pageName = extractPageName(oldJson);
         excelDiffReportService.generateExcelReport(added, removed, modified, oldMap, newMap, pageName, randomNum);
+    }
+
+    private String extractPageName(JsonNode json) {
+        // document 노드 찾기
+        JsonNode document = json.path("document");
+        if (!document.isMissingNode()) {
+            // children 배열에서 첫 번째 페이지 찾기
+            JsonNode children = document.path("children");
+            if (children.isArray() && children.size() > 0) {
+                JsonNode firstPage = children.get(0);
+                if (firstPage.has("name")) {
+                    return firstPage.get("name").asText("상세 변경 내역");
+                }
+            }
+        }
+        
+        // 페이지 이름을 찾지 못한 경우 기본값 반환
+        return "상세 변경 내역";
     }
 
     private void flattenJsonById(JsonNode node, Map<String, JsonNode> result, Set<String> visitedIds) {
