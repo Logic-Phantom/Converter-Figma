@@ -22,6 +22,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class JsonDiffAnalyzerService {
 
+    private final FigmaApiService figmaApiService;
+    private final ExcelDiffReportService excelDiffReportService;
+
+    public JsonDiffAnalyzerService(FigmaApiService figmaApiService, ExcelDiffReportService excelDiffReportService) {
+        this.figmaApiService = figmaApiService;
+        this.excelDiffReportService = excelDiffReportService;
+    }
 
 	//2025-05-12(최신버전과 직전버전 차이)
     public void analyzeJsonData(Map<String, Object> rawData, Map<String, Object> uploadedJsonData) throws IOException {
@@ -33,11 +40,6 @@ public class JsonDiffAnalyzerService {
     }
 
     //json 데이터 비교 로직 추가(메타 데이터 lastModified 기준으로) 개발필요
-    private FigmaApiService figmaApiService;
-
-    public JsonDiffAnalyzerService(FigmaApiService figmaApiService) {
-        this.figmaApiService = figmaApiService;
-    }
 
     public void analyzeJsonDataDiff(Map<String, Object> rawData, Map<String, Object> uploadedJsonData, String fileId) throws IOException, ParseException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -104,14 +106,22 @@ public class JsonDiffAnalyzerService {
             }
         }
 
+        // 난수 한 번만 생성 (100-999)
+        Random random = new Random();
+        int randomNum = random.nextInt(900) + 100;
+
         // 콘솔에 출력
         printDiffSummary(added, removed, modified);
         printDetailedDiff("추가된 항목", added, newMap);
         printDetailedDiff("삭제된 항목", removed, oldMap);
         printModifiedDiff(modified, oldMap, newMap);
 
-        // 파일로 저장
-        saveDiffResultToFile(added, removed, modified, oldMap, newMap);
+        // 텍스트 파일로 저장
+        saveDiffResultToFile(added, removed, modified, oldMap, newMap, randomNum);
+        
+        // Excel 파일로 저장
+        String pageName = oldJson.path("name").asText("Unknown Page");
+        excelDiffReportService.generateExcelReport(added, removed, modified, oldMap, newMap, pageName, randomNum);
     }
 
     private void flattenJsonById(JsonNode node, Map<String, JsonNode> result, Set<String> visitedIds) {
@@ -390,18 +400,16 @@ public class JsonDiffAnalyzerService {
     }
 
     private void saveDiffResultToFile(List<String> added, List<String> removed, List<String> modified,
-                                    Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap) {
+                                    Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap, int randomNum) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String today = dateFormat.format(new Date());
             
-            File directory = new File("C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\" + today);
+            File directory = new File("C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\txt\\" + today);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
 
-            Random random = new Random();
-            int randomNum = random.nextInt(900) + 100;
             String fileName = String.format("result_%s_%d.txt", today, randomNum);
             File file = new File(directory, fileName);
             StringBuilder content = new StringBuilder();
