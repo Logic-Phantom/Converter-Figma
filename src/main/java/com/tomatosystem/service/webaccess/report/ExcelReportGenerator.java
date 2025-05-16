@@ -195,6 +195,12 @@ public class ExcelReportGenerator {
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         style.setWrapText(true);
         
+        // 테두리 추가
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        
         Font font = workbook.createFont();
         font.setFontName("맑은 고딕");
         font.setFontHeightInPoints((short) 10);
@@ -205,12 +211,11 @@ public class ExcelReportGenerator {
 
     private CellStyle createHeaderStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
+        // 배경색 제거하고 테두리만 진하게
+        style.setBorderBottom(BorderStyle.MEDIUM);
+        style.setBorderTop(BorderStyle.MEDIUM);
+        style.setBorderRight(BorderStyle.MEDIUM);
+        style.setBorderLeft(BorderStyle.MEDIUM);
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         
@@ -227,6 +232,12 @@ public class ExcelReportGenerator {
         CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
+        
+        // 테두리 추가
+        style.setBorderBottom(BorderStyle.MEDIUM);
+        style.setBorderTop(BorderStyle.MEDIUM);
+        style.setBorderRight(BorderStyle.MEDIUM);
+        style.setBorderLeft(BorderStyle.MEDIUM);
         
         Font font = workbook.createFont();
         font.setFontName("맑은 고딕");
