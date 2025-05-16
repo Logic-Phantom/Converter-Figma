@@ -42,7 +42,7 @@ public class ExcelDiffReportService {
             CellStyle pageHeaderStyle = createPageHeaderStyle(workbook);
 
             // 전체 요약 시트 생성
-            createSummarySheet(workbook, added.size(), removed.size(), modified.size(), headerStyle, summaryStyle);
+            createSummarySheet(workbook, added.size(), removed.size(), modified.size(), headerStyle, dataStyle);
 
             // 페이지별 통계 및 상세 정보 시트 생성
             Map<String, List<ComponentChange>> pageChanges = groupChangesByPage(added, removed, modified, oldMap, newMap);
@@ -160,6 +160,46 @@ public class ExcelDiffReportService {
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         
         return style;
+    }
+
+    private void createSummarySheet(XSSFWorkbook workbook, int addedCount, int removedCount, 
+                                  int modifiedCount, CellStyle headerStyle, CellStyle dataStyle) {
+        XSSFSheet sheet = workbook.createSheet("전체 변경 요약");
+        
+        // 컬럼 너비 설정
+        sheet.setColumnWidth(0, 15 * COLUMN_WIDTH_UNIT);  // 구분
+        sheet.setColumnWidth(1, 10 * COLUMN_WIDTH_UNIT);  // 개수
+        sheet.setColumnWidth(2, 40 * COLUMN_WIDTH_UNIT);  // 상세 내용
+
+        // 헤더 행 생성
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < SUMMARY_HEADERS.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(SUMMARY_HEADERS[i]);
+            cell.setCellStyle(headerStyle);
+        }
+
+        // 데이터 행 생성
+        createSummaryRow(sheet, 1, "추가", addedCount, "새로 추가된 컴포넌트", dataStyle);
+        createSummaryRow(sheet, 2, "삭제", removedCount, "삭제된 컴포넌트", dataStyle);
+        createSummaryRow(sheet, 3, "수정", modifiedCount, "속성이 변경된 컴포넌트", dataStyle);
+    }
+
+    private void createSummaryRow(XSSFSheet sheet, int rowNum, String category, 
+                                int count, String description, CellStyle style) {
+        Row row = sheet.createRow(rowNum);
+        
+        Cell categoryCell = row.createCell(0);
+        categoryCell.setCellValue(category);
+        categoryCell.setCellStyle(style);
+
+        Cell countCell = row.createCell(1);
+        countCell.setCellValue(count);
+        countCell.setCellStyle(style);
+
+        Cell descCell = row.createCell(2);
+        descCell.setCellValue(description);
+        descCell.setCellStyle(style);
     }
 
     private static class ComponentChange {
