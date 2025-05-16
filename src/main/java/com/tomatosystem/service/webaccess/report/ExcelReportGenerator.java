@@ -3,6 +3,7 @@ package com.tomatosystem.service.webaccess.report;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
@@ -364,10 +365,20 @@ public class ExcelReportGenerator {
             }
         } else {
             Row row = sheet.createRow(rowNum);
-            Cell noDataCell = row.createCell(0);
-            noDataCell.setCellValue("발견된 접근성 문제가 없습니다.");
-            noDataCell.setCellStyle(defaultStyle);
+            // 모든 셀 생성 및 스타일 적용
+            for (int i = 0; i < 6; i++) {
+                Cell cell = row.createCell(i);
+                cell.setCellStyle(defaultStyle);
+                if (i == 0) {
+                    cell.setCellValue("발견된 접근성 문제가 없습니다.");
+                }
+            }
             sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 5));
+            // 병합된 셀의 테두리 설정
+            RegionUtil.setBorderTop(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
+            RegionUtil.setBorderBottom(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
+            RegionUtil.setBorderLeft(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
+            RegionUtil.setBorderRight(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
         }
         
         // 열 너비 설정
@@ -439,10 +450,20 @@ public class ExcelReportGenerator {
             }
         } else {
             Row row = sheet.createRow(rowNum);
-            Cell noDataCell = row.createCell(0);
-            noDataCell.setCellValue("WCAG 기준 위반 사항이 없습니다.");
-            noDataCell.setCellStyle(defaultStyle);
+            // 모든 셀 생성 및 스타일 적용
+            for (int i = 0; i < 3; i++) {
+                Cell cell = row.createCell(i);
+                cell.setCellStyle(defaultStyle);
+                if (i == 0) {
+                    cell.setCellValue("WCAG 기준 위반 사항이 없습니다.");
+                }
+            }
             sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 2));
+            // 병합된 셀의 테두리 설정
+            RegionUtil.setBorderTop(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 2), sheet);
+            RegionUtil.setBorderBottom(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 2), sheet);
+            RegionUtil.setBorderLeft(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 2), sheet);
+            RegionUtil.setBorderRight(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 2), sheet);
         }
         
         // 열 너비 설정
@@ -522,10 +543,20 @@ public class ExcelReportGenerator {
             }
         } else {
             Row row = sheet.createRow(rowNum);
-            Cell noDataCell = row.createCell(0);
-            noDataCell.setCellValue("컴포넌트별 접근성 문제가 없습니다.");
-            noDataCell.setCellStyle(defaultStyle);
+            // 모든 셀 생성 및 스타일 적용
+            for (int i = 0; i < 6; i++) {
+                Cell cell = row.createCell(i);
+                cell.setCellStyle(defaultStyle);
+                if (i == 0) {
+                    cell.setCellValue("컴포넌트별 접근성 문제가 없습니다.");
+                }
+            }
             sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 5));
+            // 병합된 셀의 테두리 설정
+            RegionUtil.setBorderTop(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
+            RegionUtil.setBorderBottom(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
+            RegionUtil.setBorderLeft(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
+            RegionUtil.setBorderRight(BorderStyle.THIN, new CellRangeAddress(rowNum, rowNum, 0, 5), sheet);
         }
         
         // 열 너비 설정
