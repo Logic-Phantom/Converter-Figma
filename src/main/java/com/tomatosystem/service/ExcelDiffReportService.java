@@ -237,44 +237,88 @@ public class ExcelDiffReportService {
             Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap) {
         
         Map<String, List<ComponentChange>> pageChanges = new HashMap<>();
+        int totalItems = added.size() + removed.size() + modified.size();
+        int processedItems = 0;
 
-        // 추가된 항목 처리
-        for (String id : added) {
-            JsonNode node = newMap.get(id);
-            String pageName = getPageName(node);
-            pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
-                      .add(new ComponentChange(id, "추가", null, node, "추가", pageName));
-        }
-
-        // 삭제된 항목 처리
-        for (String id : removed) {
-            JsonNode node = oldMap.get(id);
-            String pageName = getPageName(node);
-            pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
-                      .add(new ComponentChange(id, "삭제", node, null, "삭제", pageName));
-        }
-
-        // 수정된 항목 처리
-        for (String id : modified) {
-            JsonNode oldNode = oldMap.get(id);
-            JsonNode newNode = newMap.get(id);
-            String pageName = getPageName(oldNode);
-            if (!findActualChanges(oldNode, newNode).isEmpty()) {
+        try {
+            // 추가된 항목 처리
+            System.out.println("추가된 항목 처리 중... (" + added.size() + "개)");
+            for (String id : added) {
+                JsonNode node = newMap.get(id);
+                String pageName = getPageName(node);
                 pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
-                          .add(new ComponentChange(id, "수정", oldNode, newNode, "수정", pageName));
+                          .add(new ComponentChange(id, "추가", null, node, "추가", pageName));
+                processedItems++;
+                if (processedItems % 100 == 0) {
+                    System.out.println("처리 진행률: " + (processedItems * 100 / totalItems) + "%");
+                }
             }
-        }
 
-        return pageChanges;
+            // 삭제된 항목 처리
+            System.out.println("삭제된 항목 처리 중... (" + removed.size() + "개)");
+            for (String id : removed) {
+                JsonNode node = oldMap.get(id);
+                String pageName = getPageName(node);
+                pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
+                          .add(new ComponentChange(id, "삭제", node, null, "삭제", pageName));
+                processedItems++;
+                if (processedItems % 100 == 0) {
+                    System.out.println("처리 진행률: " + (processedItems * 100 / totalItems) + "%");
+                }
+            }
+
+            // 수정된 항목 처리
+            System.out.println("수정된 항목 처리 중... (" + modified.size() + "개)");
+            for (String id : modified) {
+                JsonNode oldNode = oldMap.get(id);
+                JsonNode newNode = newMap.get(id);
+                String pageName = getPageName(oldNode);
+                if (!findActualChanges(oldNode, newNode).isEmpty()) {
+                    pageChanges.computeIfAbsent(pageName, k -> new ArrayList<>())
+                              .add(new ComponentChange(id, "수정", oldNode, newNode, "수정", pageName));
+                }
+                processedItems++;
+                if (processedItems % 100 == 0) {
+                    System.out.println("처리 진행률: " + (processedItems * 100 / totalItems) + "%");
+                }
+            }
+
+            System.out.println("페이지별 그룹화 완료. 총 " + pageChanges.size() + "개 페이지 처리됨");
+            return pageChanges;
+
+        } catch (Exception e) {
+            System.err.println("페이지별 그룹화 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+            return new HashMap<>();
+        }
     }
 
     private String getPageName(JsonNode node) {
-        // 노드의 상위 계층을 탐색하여 페이지 이름을 찾음
-        JsonNode current = node;
-        while (current != null && !current.path("type").asText().equals("PAGE")) {
-            current = current.path("parent");
+        try {
+            // 노드의 상위 계층을 탐색하여 페이지 이름을 찾음
+            if (node.has("type") && "PAGE".equals(node.path("type").asText())) {
+                return node.path("name").asText("기본 페이지");
+            }
+
+            // document 노드 찾기
+            if (node.has("document")) {
+                JsonNode document = node.path("document");
+                if (!document.isMissingNode()) {
+                    JsonNode children = document.path("children");
+                    if (children.isArray() && children.size() > 0) {
+                        JsonNode firstPage = children.get(0);
+                        if (firstPage.has("name")) {
+                            return firstPage.path("name").asText("기본 페이지");
+                        }
+                    }
+                }
+            }
+
+            return "기본 페이지";
+        } catch (Exception e) {
+            System.err.println("페이지 이름 추출 중 오류 발생: " + e.getMessage());
+            return "기본 페이지";
         }
-        return current != null ? current.path("name").asText("기본 페이지") : "기본 페이지";
     }
 
     private void createPageDetailSheet(XSSFWorkbook workbook, String pageName, 
