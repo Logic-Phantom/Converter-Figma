@@ -18,7 +18,7 @@ public class ExcelDiffReportService {
 
     public void generateExcelReport(List<String> added, List<String> removed, List<String> modified,
                                   Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap,
-                                  String pageName) {
+                                  String pageName, int randomNum) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String today = dateFormat.format(new Date());
@@ -29,9 +29,6 @@ public class ExcelDiffReportService {
                 directory.mkdirs();
             }
 
-            // 랜덤 번호 생성 (100-999)
-            Random random = new Random();
-            int randomNum = random.nextInt(900) + 100;
             String fileName = String.format("changes_%s_%d.xlsx", today, randomNum);
             File file = new File(directory, fileName);
 
