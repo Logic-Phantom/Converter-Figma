@@ -3,6 +3,7 @@ package com.tomatosystem.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.tomatosystem.service.webaccess.report.ExcelReportGenerator;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -20,6 +21,12 @@ public class AccessibilityAnalyzerService {
     
     private static final int MIN_NORMAL_TEXT_SIZE = 16; // 16px
     private static final int MIN_LARGE_TEXT_SIZE = 24; // 24px or 18.5px if bold
+    
+    private final ExcelReportGenerator excelReportGenerator;
+
+    public AccessibilityAnalyzerService() {
+        this.excelReportGenerator = new ExcelReportGenerator();
+    }
 
     public void analyzeAccessibility(JsonNode figmaJson, String outputPath) {
         try {
@@ -28,6 +35,9 @@ public class AccessibilityAnalyzerService {
 
             // 결과를 다양한 형식으로 저장
             saveAnalysisResults(accessibilityIssues, outputPath);
+            
+            // Excel 리포트 생성
+            excelReportGenerator.generateReport(accessibilityIssues, outputPath);
             
             System.out.println("접근성 분석 완료");
         } catch (Exception e) {
