@@ -20,49 +20,61 @@ public class ExcelDiffReportService {
                                   Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap,
                                   String pageName, int randomNum) {
         try {
+            System.out.println("Excel 리포트 생성 시작...");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String today = dateFormat.format(new Date());
             
             // Excel 파일 저장 디렉토리 생성
             File directory = new File("C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\excel\\" + today);
             if (!directory.exists()) {
+                System.out.println("디렉토리 생성: " + directory.getAbsolutePath());
                 directory.mkdirs();
             }
 
             String fileName = String.format("changes_%s_%d.xlsx", today, randomNum);
             File file = new File(directory, fileName);
+            System.out.println("생성할 파일 경로: " + file.getAbsolutePath());
 
             // 워크북 생성
+            System.out.println("워크북 생성 시작...");
             XSSFWorkbook workbook = new XSSFWorkbook();
 
             // 스타일 생성
+            System.out.println("스타일 생성...");
             CellStyle headerStyle = createHeaderStyle(workbook);
             CellStyle dataStyle = createDataStyle(workbook);
             CellStyle summaryStyle = createSummaryStyle(workbook);
             CellStyle pageHeaderStyle = createPageHeaderStyle(workbook);
 
             // 전체 요약 시트 생성
-            createSummarySheet(workbook, added.size(), removed.size(), modified.size(), headerStyle, dataStyle);
+            System.out.println("전체 요약 시트 생성...");
+            createSummarySheet(workbook, added.size(), removed.size(), modified.size(), headerStyle, summaryStyle);
 
             // 페이지별 통계 및 상세 정보 시트 생성
+            System.out.println("페이지별 변경사항 그룹화...");
             Map<String, List<ComponentChange>> pageChanges = groupChangesByPage(added, removed, modified, oldMap, newMap);
+            
+            System.out.println("페이지별 시트 생성...");
             for (Map.Entry<String, List<ComponentChange>> entry : pageChanges.entrySet()) {
                 String currentPage = entry.getKey();
                 List<ComponentChange> changes = entry.getValue();
+                System.out.println("페이지 처리 중: " + currentPage);
                 createPageDetailSheet(workbook, currentPage, changes, headerStyle, dataStyle, pageHeaderStyle);
             }
 
             // 파일 저장
+            System.out.println("워크북 파일 저장...");
             try (FileOutputStream fileOut = new FileOutputStream(file)) {
                 workbook.write(fileOut);
             }
             workbook.close();
 
-            System.out.println("\nExcel 보고서가 생성되었습니다: " + file.getAbsolutePath());
+            System.out.println("Excel 보고서가 생성되었습니다: " + file.getAbsolutePath());
 
         } catch (Exception e) {
             System.err.println("Excel 파일 생성 중 오류 발생: " + e.getMessage());
             e.printStackTrace();
+            throw e; // 상위로 예외를 전파하여 호출자가 처리할 수 있도록 함
         }
     }
 

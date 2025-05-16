@@ -74,54 +74,68 @@ public class JsonDiffAnalyzerService {
     }
     
     private void performJsonDiffAnalysis(JsonNode oldJson, JsonNode newJson) {
-        Map<String, JsonNode> oldMap = new HashMap<>();
-        Map<String, JsonNode> newMap = new HashMap<>();
+        try {
+            Map<String, JsonNode> oldMap = new HashMap<>();
+            Map<String, JsonNode> newMap = new HashMap<>();
 
-        Set<String> visitedOldIds = new HashSet<>();
-        Set<String> visitedNewIds = new HashSet<>();
+            Set<String> visitedOldIds = new HashSet<>();
+            Set<String> visitedNewIds = new HashSet<>();
 
-        flattenJsonById(oldJson, oldMap, visitedOldIds);
-        flattenJsonById(newJson, newMap, visitedNewIds);
+            flattenJsonById(oldJson, oldMap, visitedOldIds);
+            flattenJsonById(newJson, newMap, visitedNewIds);
 
-        Set<String> allIds = new HashSet<>();
-        allIds.addAll(oldMap.keySet());
-        allIds.addAll(newMap.keySet());
+            Set<String> allIds = new HashSet<>();
+            allIds.addAll(oldMap.keySet());
+            allIds.addAll(newMap.keySet());
 
-        List<String> added = new ArrayList<>();
-        List<String> removed = new ArrayList<>();
-        List<String> modified = new ArrayList<>();
+            List<String> added = new ArrayList<>();
+            List<String> removed = new ArrayList<>();
+            List<String> modified = new ArrayList<>();
 
-        for (String id : allIds) {
-            JsonNode oldNode = oldMap.get(id);
-            JsonNode newNode = newMap.get(id);
+            for (String id : allIds) {
+                JsonNode oldNode = oldMap.get(id);
+                JsonNode newNode = newMap.get(id);
 
-            if (oldNode == null && newNode != null) {
-                added.add(id);
-            } else if (oldNode != null && newNode == null) {
-                removed.add(id);
-            } else if (oldNode != null && newNode != null) {
-                if (isNodeActuallyModified(oldNode, newNode)) {
-                    modified.add(id);
+                if (oldNode == null && newNode != null) {
+                    added.add(id);
+                } else if (oldNode != null && newNode == null) {
+                    removed.add(id);
+                } else if (oldNode != null && newNode != null) {
+                    if (isNodeActuallyModified(oldNode, newNode)) {
+                        modified.add(id);
+                    }
                 }
             }
+
+            // 난수 한 번만 생성 (100-999)
+            Random random = new Random();
+            int randomNum = random.nextInt(900) + 100;
+
+            // 콘솔에 출력
+            printDiffSummary(added, removed, modified);
+            printDetailedDiff("추가된 항목", added, newMap);
+            printDetailedDiff("삭제된 항목", removed, oldMap);
+            printModifiedDiff(modified, oldMap, newMap);
+
+            // 텍스트 파일로 저장
+            saveDiffResultToFile(added, removed, modified, oldMap, newMap, randomNum);
+            
+            // Excel 파일로 저장
+            try {
+                String pageName = extractPageName(oldJson);
+                System.out.println("\nExcel 파일 생성을 시작합니다...");
+                excelDiffReportService.generateExcelReport(added, removed, modified, oldMap, newMap, pageName, randomNum);
+                System.out.println("Excel 파일 생성이 완료되었습니다.");
+            } catch (Exception e) {
+                System.err.println("Excel 파일 생성 중 오류 발생: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            System.out.println("\n분석이 완료되었습니다.");
+        } catch (Exception e) {
+            System.err.println("분석 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        // 난수 한 번만 생성 (100-999)
-        Random random = new Random();
-        int randomNum = random.nextInt(900) + 100;
-
-        // 콘솔에 출력
-        printDiffSummary(added, removed, modified);
-        printDetailedDiff("추가된 항목", added, newMap);
-        printDetailedDiff("삭제된 항목", removed, oldMap);
-        printModifiedDiff(modified, oldMap, newMap);
-
-        // 텍스트 파일로 저장
-        saveDiffResultToFile(added, removed, modified, oldMap, newMap, randomNum);
-        
-        // Excel 파일로 저장
-        String pageName = extractPageName(oldJson);
-        excelDiffReportService.generateExcelReport(added, removed, modified, oldMap, newMap, pageName, randomNum);
     }
 
     private String extractPageName(JsonNode json) {
