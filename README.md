@@ -1,218 +1,155 @@
-# Converter-Figma
+# Figma to CLX Converter
 
-Figma 디자인 파일을 `.clx` 확장자를 가진 XML 포맷으로 변환하는 도구입니다.  
-이 도구는 Figma API를 통해 JSON 데이터를 가져와, eXBuilder6에서 사용하는 `.clx` 구조로 자동 변환해줍니다.
+## 🚀 주요 기능
 
-## 📌 목적
+### 1. Figma 디자인 변환
+- Figma 디자인을 CLX 컴포넌트로 자동 변환
+- 컴포넌트별 속성 및 스타일 자동 매핑
+- 레이아웃 및 위치 정보 보존
+- 이미지 및 벡터 자동 변환 지원
 
-- **Figma → XML (`.clx`) 자동화**
-- Figma 디자인을 기반으로 UI를 빠르게 eXBuilder6 프로젝트에 반영
-- 반복적인 수작업을 줄이고 일관된 UI 구조 생성
+### 2. 인증 및 접근 방식
+#### OAuth 2.0 인증
+- Figma OAuth를 통한 자동 로그인
+- Access Token 자동 발급 및 관리
+- 팀/프로젝트/파일 접근 권한 관리
 
-## 🎨 Figma인 이유
-  
-| 도구         | 계층 구조 지원 | API 또는 추출 가능성       | 설명 |
-|--------------|----------------|----------------------------|------|
-| **Figma**    | ✅ 완전 지원     | ✅ Figma API (JSON 구조)     | 디자인 트리 전체를 JSON 형태로 제공하며, 자동화 및 계층 변환에 가장 적합 |
-| **Sketch**   | ✅ 제한적 지원   | ✅ Sketch API 또는 JSON Export | macOS 환경 전용, 계층 정보 포함한 JSON 추출 가능 |
-| **Adobe XD** | ⚠️ 제한적        | ⚠️ Plugin SDK 필요           | 공식 API는 미흡하나, Plugin 개발을 통해 JSON 형태의 구조 추출은 가능 |
-| **Photoshop**| ⚠️ 제한적        | ⚠️ JavaScript 기반 추출 가능 | PSD 내부에 계층 정보는 존재하나, 외부 추출 구조가 복잡하고 자동화에 어려움 |
-| **Zeplin**   | ❌ 불가능        | ✅ 일부 정보 추출 가능         | 계층 구조는 지원되지 않으며, 화면 기반 단일 요소 정보만 추출 가능 |
+#### 직접 토큰 방식
+- 수동 API 토큰 입력 지원
+- 단일 파일 빠른 변환 가능
 
----
+### 3. 프로젝트 관리 기능
+#### 팀 단위 관리
+- 팀 ID 기반 프로젝트 목록 조회
+- 전체 프로젝트 일괄 변환
+- 프로젝트별 파일 관리
 
-## 🧑‍💻 개발 언어
+#### 파일 관리
+- 날짜별 자동 디렉토리 생성
+- UUID 기반 중복 없는 파일명 생성
+- JSON 원본 데이터 백업
 
-| 영역       | 사용 언어       |
-|------------|-----------------|
-| 서버 사이드 | Java (JDK 8 이상) |
-| 데이터 처리 | JSON (Figma API 응답) |
-| 뷰 템플릿  | XML 기반 `.clx` (eXBuilder6 전용) |
-| 스크립트   | JavaScript (자동 생성 `.js`) |
+### 4. 컴포넌트 변환
+#### 기본 컴포넌트
+- Button (`<cl:button>`)
+- Input (`<cl:inputbox>`)
+- Output (`<cl:output>`)
+- Group (`<cl:group>`)
+- Rectangle
+- Vector/Image
 
+#### 복합 컴포넌트
+- Radio Button Groups
+  - 자동 그룹화
+  - 아이템 자동 생성
+- Tables
+  - 테이블 구조 자동 인식
+  - 셀 병합 지원
+- Frames
+  - 중첩 프레임 지원
+  - 상대 위치 계산
+- Instances
+  - 컴포넌트 인스턴스 처리
+  - 속성 상속
 
-## 🧰 기술 스택
+### 5. 웹 접근성 분석
+- WCAG 2.1 기준 준수 검사
+- 접근성 문제 자동 감지
+- 상세 리포트 생성
+  - 요약 정보
+  - 상세 분석
+  - WCAG 기준별 분석
+  - 컴포넌트별 분석
+- Excel 리포트 출력
+  - 한글 지원
+  - 멀티 시트 구성
+  - 스타일 자동 적용
 
-| 범주           | 사용 기술                                                                 |
-|----------------|---------------------------------------------------------------------------|
-| **백엔드**     | Java 8+, Spring MVC, Servlet API                                          |
-| **빌드/환경**  | Tomcat 9                                                                  |
-| **API 연동**   | [Figma REST API](https://www.figma.com/developers/api), Apache HttpClient |
-| **데이터 처리**| Jackson (`ObjectMapper`)                                                  |
-| **파일 시스템**| Java NIO (`java.nio.file.Files`, `Paths`)                                 |
-| **문서 생성**  | Custom `.clx` 구조 및 자바스크립트 템플릿 자동 생성                          |
-| **OAuth 인증** | Figma OAuth2 기반 토큰 처리                                                |
-| **프론트 연동**| eXBuilder6 (CLX 연동)                                                     |
-| **개발 도구**  | Git, Eclipse 등                                                           |
-| **AI 활용**    | ✅ **ChatGPT 기반 코드 생성 및 리팩토링으로 서버 로직 구현**              |
+### 6. 디자인 토큰 추출
+- 색상 토큰
+  - 브랜드 컬러
+  - 시스템 컬러
+  - 의미적 컬러
+- 타이포그래피
+  - 폰트 패밀리
+  - 폰트 크기
+  - 라인 높이
+- 스페이싱
+  - 여백
+  - 간격
+- 테두리
+  - 반경
+  - 스타일
 
-> 본 프로젝트의 핵심 서버 로직은 **OpenAI의 ChatGPT를 활용하여** 개발되었으며,  
-> 복잡한 로직을 빠르게 구현하고 반복 작업을 자동화하는 데에 큰 도움이 되었습니다.
+### 7. 버전별 기능
+#### v1.0
+- 기본 컴포넌트 변환
+- 단일 파일 처리
+- 수동 토큰 방식
 
----
+#### v1.1
+- OAuth 인증 추가
+- 팀 단위 관리
+- 다중 파일 처리
 
-## 🛠 주요 기능
+#### v1.2
+- 웹 접근성 분석
+- Excel 리포트
+- 디자인 토큰 추출
 
-- ✅ **Figma API 연동**
-  - Token 기반 또는 OAuth2 인증 방식 지원
+#### v1.3 (현재)
+- 이미지/벡터 처리 개선
+- 복합 컴포넌트 지원 강화
+- 스타일 매핑 개선
 
-- 🔁 **디자인 JSON → `.clx` 변환**
-  - eXBuilder6 전용 XML 구조 생성
+## 🔧 시스템 요구사항
+- Java 8 이상
+- Spring Framework
+- Apache POI (Excel 리포트용)
+- Figma API 토큰 또는 OAuth 인증 정보
 
-- 🧩 **지원 컴포넌트**
-  - `<cl:button>`, `<cl:inputbox>`, `<cl:grid>`, `<cl:radiobutton>`, `<cl:group>` 등
+## 📝 사용 방법
 
-- 🎨 **자동 스타일 적용**
-  - 위치, 크기, 스타일 속성 자동 반영
-
-- ✏️ **`.js` 스크립트 자동 생성**
-  - 각 `.clx` 파일에 대응하는 자바스크립트 템플릿 포함
-
-- 📁 **Figma 팀 → 프로젝트 → 파일 흐름 지원**
-
-
-## 📂 프로젝트 구조
-
-```
-Converter-Figma/
-├── src/ # 핵심 로직
-│    ├── controller/ # 변환 요청을 처리하는 컨트롤러
-│    ├── service/ # JSON → CLX 변환 로직
-│    ├── web/ # JSON → CLX 변환 로직
-├── resources/ # 예제
-├── clx-src/# 클라이언트 소스(뷰)
-├── .gitignore
-└── README.md
-```
-## ▶️ 사용 방법
-
-### 1. Figma API Token 수동 발급
-
-- https://www.figma.com/developers/api#access-tokens 참고
-- 발급된 Token은 컨트롤러에서 직접 사용하거나 `.properties`, `.env` 파일로 관리할 수 있습니다.
-
-### 2. OAuth 인증 방식 (자동 토큰 발급 지원)
-
-본 프로젝트는 **Figma OAuth2 인증**을 지원합니다.  
-사용자는 로그인 후 자동으로 Access Token을 발급받고 `.clx` 변환 프로세스를 시작할 수 있습니다.
-
-- https://www.figma.com/developers/apps 참고
-- 직접 앱을 등록하여 clientID, clientSecret 설정
-
-#### 🔑 OAuth 연동 흐름
-
-```
-사용자 → Figma 로그인 → Redirect (code) → Access Token 발급 → JSON 변환 → .clx 생성
-```
-
-#### 🔗 예시 URL 호출
-
-```
-https://www.figma.com/oauth?client_id=YOUR_CLIENT_ID &redirect_uri=YOUR_REDIRECT_URI &scope=file_read &state=STATE &response_type=code
-```
-
-#### ⚙️ 설정 예시 (.env 또는 config.properties 등)
-
+### 1. OAuth 인증 방식
 ```properties
-figma.clientId=YOUR_CLIENT_ID
-figma.clientSecret=YOUR_CLIENT_SECRET
-figma.redirectUri=http://localhost:8080/oauth/callback.do
-
-```
-🔄 Callback 처리
-
-```
-/oauth/callback.do 엔드포인트에서 access_token을 발급받아 .clx 변환 흐름에 자동 연동됩니다.
-
-변환된 결과는 clx-src/ 디렉토리 하위에 .clx 및 .js 파일로 저장됩니다.
+# application.properties 설정
+figma.client.id=YOUR_CLIENT_ID
+figma.client.secret=YOUR_CLIENT_SECRET
+figma.redirect.uri=http://localhost:8080/oauth/callback.do
 ```
 
-## 📌 기능 분류
+### 2. API 엔드포인트
+#### 파일 변환
+- `/design/convertDirect.do`: 단일 파일 직접 변환
+- `/design/convert.do`: OAuth 토큰 기반 변환
+- `/design/convertAll.do`: 전체 프로젝트 변환
 
-프로젝트는 아래 세 가지 방식의 변환 API 엔드포인트를 제공합니다:
+#### 웹 접근성 분석
+- `/accessibility/analyze.do`: 접근성 분석 실행
+- `/accessibility/report.do`: Excel 리포트 생성
 
-1. **직접 수동 방식 (convertDirect.do)**  
-   - 사용자가 직접 Figma URL과 토큰을 하드코딩하여 단일 파일을 변환합니다.  
-   - 테스트나 간단한 작업에 유용합니다.
-   
-2. **OAuth 인증 후 단일 프로젝트/파일 변환 (convert.do)**  
-   - OAuth 인증을 통해 발급받은 토큰을 사용하여,  
-   - 지정된 팀 ID 내 첫 번째 프로젝트의 첫 번째 파일만 변환합니다.
-   
-3. **OAuth 인증 후 전체 프로젝트/파일 변환 (convertAll.do)**  
-   - 동일하게 OAuth 인증을 통해 토큰을 사용하여,  
-   - 지정된 팀 ID 내 **모든** 프로젝트의 **모든** 파일을 순회하며 변환합니다.
-   
+#### 디자인 토큰
+- `/design/tokens/extract.do`: 디자인 토큰 추출
+- `/design/tokens/export.do`: 토큰 내보내기
 
----
-## ⚙️ 사용 예시
-
-### 1. 직접 수동 방식 - `/design/convertDirect.do`
-
-- **설명**:  
-  미리 하드코딩된 Figma URL과 토큰("figd_...")을 사용하여 단일 파일만 변환합니다.
-  
-- **특징**:
-  - 빠른 테스트 및 디버깅용.
-  - 프로젝트나 파일 선택 없이 단순 변환.
-
-- **호출 예시 (GET)**:
-
+### 3. 출력 파일 구조
 ```
-http://localhost:8080/design/convertDirect.do
+clx-src/
+├── convertTest/    # CLX 변환 파일
+│   └── YYYY-MM-DD/
+│       ├── design12345.clx
+│       └── design12345.js
+├── json/          # JSON 백업
+│   └── YYYY-MM-DD/
+│       └── design12345.json
+└── reports/       # 분석 리포트
+    └── YYYY-MM-DD/
+        └── accessibility_report_12345.xlsx
 ```
 
-- **응답 예시**:
-
-```
-CLX file saved successfully at: C:\Users\LCM\git\Converter-Figma\clx-src\2025-04-10\design12345.clx
-```
-
----
-
-### 2. OAuth 인증 후 단일 프로젝트/파일 변환 - `/design/convert.do`
-
-- **설명**:  
-클라이언트에서 전달받은 파라미터(`dmParam`) 내의 OAuth 토큰을 이용하여  
-**하드코딩된 팀ID** 내 첫 번째 프로젝트의 첫 번째 파일을 변환합니다.
-
-- **특징**:
-- 팀 ID와 연동하여 Figma API를 호출 (단, 단일 파일만 처리).
-- OAuth 인증 후 받은 토큰으로 요청.
-
-- **호출 예시 (GET/POST)**:
-
-```
-http://localhost:8080/design/convert.do
-```
-
-요청 파라미터 예:
-- dmParam.token : OAuth Access Token
-
-- **응답 예시**:
-```
-CLX file saved successfully at: C:\Users\LCM\git\Converter-Figma\clx-src\2025-04-10\design67890.clx
-```
----
-
-### 3. OAuth 인증 후 전체 프로젝트/파일 변환 - `/design/convertAll.do`
-
-- **설명**:  
-클라이언트에서 전달받은 OAuth 토큰을 사용하여  
-**하드코딩된 팀ID** 내 모든 프로젝트의 모든 파일을 순회하며 변환합니다.
-
-- **특징**:
-- 팀의 전체 프로젝트와 각 프로젝트의 모든 파일에 대해 CLX 파일 생성.
-- 각 프로젝트와 파일 별로 처리 결과를 로그로 반환합니다.
-
-- **호출 예시 (GET/POST)**:
-```
-http://localhost:8080/design/convertAll.do
-```
-요청 파라미터 예:
-- dmParam.token : OAuth Access Token
-
-- **응답 예시**:
-```
-Project ID: 1420657369280493518 File: Homepage (fileKey123) ✅ Saved: C:\Users\LCM\git\Converter-Figma\clx-src\2025-04-10\design00123.clx File: About (fileKey456) ✅ Saved: C:\Users\LCM\git\Converter-Figma\clx-src\2025-04-10\design00456.clx ...
-```
+## 🎯 향후 계획
+- [ ] AI 기반 컴포넌트 자동 인식
+- [ ] 실시간 변환 모니터링
+- [ ] 다국어 지원 확대
+- [ ] 변환 성능 최적화
+- [ ] 사용자 인터페이스 개선
