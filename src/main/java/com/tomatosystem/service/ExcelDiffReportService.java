@@ -1,6 +1,7 @@
 package com.tomatosystem.service;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class ExcelDiffReportService {
 
     public void generateExcelReport(List<String> added, List<String> removed, List<String> modified,
                                   Map<String, JsonNode> oldMap, Map<String, JsonNode> newMap,
-                                  String pageName, int randomNum) {
+                                  String pageName, int randomNum) throws Exception {
         try {
             System.out.println("Excel 리포트 생성 시작...");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
