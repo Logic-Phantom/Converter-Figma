@@ -58,18 +58,27 @@ public class ExcelReportGenerator {
     private void createSummarySheet(Sheet sheet, List<Map<String, Object>> issues, CellStyle titleStyle, CellStyle headerStyle, CellStyle defaultStyle) {
         // 제목 행
         Row titleRow = sheet.createRow(0);
-        Cell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("웹 접근성 분석 요약 리포트");
-        titleCell.setCellStyle(titleStyle);
+        for (int i = 0; i < 5; i++) {
+            Cell cell = titleRow.createCell(i);
+            cell.setCellStyle(titleStyle);
+            if (i == 0) {
+                cell.setCellValue("웹 접근성 분석 요약 리포트");
+            }
+        }
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
         titleRow.setHeight((short) 900);
 
         // 분석 시간과 총 이슈 수
         Row infoRow = sheet.createRow(1);
-        infoRow.createCell(0).setCellValue("분석 시간: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        infoRow.createCell(2).setCellValue("총 발견된 문제: " + (issues.isEmpty() ? "0" : issues.size()) + "개");
-        infoRow.getCell(0).setCellStyle(defaultStyle);
-        infoRow.getCell(2).setCellStyle(defaultStyle);
+        for (int i = 0; i < 5; i++) {
+            Cell cell = infoRow.createCell(i);
+            cell.setCellStyle(defaultStyle);
+            if (i == 0) {
+                cell.setCellValue("분석 시간: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            } else if (i == 2) {
+                cell.setCellValue("총 발견된 문제: " + (issues.isEmpty() ? "0" : issues.size()) + "개");
+            }
+        }
         sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 1));
         sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4));
         
@@ -195,11 +204,14 @@ public class ExcelReportGenerator {
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         style.setWrapText(true);
         
-        // 테두리 추가
+        // 모든 테두리 설정
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderTop(BorderStyle.THIN);
         style.setBorderRight(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
+        
+        // 배경색 명시적으로 없음 설정
+        style.setFillPattern(FillPatternType.NO_FILL);
         
         Font font = workbook.createFont();
         font.setFontName("맑은 고딕");
@@ -211,11 +223,16 @@ public class ExcelReportGenerator {
 
     private CellStyle createHeaderStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
-        // 배경색 제거하고 테두리만 진하게
+        
+        // 모든 테두리 설정
         style.setBorderBottom(BorderStyle.MEDIUM);
         style.setBorderTop(BorderStyle.MEDIUM);
         style.setBorderRight(BorderStyle.MEDIUM);
         style.setBorderLeft(BorderStyle.MEDIUM);
+        
+        // 배경색 명시적으로 없음 설정
+        style.setFillPattern(FillPatternType.NO_FILL);
+        
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         
@@ -233,11 +250,14 @@ public class ExcelReportGenerator {
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         
-        // 테두리 추가
+        // 모든 테두리 설정
         style.setBorderBottom(BorderStyle.MEDIUM);
         style.setBorderTop(BorderStyle.MEDIUM);
         style.setBorderRight(BorderStyle.MEDIUM);
         style.setBorderLeft(BorderStyle.MEDIUM);
+        
+        // 배경색 명시적으로 없음 설정
+        style.setFillPattern(FillPatternType.NO_FILL);
         
         Font font = workbook.createFont();
         font.setFontName("맑은 고딕");
@@ -251,17 +271,25 @@ public class ExcelReportGenerator {
     private void createDetailSheet(Sheet sheet, List<Map<String, Object>> issues, CellStyle titleStyle, CellStyle headerStyle, CellStyle defaultStyle) {
         // 제목 행
         Row titleRow = sheet.createRow(0);
-        Cell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("웹 접근성 상세 분석 결과");
-        titleCell.setCellStyle(titleStyle);
+        for (int i = 0; i < 6; i++) {
+            Cell cell = titleRow.createCell(i);
+            cell.setCellStyle(titleStyle);
+            if (i == 0) {
+                cell.setCellValue("웹 접근성 상세 분석 결과");
+            }
+        }
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
         titleRow.setHeight((short) 900);
 
         // 분석 시간
         Row infoRow = sheet.createRow(1);
-        Cell infoCell = infoRow.createCell(0);
-        infoCell.setCellValue("분석 시간: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        infoCell.setCellStyle(defaultStyle);
+        for (int i = 0; i < 6; i++) {
+            Cell cell = infoRow.createCell(i);
+            cell.setCellStyle(defaultStyle);
+            if (i == 0) {
+                cell.setCellValue("분석 시간: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            }
+        }
         sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 5));
         
         // 상세 분석 헤더
@@ -335,9 +363,13 @@ public class ExcelReportGenerator {
     private void createWCAGAnalysisSheet(Sheet sheet, List<Map<String, Object>> issues, CellStyle titleStyle, CellStyle headerStyle, CellStyle defaultStyle) {
         // 제목 행
         Row titleRow = sheet.createRow(0);
-        Cell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("WCAG 기준별 분석");
-        titleCell.setCellStyle(titleStyle);
+        for (int i = 0; i < 3; i++) {
+            Cell cell = titleRow.createCell(i);
+            cell.setCellStyle(titleStyle);
+            if (i == 0) {
+                cell.setCellValue("WCAG 기준별 분석");
+            }
+        }
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2));
         titleRow.setHeight((short) 900);
         
@@ -403,9 +435,13 @@ public class ExcelReportGenerator {
     private void createComponentAnalysisSheet(Sheet sheet, List<Map<String, Object>> issues, CellStyle titleStyle, CellStyle headerStyle, CellStyle defaultStyle) {
         // 제목 행
         Row titleRow = sheet.createRow(0);
-        Cell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("컴포넌트별 접근성 분석");
-        titleCell.setCellStyle(titleStyle);
+        for (int i = 0; i < 6; i++) {
+            Cell cell = titleRow.createCell(i);
+            cell.setCellStyle(titleStyle);
+            if (i == 0) {
+                cell.setCellValue("컴포넌트별 접근성 분석");
+            }
+        }
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
         titleRow.setHeight((short) 900);
         
