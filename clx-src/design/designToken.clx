@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-8f223f58" version="1.0.5542">
+  <head std:sid="head-bd997329">
+    <screen std:sid="screen-43c8f029" id="default" name="default" width="1024px" height="768px"/>
+    <screen std:sid="screen-e9783c95" id="tablet" name="tablet" width="500px" height="667px"/>
+    <screen std:sid="screen-6a1e60c0" id="mobile" name="mobile" width="350px" height="525px"/>
+    <cl:model std:sid="model-e3abc9e5">
+      <cl:submission std:sid="submission-e3abd251" id="subToken" action="../figma/design-tokens/extract.do"/>
+    </cl:model>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-3e581607">
+    <cl:button std:sid="button-7f7595d9" value="전송">
+      <cl:listener std:sid="listener-dc3ba515" name="click" handler="onButtonClick"/>
+      <cl:xylayoutdata std:sid="xyl-data-d244c638" top="200px" left="228px" width="512px" height="162px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:button>
+    <cl:xylayout std:sid="xylayout-a0aeabbb"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

@@ -39,7 +39,7 @@ public class DesignTokenExtractorController {
 
     private final DesignTokenExtractorService designTokenExtractorService;
     private final ObjectMapper objectMapper;
-    private static final String BASE_PATH = "clx-src/result/design-tokens";
+    private static final String BASE_PATH = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\design-tokens";
 
     public DesignTokenExtractorController(DesignTokenExtractorService designTokenExtractorService) {
         this.designTokenExtractorService = designTokenExtractorService;
