@@ -120,15 +120,14 @@ public class ExcelDiffReportService {
         // 자동 줄바꿈 설정
         style.setWrapText(true);
         
+        // 배경색 없음 (흰색 배경)
+        style.setFillPattern(FillPatternType.NO_FILL);
+        
         return style;
     }
 
     private CellStyle createSummaryStyle(XSSFWorkbook workbook) {
         CellStyle style = workbook.createCellStyle();
-        
-        // 배경색 설정 (연한 노란색)
-        style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         
         // 테두리 설정
         style.setBorderTop(BorderStyle.THIN);
@@ -144,6 +143,9 @@ public class ExcelDiffReportService {
         // 정렬 설정
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
+        
+        // 배경색 없음 (흰색 배경)
+        style.setFillPattern(FillPatternType.NO_FILL);
         
         return style;
     }
@@ -354,8 +356,7 @@ public class ExcelDiffReportService {
         // 상세 정보 추가
         for (ComponentChange change : changes) {
             currentRow = addDetailRow(sheet, currentRow, change, dataStyle);
-            // 각 항목 사이에 빈 행 추가
-            currentRow++;
+            // 간격 제거
         }
     }
 
@@ -378,6 +379,11 @@ public class ExcelDiffReportService {
         String[] stats = {"추가된 항목", "삭제된 항목", "수정된 항목"};
         long[] counts = {addedCount, removedCount, modifiedCount};
         
+        // 통계 데이터용 스타일 생성
+        CellStyle statsDataStyle = sheet.getWorkbook().createCellStyle();
+        statsDataStyle.cloneStyleFrom(headerStyle);
+        statsDataStyle.setFillPattern(FillPatternType.NO_FILL); // 배경색 없음
+        
         for (int i = 0; i < stats.length; i++) {
             Row row = sheet.createRow(currentRow++);
             Cell typeCell = row.createCell(0);
@@ -386,8 +392,8 @@ public class ExcelDiffReportService {
             typeCell.setCellValue(stats[i]);
             countCell.setCellValue(counts[i]);
             
-            typeCell.setCellStyle(headerStyle);
-            countCell.setCellStyle(headerStyle);
+            typeCell.setCellStyle(statsDataStyle);
+            countCell.setCellStyle(statsDataStyle);
         }
 
         return currentRow;
