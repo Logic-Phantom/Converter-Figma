@@ -255,6 +255,9 @@ public class JsonDiffAnalyzerService {
                                  ") → (" + String.format("%.1f", newX) + ", " + String.format("%.1f", newY) + ")");
             }
             
+            // Check for size changes
+            checkAndPrintSizeChanges(oldNode, newNode);
+            
             printStyleInfo(oldNode, newNode);
         }
     }
@@ -265,103 +268,57 @@ public class JsonDiffAnalyzerService {
         System.out.println(prefix + " Type: " + type + " Name: " + name);
     }
 
-//    private void printStyleInfo(JsonNode oldNode, JsonNode newNode) {
-//        JsonNode oldStyleNode = oldNode.path("style");
-//        JsonNode newStyleNode = newNode.path("style");
-//
-//        // 스타일이 달라진 경우
-//        if (!oldStyleNode.equals(newStyleNode)) {
-//            System.out.println("  → 스타일 변경:");
-//            oldStyleNode.fieldNames().forEachRemaining(field -> {
-//                JsonNode oldVal = oldStyleNode.get(field);
-//                JsonNode newVal = newStyleNode.get(field);
-//                if (newVal != null && !oldVal.equals(newVal)) {
-//                    System.out.println("    - " + field + " 변경: " + oldVal.asText() + " → " + newVal.asText());
-//                }
-//            });
-//        }
-//
-//        // 스타일 외부의 속성들 (배경색, 선 색 등) 비교
-//        printAdditionalStyleInfo(oldNode, newNode);
-//    }
-
-    private void printAdditionalStyleInfo(JsonNode oldNode, JsonNode newNode) {
-        // 배경색 비교
-        JsonNode oldFills = oldNode.path("fills");
-        JsonNode newFills = newNode.path("fills");
-        if (!oldFills.equals(newFills)) {
-            System.out.println("    - 배경색(fills) 변경:");
-            compareFills(oldFills, newFills);
-        }
-
-        // 테두리 색 비교 (strokes)
-        JsonNode oldStrokes = oldNode.path("strokes");
-        JsonNode newStrokes = newNode.path("strokes");
-        if (!oldStrokes.equals(newStrokes)) {
-            System.out.println("    - 테두리 색(strokes) 변경:");
-            compareStrokes(oldStrokes, newStrokes);
-        }
-
-        // 배경 비교 (background)
-        JsonNode oldBackground = oldNode.path("background");
-        JsonNode newBackground = newNode.path("background");
-        if (!oldBackground.equals(newBackground)) {
-            System.out.println("    - 배경(background) 변경:");
-            compareBackground(oldBackground, newBackground);
-        }
-    }
-
-    private void compareFills(JsonNode oldFills, JsonNode newFills) {
-        for (int i = 0; i < oldFills.size(); i++) {
-            JsonNode oldFill = oldFills.get(i);
-            JsonNode newFill = newFills.get(i);
-            if (!oldFill.equals(newFill)) {
-                System.out.println("      - " + convertToHexColor(oldFill.path("color")) + " → " + convertToHexColor(newFill.path("color")));
+    private void checkAndPrintSizeChanges(JsonNode oldNode, JsonNode newNode) {
+        // absoluteBoundingBox를 사용한 크기 변경 확인
+        JsonNode oldBox = oldNode.path("absoluteBoundingBox");
+        JsonNode newBox = newNode.path("absoluteBoundingBox");
+        
+        if (!oldBox.isMissingNode() && !newBox.isMissingNode()) {
+            double oldWidth = oldBox.path("width").asDouble();
+            double oldHeight = oldBox.path("height").asDouble();
+            double newWidth = newBox.path("width").asDouble();
+            double newHeight = newBox.path("height").asDouble();
+            
+            boolean widthChanged = oldWidth != newWidth;
+            boolean heightChanged = oldHeight != newHeight;
+            
+            if (widthChanged || heightChanged) {
+                System.out.println("  - 크기 변경:");
+                if (widthChanged) {
+                    System.out.println("    너비: " + String.format("%.1f", oldWidth) + " → " + String.format("%.1f", newWidth));
+                }
+                if (heightChanged) {
+                    System.out.println("    높이: " + String.format("%.1f", oldHeight) + " → " + String.format("%.1f", newHeight));
+                }
             }
         }
-    }
-
-    private void compareStrokes(JsonNode oldStrokes, JsonNode newStrokes) {
-        for (int i = 0; i < oldStrokes.size(); i++) {
-            JsonNode oldStroke = oldStrokes.get(i);
-            JsonNode newStroke = newStrokes.get(i);
-            if (!oldStroke.equals(newStroke)) {
-                System.out.println("      - " + convertToHexColor(oldStroke.path("color")) + " → " + convertToHexColor(newStroke.path("color")));
+        
+        // size 속성을 사용한 크기 변경 확인 (일부 컴포넌트에서 사용)
+        if (oldNode.has("size") && newNode.has("size")) {
+            JsonNode oldSize = oldNode.path("size");
+            JsonNode newSize = newNode.path("size");
+            
+            if (!oldSize.path("width").isMissingNode() && !newSize.path("width").isMissingNode() &&
+                !oldSize.path("height").isMissingNode() && !newSize.path("height").isMissingNode()) {
+                
+                double oldWidth = oldSize.path("width").asDouble();
+                double oldHeight = oldSize.path("height").asDouble();
+                double newWidth = newSize.path("width").asDouble();
+                double newHeight = newSize.path("height").asDouble();
+                
+                boolean widthChanged = oldWidth != newWidth;
+                boolean heightChanged = oldHeight != newHeight;
+                
+                if (widthChanged || heightChanged) {
+                    System.out.println("  - 크기 변경 (size 속성):");
+                    if (widthChanged) {
+                        System.out.println("    너비: " + String.format("%.1f", oldWidth) + " → " + String.format("%.1f", newWidth));
+                    }
+                    if (heightChanged) {
+                        System.out.println("    높이: " + String.format("%.1f", oldHeight) + " → " + String.format("%.1f", newHeight));
+                    }
+                }
             }
-        }
-    }
-
-    private void compareBackground(JsonNode oldBackground, JsonNode newBackground) {
-        for (int i = 0; i < oldBackground.size(); i++) {
-            JsonNode oldBg = oldBackground.get(i);
-            JsonNode newBg = newBackground.get(i);
-            if (!oldBg.equals(newBg)) {
-                System.out.println("      - " + convertToHexColor(oldBg.path("color")) + " → " + convertToHexColor(newBg.path("color")));
-            }
-        }
-    }
-
-    private void compareStyleProperties(JsonNode oldStyle, JsonNode newStyle) {
-        // fontFamily 비교
-        if (!oldStyle.path("fontFamily").equals(newStyle.path("fontFamily"))) {
-            System.out.println("        - fontFamily 변경: " + oldStyle.path("fontFamily").asText() + " → " + newStyle.path("fontFamily").asText());
-        }
-
-        // fontSize 비교
-        if (!oldStyle.path("fontSize").equals(newStyle.path("fontSize"))) {
-            System.out.println("        - fontSize 변경: " + oldStyle.path("fontSize").asText() + " → " + newStyle.path("fontSize").asText());
-        }
-
-        // lineHeightPx 비교
-        if (!oldStyle.path("lineHeightPx").equals(newStyle.path("lineHeightPx"))) {
-            System.out.println("        - lineHeightPx 변경: " + oldStyle.path("lineHeightPx").asText() + " → " + newStyle.path("lineHeightPx").asText());
-        }
-
-        // fill 색상 비교
-        JsonNode oldFills = oldStyle.path("fills");
-        JsonNode newFills = newStyle.path("fills");
-        if (!oldFills.equals(newFills)) {
-            System.out.println("        - 색상 변경: " + convertToHexColor(oldFills.path("color")) + " → " + convertToHexColor(newFills.path("color")));
         }
     }
 
@@ -475,6 +432,9 @@ public class JsonDiffAnalyzerService {
                         if (changes.containsKey("position")) {
                             content.append("  - 위치 변경: ").append(changes.get("position")).append("\n");
                         }
+                        if (changes.containsKey("크기")) {
+                            content.append("  - 크기 변경: ").append(changes.get("크기")).append("\n");
+                        }
                         if (changes.containsKey("배경색")) {
                             content.append("  - 배경색: ").append(changes.get("배경색")).append("\n");
                         }
@@ -546,6 +506,61 @@ public class JsonDiffAnalyzerService {
             
             if (oldX != newX || oldY != newY) {
                 changes.put("position", String.format("(%.1f, %.1f) → (%.1f, %.1f)", oldX, oldY, newX, newY));
+            }
+            
+            // 크기 변경 확인
+            double oldWidth = oldBox.path("width").asDouble();
+            double oldHeight = oldBox.path("height").asDouble();
+            double newWidth = newBox.path("width").asDouble();
+            double newHeight = newBox.path("height").asDouble();
+            
+            boolean widthChanged = oldWidth != newWidth;
+            boolean heightChanged = oldHeight != newHeight;
+            
+            if (widthChanged || heightChanged) {
+                StringBuilder sizeChange = new StringBuilder();
+                if (widthChanged) {
+                    sizeChange.append("너비: ").append(String.format("%.1f", oldWidth))
+                             .append(" → ").append(String.format("%.1f", newWidth));
+                }
+                if (heightChanged) {
+                    if (widthChanged) sizeChange.append(", ");
+                    sizeChange.append("높이: ").append(String.format("%.1f", oldHeight))
+                             .append(" → ").append(String.format("%.1f", newHeight));
+                }
+                changes.put("크기", sizeChange.toString());
+            }
+        }
+        
+        // size 속성을 사용한 크기 변경 확인 (일부 컴포넌트에서 사용)
+        if (oldNode.has("size") && newNode.has("size")) {
+            JsonNode oldSize = oldNode.path("size");
+            JsonNode newSize = newNode.path("size");
+            
+            if (!oldSize.path("width").isMissingNode() && !newSize.path("width").isMissingNode() &&
+                !oldSize.path("height").isMissingNode() && !newSize.path("height").isMissingNode()) {
+                
+                double oldWidth = oldSize.path("width").asDouble();
+                double oldHeight = oldSize.path("height").asDouble();
+                double newWidth = newSize.path("width").asDouble();
+                double newHeight = newSize.path("height").asDouble();
+                
+                boolean widthChanged = oldWidth != newWidth;
+                boolean heightChanged = oldHeight != newHeight;
+                
+                if (widthChanged || heightChanged) {
+                    StringBuilder sizeChange = new StringBuilder();
+                    if (widthChanged) {
+                        sizeChange.append("너비: ").append(String.format("%.1f", oldWidth))
+                                 .append(" → ").append(String.format("%.1f", newWidth));
+                    }
+                    if (heightChanged) {
+                        if (widthChanged) sizeChange.append(", ");
+                        sizeChange.append("높이: ").append(String.format("%.1f", oldHeight))
+                                 .append(" → ").append(String.format("%.1f", newHeight));
+                    }
+                    changes.put("크기", sizeChange.toString());
+                }
             }
         }
 

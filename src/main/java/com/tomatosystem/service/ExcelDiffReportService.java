@@ -544,6 +544,61 @@ public class ExcelDiffReportService {
             if (oldX != newX || oldY != newY) {
                 changes.put("위치", String.format("(%.1f, %.1f) → (%.1f, %.1f)", oldX, oldY, newX, newY));
             }
+            
+            // 크기 변경 확인
+            double oldWidth = oldBox.path("width").asDouble();
+            double oldHeight = oldBox.path("height").asDouble();
+            double newWidth = newBox.path("width").asDouble();
+            double newHeight = newBox.path("height").asDouble();
+            
+            boolean widthChanged = oldWidth != newWidth;
+            boolean heightChanged = oldHeight != newHeight;
+            
+            if (widthChanged || heightChanged) {
+                StringBuilder sizeChange = new StringBuilder();
+                if (widthChanged) {
+                    sizeChange.append("너비: ").append(String.format("%.1f", oldWidth))
+                             .append(" → ").append(String.format("%.1f", newWidth));
+                }
+                if (heightChanged) {
+                    if (widthChanged) sizeChange.append(", ");
+                    sizeChange.append("높이: ").append(String.format("%.1f", oldHeight))
+                             .append(" → ").append(String.format("%.1f", newHeight));
+                }
+                changes.put("크기", sizeChange.toString());
+            }
+        }
+        
+        // size 속성을 사용한 크기 변경 확인 (일부 컴포넌트에서 사용)
+        if (oldNode.has("size") && newNode.has("size")) {
+            JsonNode oldSize = oldNode.path("size");
+            JsonNode newSize = newNode.path("size");
+            
+            if (!oldSize.path("width").isMissingNode() && !newSize.path("width").isMissingNode() &&
+                !oldSize.path("height").isMissingNode() && !newSize.path("height").isMissingNode()) {
+                
+                double oldWidth = oldSize.path("width").asDouble();
+                double oldHeight = oldSize.path("height").asDouble();
+                double newWidth = newSize.path("width").asDouble();
+                double newHeight = newSize.path("height").asDouble();
+                
+                boolean widthChanged = oldWidth != newWidth;
+                boolean heightChanged = oldHeight != newHeight;
+                
+                if (widthChanged || heightChanged) {
+                    StringBuilder sizeChange = new StringBuilder();
+                    if (widthChanged) {
+                        sizeChange.append("너비: ").append(String.format("%.1f", oldWidth))
+                                 .append(" → ").append(String.format("%.1f", newWidth));
+                    }
+                    if (heightChanged) {
+                        if (widthChanged) sizeChange.append(", ");
+                        sizeChange.append("높이: ").append(String.format("%.1f", oldHeight))
+                                 .append(" → ").append(String.format("%.1f", newHeight));
+                    }
+                    changes.put("크기", sizeChange.toString());
+                }
+            }
         }
 
         // fills 변경 확인
