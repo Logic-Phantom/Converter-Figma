@@ -352,8 +352,86 @@ public class JsonDiffAnalyzerService {
             }
         }
 
-        // 스타일 외부의 속성들 (배경색, 선 색 등) 비교
-        printAdditionalStyleInfo(oldNode, newNode);
+        // 배경색 비교 (fills)
+        JsonNode oldFills = oldNode.path("fills");
+        JsonNode newFills = newNode.path("fills");
+        if (!oldFills.equals(newFills)) {
+            System.out.println("  → 배경색(fills) 변경:");
+            compareFills(oldFills, newFills);
+        }
+
+        // 테두리 색 비교 (strokes)
+        JsonNode oldStrokes = oldNode.path("strokes");
+        JsonNode newStrokes = newNode.path("strokes");
+        if (!oldStrokes.equals(newStrokes)) {
+            System.out.println("  → 테두리 색(strokes) 변경:");
+            compareStrokes(oldStrokes, newStrokes);
+        }
+
+        // 배경 비교 (background)
+        JsonNode oldBackground = oldNode.path("background");
+        JsonNode newBackground = newNode.path("background");
+        if (!oldBackground.equals(newBackground)) {
+            System.out.println("  → 배경(background) 변경:");
+            compareBackground(oldBackground, newBackground);
+        }
+    }
+    
+    private void compareFills(JsonNode oldFills, JsonNode newFills) {
+        if (oldFills.isArray() && newFills.isArray()) {
+            int maxSize = Math.max(oldFills.size(), newFills.size());
+            for (int i = 0; i < maxSize; i++) {
+                if (i < oldFills.size() && i < newFills.size()) {
+                    JsonNode oldFill = oldFills.get(i);
+                    JsonNode newFill = newFills.get(i);
+                    if (!oldFill.equals(newFill)) {
+                        JsonNode oldColor = oldFill.path("color");
+                        JsonNode newColor = newFill.path("color");
+                        if (!oldColor.isMissingNode() && !newColor.isMissingNode()) {
+                            System.out.println("      - " + convertToHexColor(oldColor) + " → " + convertToHexColor(newColor));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void compareStrokes(JsonNode oldStrokes, JsonNode newStrokes) {
+        if (oldStrokes.isArray() && newStrokes.isArray()) {
+            int maxSize = Math.max(oldStrokes.size(), newStrokes.size());
+            for (int i = 0; i < maxSize; i++) {
+                if (i < oldStrokes.size() && i < newStrokes.size()) {
+                    JsonNode oldStroke = oldStrokes.get(i);
+                    JsonNode newStroke = newStrokes.get(i);
+                    if (!oldStroke.equals(newStroke)) {
+                        JsonNode oldColor = oldStroke.path("color");
+                        JsonNode newColor = newStroke.path("color");
+                        if (!oldColor.isMissingNode() && !newColor.isMissingNode()) {
+                            System.out.println("      - " + convertToHexColor(oldColor) + " → " + convertToHexColor(newColor));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void compareBackground(JsonNode oldBackground, JsonNode newBackground) {
+        if (oldBackground.isArray() && newBackground.isArray()) {
+            int maxSize = Math.max(oldBackground.size(), newBackground.size());
+            for (int i = 0; i < maxSize; i++) {
+                if (i < oldBackground.size() && i < newBackground.size()) {
+                    JsonNode oldBg = oldBackground.get(i);
+                    JsonNode newBg = newBackground.get(i);
+                    if (!oldBg.equals(newBg)) {
+                        JsonNode oldColor = oldBg.path("color");
+                        JsonNode newColor = newBg.path("color");
+                        if (!oldColor.isMissingNode() && !newColor.isMissingNode()) {
+                            System.out.println("      - " + convertToHexColor(oldColor) + " → " + convertToHexColor(newColor));
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private String convertToHexColor(JsonNode colorNode) {
