@@ -1,0 +1,61 @@
+📌 비교 결과 요약:
+ - 추가된 항목 수 = 0
+ - 삭제된 항목 수 = 0
+ - 수정된 항목 수 = 18
+
+📌 수정된 항목:
+* Type: INSTANCE Name: icon16
+  - 위치 변경: (1340.0, 300.0) → (1221.0, 300.0)
+
+* Type: TEXT Name: 버튼 Value: 삭제
+  - 위치 변경: (1328.3, 303.5) → (1236.1, 303.5)
+
+* Type: INSTANCE Name: icon16
+  - 위치 변경: (1310.0, 300.0) → (1191.0, 300.0)
+
+* Type: Button Name: Button Value: 퇴록
+  - 위치 변경: (1400.5, 292.0) → (1346.8, 292.0)
+
+* Type: Button Name: Button Value: 삭제
+  - 위치 변경: (1300.0, 292.0) → (1181.0, 292.0)
+
+* Type: GROUP Name: Group 815468
+  - 위치 변경: (1300.0, 292.0) → (1181.0, 292.0)
+
+* Type: RECTANGLE Name: Rectangle 97
+  - 위치 변경: (1340.0, 300.0) → (1221.0, 300.0)
+
+* Type: RECTANGLE Name: Rectangle 98
+  - 위치 변경: (1342.0, 302.0) → (1223.0, 302.0)
+
+* Type: Button Name: Button Value: 초기화
+  - 배경색: #F6BBBB → #72EEC7
+  - 배경: #F6BBBB → #72EEC7
+
+* Type: RECTANGLE Name: Rectangle 98
+  - 위치 변경: (1412.5, 302.0) → (1358.8, 302.0)
+
+* Type: RECTANGLE Name: Rectangle 97
+  - 위치 변경: (1410.5, 300.0) → (1356.8, 300.0)
+
+* Type: TEXT Name: 버튼 Value: 퇴록
+  - 위치 변경: (1428.7, 303.5) → (1401.9, 303.5)
+
+* Type: INSTANCE Name: icon16
+  - 위치 변경: (1440.5, 300.0) → (1386.8, 300.0)
+
+* Type: INSTANCE Name: icon16
+  - 위치 변경: (1410.5, 300.0) → (1356.8, 300.0)
+
+* Type: RECTANGLE Name: Rectangle 98
+  - 위치 변경: (1312.0, 302.0) → (1193.0, 302.0)
+
+* Type: RECTANGLE Name: Rectangle 97
+  - 위치 변경: (1310.0, 300.0) → (1191.0, 300.0)
+
+* Type: RECTANGLE Name: Rectangle 97
+  - 위치 변경: (1440.5, 300.0) → (1386.8, 300.0)
+
+* Type: RECTANGLE Name: Rectangle 98
+  - 위치 변경: (1442.5, 302.0) → (1388.8, 302.0)
+
