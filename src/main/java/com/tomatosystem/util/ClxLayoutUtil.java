@@ -29,6 +29,7 @@ public class ClxLayoutUtil {
         sb.append("    <cl:appspec/>\n");
         sb.append("  </head>\n");
         sb.append("  <body std:sid=\"body-64c95367\" class=\"content-wrapper\">\n");
+        sb.append("  <cl:verticallayout std:sid=\"v-layout-78e61a9f\"/>\n");
 
         // Figma JSON 계층 순회 (CANVAS/FRAME/GROUP 등 중간 계층 모두 재귀)
         Map<String, Object> document = (Map<String, Object>) figmaJson.get("document");
