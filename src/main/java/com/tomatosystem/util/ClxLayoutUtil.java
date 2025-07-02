@@ -66,6 +66,17 @@ public class ClxLayoutUtil {
                 sb.append(indent).append("</cl:group>\n");
                 return;
             }
+            // 그룹/섹션별 verticaldata(높이/폭) 출력
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            if (height != null || width != null) {
+                sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
+                if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
+                if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
+                sb.append(" autosize=\"");
+                sb.append((height != null) ? "height" : (width != null) ? "width" : "none");
+                sb.append("\"/>\n");
+            }
             // 중첩 최소화: 자식이 1개면 group/formlayout 감싸지 않고 바로 출력
             if (children.size() == 1 && children.get(0).get("children") == null) {
                 convertLeafWithFormdata(sb, children.get(0), depth, 0, 0);
@@ -86,6 +97,8 @@ public class ClxLayoutUtil {
                 int tolerance = 10;
                 List<List<Map<String, Object>>> rows = new ArrayList<>();
                 List<Double> rowYs = new ArrayList<>();
+                List<List<Double>> rowHeights = new ArrayList<>();
+                List<List<Double>> colWidths = new ArrayList<>();
                 for (Map<String, Object> item : all) {
                     Double y = getY(item);
                     boolean placed = false;
@@ -106,11 +119,46 @@ public class ClxLayoutUtil {
                 for (List<Map<String, Object>> row : rows) {
                     row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
                 }
-                int rowCount = rows.size();
+                // 행/열별 크기 추정
+                List<Double> rowHeightsList = new ArrayList<>();
+                List<Double> colWidthsList = new ArrayList<>();
+                for (List<Map<String, Object>> row : rows) {
+                    double maxH = 0;
+                    for (Map<String, Object> item : row) {
+                        Double h = getHeight(item);
+                        if (h != null && h > maxH) maxH = h;
+                    }
+                    rowHeightsList.add(maxH);
+                }
                 int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
+                for (int c = 0; c < colCount; c++) {
+                    double maxW = 0;
+                    for (List<Map<String, Object>> row : rows) {
+                        if (c < row.size()) {
+                            Double w = getWidth(row.get(c));
+                            if (w != null && w > maxW) maxW = w;
+                        }
+                    }
+                    colWidthsList.add(maxW);
+                }
+                int rowCount = rows.size();
                 sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
-                sb.append(indent).append("    <cl:rows length=\"").append(rowCount).append("\" unit=\"FRACTION\"/>\n");
-                sb.append(indent).append("    <cl:columns length=\"").append(colCount).append("\" unit=\"FRACTION\"/>\n");
+                // 행 크기: 40px 이상이면 PIXEL, 아니면 FRACTION
+                for (Double h : rowHeightsList) {
+                    if (h != null && h >= 40) {
+                        sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                    } else {
+                        sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
+                    }
+                }
+                // 열 크기: 80px 이상이면 PIXEL, 아니면 FRACTION
+                for (Double w : colWidthsList) {
+                    if (w != null && w >= 80) {
+                        sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                    } else {
+                        sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
+                    }
+                }
                 sb.append(indent).append("  </cl:formlayout>\n");
                 for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
                     List<Map<String, Object>> row = rows.get(rowIdx);
@@ -146,6 +194,18 @@ public class ClxLayoutUtil {
         Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
         if (box != null && box.get("x") != null) return ((Number) box.get("x")).doubleValue();
         return 0.0;
+    }
+
+    // 높이/폭 추출 유틸
+    private static Double getHeight(Map<String, Object> node) {
+        Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
+        if (box != null && box.get("height") != null) return ((Number) box.get("height")).doubleValue();
+        return null;
+    }
+    private static Double getWidth(Map<String, Object> node) {
+        Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
+        if (box != null && box.get("width") != null) return ((Number) box.get("width")).doubleValue();
+        return null;
     }
 
     // leaf 노드 변환 (폼/버티컬/버튼 등) + formdata
