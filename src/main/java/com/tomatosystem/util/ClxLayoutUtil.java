@@ -54,11 +54,16 @@ public class ClxLayoutUtil {
     private static void traverseFigmaNode(StringBuilder sb, Map<String, Object> node, int depth) {
         String type = (String) node.get("type");
         List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
-        // CANVAS/FRAME/GROUP 등은 내부 children 재귀
-        if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null) {
+        String indent = "    ".repeat(depth);
+        // CANVAS/FRAME/GROUP 등은 내부 children을 그룹핑하여 변환
+        if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
+            // 그룹핑: <cl:group> 또는 <cl:verticallayout> 사용
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+            sb.append(indent).append("  <cl:verticallayout std:sid=\"v-layout-").append(genId()).append("\" spacing=\"12\"/>\n");
             for (Map<String, Object> child : children) {
-                traverseFigmaNode(sb, child, depth + 1);
+                traverseFigmaNode(sb, child, depth + 2);
             }
+            sb.append(indent).append("</cl:group>\n");
             return;
         }
         // leaf 노드(텍스트, 인풋 등)는 폼/버티컬/버튼 등으로 변환
