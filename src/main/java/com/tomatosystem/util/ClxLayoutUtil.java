@@ -81,7 +81,7 @@ public class ClxLayoutUtil {
         // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 생성
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
             // <cl:group> 생성 (루트 또는 그룹핑 필요시)
-            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\");
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\"");
             // class/id 매핑
             if (name != null && !name.isEmpty()) {
                 sb.append(" class=\"").append(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()).append("\"");
