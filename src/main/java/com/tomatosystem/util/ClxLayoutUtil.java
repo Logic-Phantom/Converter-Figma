@@ -88,8 +88,7 @@ public class ClxLayoutUtil {
             sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
             if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
             if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append("/>");
-            sb.append("\n");
+            sb.append("/>\n");
             // row/col 그룹핑
             int tolerance = 20; // px
             List<List<Map<String, Object>>> rows = new ArrayList<>();
@@ -138,7 +137,7 @@ public class ClxLayoutUtil {
                 }
                 colWidthsList.add(maxW);
             }
-            // <cl:formlayout> 한 번만 생성
+            // <cl:formlayout> 한 번만 생성, rows/columns/컨트롤/그룹 모두 내부에만
             sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
             for (Double h : rowHeightsList) {
                 if (h != null && h >= 40) {
@@ -154,7 +153,7 @@ public class ClxLayoutUtil {
                     sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
                 }
             }
-            // 컨트롤 배치: <cl:formdata row=... col=...>는 leaf 컨트롤에만
+            // 컨트롤 배치: <cl:formdata row=... col=...>는 leaf 컨트롤에만, 그룹도 formlayout 내부에만
             for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
                 List<Map<String, Object>> row = rows.get(rowIdx);
                 for (int colIdx = 0; colIdx < row.size(); colIdx++) {
@@ -162,7 +161,7 @@ public class ClxLayoutUtil {
                     if (item.get("children") == null) {
                         convertLeafWithFormdata(sb, item, depth + 2, rowIdx, colIdx);
                     } else {
-                        // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 중첩 허용
+                        // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 중첩 허용 (formlayout 내부에서만)
                         traverseFigmaNode(sb, item, depth + 2);
                     }
                 }
