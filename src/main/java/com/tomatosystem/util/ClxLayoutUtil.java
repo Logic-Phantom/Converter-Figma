@@ -99,12 +99,10 @@ public class ClxLayoutUtil {
             sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
             if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
             if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append("/>");
-            sb.append("\n");
+            sb.append("/>\n");
             String titleText = findFirstTextValue(node);
             if (titleText != null && !titleText.isEmpty()) {
-                sb.append(indent).append("  <cl:property name=\"title\" value=\"").append(escapeXml(titleText)).append("\" type=\"string\"/>");
-                sb.append("\n");
+                sb.append(indent).append("  <cl:property name=\"title\" value=\"").append(escapeXml(titleText)).append("\" type=\"string\"/>\n");
             }
             sb.append(indent).append("</cl:udc>\n");
             return;
