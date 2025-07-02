@@ -83,6 +83,11 @@ public class ClxLayoutUtil {
         }
     }
 
+    // 그룹 타입 판별
+    private static boolean isGroupType(String type) {
+        return "CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type);
+    }
+
     // 중간 계층(CANVAS/FRAME/GROUP 등) 재귀 순회
     private static void traverseFigmaNode(StringBuilder sb, Map<String, Object> node, int depth) {
         String type = (String) node.get("type");
@@ -90,7 +95,7 @@ public class ClxLayoutUtil {
         List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
         String indent = "    ".repeat(depth);
 
-        // UDC 헤더 처리: FRAME이고 이름에 title이 포함된 경우
+        // UDC 헤더 처리
         if ("FRAME".equalsIgnoreCase(type) && name.toLowerCase().contains("title")) {
             String udcId = "ud-control-" + genId();
             sb.append(indent).append("<cl:udc std:sid=\"").append(udcId).append("\" id=\"udcComAppHeader\" type=\"udc.udcComAppHeader\">\n");
@@ -108,8 +113,8 @@ public class ClxLayoutUtil {
             return;
         }
 
-        // group은 CANVAS/FRAME만 생성
-        if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
+        // 실제로 그룹핑이 필요한 경우만 group 생성
+        if ((isGroupType(type)) && children != null && !children.isEmpty()) {
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\"");
             if (name != null && !name.isEmpty()) {
                 sb.append(" class=\"").append(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()).append("\"");
@@ -123,32 +128,17 @@ public class ClxLayoutUtil {
               .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
               .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
               .append("/>\n");
-            boolean udcCreated = false;
             for (Map<String, Object> child : children) {
-                String childType = (String) child.get("type");
-                String childName = (String) child.getOrDefault("name", "");
-                if (!udcCreated && "FRAME".equalsIgnoreCase(childType) && childName.toLowerCase().contains("title")) {
-                    traverseFigmaNode(sb, child, depth + 1);
-                    udcCreated = true;
-                } else if (!("FRAME".equalsIgnoreCase(childType) && childName.toLowerCase().contains("title"))) {
-                    traverseFigmaNode(sb, child, depth + 1);
-                }
+                traverseFigmaNode(sb, child, depth + 1);
             }
             sb.append(indent).append("</cl:group>\n");
             return;
         }
 
-        // children이 모두 leaf(컨트롤)이고 2개 이상이며, 실제 row/col 그리드가 필요한 경우에만 formlayout 생성
+        // formlayout: leaf가 2개 이상, 실제 행/열 배치가 필요한 경우만
         if (children != null && !children.isEmpty()) {
-            boolean allLeaf = true;
-            for (Map<String, Object> child : children) {
-                if (child.get("children") != null) {
-                    allLeaf = false;
-                    break;
-                }
-            }
+            boolean allLeaf = children.stream().allMatch(child -> child.get("children") == null);
             if (allLeaf && children.size() > 1) {
-                // formlayout 1회만 생성, 그 안에 컨트롤+formdata만 나열
                 int tolerance = 20; // px
                 List<List<Map<String, Object>>> rows = new ArrayList<>();
                 List<Double> rowYs = new ArrayList<>();
@@ -220,7 +210,6 @@ public class ClxLayoutUtil {
                 sb.append(indent).append("</cl:formlayout>\n");
                 return;
             } else {
-                // 컨트롤만 나열 (formlayout 없이)
                 for (Map<String, Object> child : children) {
                     if (child.get("children") == null) {
                         convertLeaf(sb, child, depth + 1);
@@ -231,7 +220,6 @@ public class ClxLayoutUtil {
                 return;
             }
         }
-        // leaf 컨트롤 처리 (formlayout 내부에서만 호출됨)
         convertLeaf(sb, node, depth);
     }
 
@@ -278,37 +266,81 @@ public class ClxLayoutUtil {
         return null;
     }
 
-    // leaf 노드 변환 (폼/버티컬/버튼 등) + formdata (항상 포함)
+    // leaf 노드 변환 (formlayout 내부)
     private static void convertLeafWithFormdata(StringBuilder sb, Map<String, Object> node, int depth, int row, int col) {
         String type = (String) node.get("type");
         String name = (String) node.getOrDefault("name", "");
         String indent = "    ".repeat(depth);
         String formdata = "<cl:formdata std:sid=\"f-data-" + genId() + "\" row=\"" + row + "\" col=\"" + col + "\"/>";
-        // leaf 컨트롤만 <cl:formdata>와 함께 출력
         if ("TEXT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
+            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" value=\"")
               .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:output>\n");
         } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:inputbox>\n");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:dateinput>\n");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:combobox>\n");
-        } else if ("BUTTON".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
-              .append(escapeXml(name)).append("\">\n");
+        } else if ("SEARCHINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:button>\n");
+            sb.append(indent).append("</cl:searchinput>\n");
+        } else if ("RADIOBUTTON".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:radiobutton>\n");
+        } else if ("CHECKBOXGROUP".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:checkboxgroup>\n");
+        } else if ("GRID".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:grid>\n");
         } else {
-            // 기타 컨트롤은 기존 방식대로 처리
+            writeControlXml(sb, node, depth);
+        }
+    }
+
+    // leaf 노드 변환 (formlayout 외부)
+    private static void convertLeaf(StringBuilder sb, Map<String, Object> node, int depth) {
+        String type = (String) node.get("type");
+        String name = (String) node.getOrDefault("name", "");
+        String indent = "    ".repeat(depth);
+        if ("TEXT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" value=\"")
+              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>
+");
+        } else if ("INPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\"/>
+");
+        } else if ("DATEINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\"/>
+");
+        } else if ("COMBOBOX".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\"/>
+");
+        } else if ("SEARCHINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\"/>
+");
+        } else if ("RADIOBUTTON".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\"/>
+");
+        } else if ("CHECKBOXGROUP".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\"/>
+");
+        } else if ("GRID".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\"/>
+");
+        } else {
             writeControlXml(sb, node, depth);
         }
     }
@@ -318,52 +350,6 @@ public class ClxLayoutUtil {
         writeControlXml(sb, node, depth, (String) node.get("type"), (String) node.getOrDefault("name", ""));
     }
     private static void writeControlXml(StringBuilder sb, Map<String, Object> node, int depth, String type, String name) {
-        String indent = "    ".repeat(depth);
-        // INSTANCE 타입 매핑
-        if ("INSTANCE".equalsIgnoreCase(type)) {
-            String lowerName = name.toLowerCase();
-            if (lowerName.contains("button")) type = "BUTTON";
-            else if (lowerName.contains("input")) type = "INPUT";
-            else if (lowerName.contains("combobox")) type = "COMBOBOX";
-            else if (lowerName.contains("date")) type = "DATEINPUT";
-            else if (lowerName.contains("radio")) return;
-        }
-        if ("TEXT".equalsIgnoreCase(type)) {
-            sb.append(indent)
-              .append("<cl:output std:sid=\"output-").append(genId())
-              .append("\" id=\"opt-").append(genId())
-              .append("\" value=\"")
-              .append(escapeXml((String) node.getOrDefault("characters", "")))
-              .append("\"/>\n");
-        } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent)
-              .append("<cl:inputbox std:sid=\"i-box-").append(genId())
-              .append("\" id=\"ipb-").append(genId())
-              .append("\"/>\n");
-        } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent)
-              .append("<cl:dateinput std:sid=\"d-input-").append(genId())
-              .append("\" id=\"dti-").append(genId())
-              .append("\"/>\n");
-        } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent)
-              .append("<cl:combobox std:sid=\"c-box-").append(genId())
-              .append("\" id=\"cmb-").append(genId())
-              .append("\"/>\n");
-        } else if ("BUTTON".equalsIgnoreCase(type)) {
-            sb.append(indent)
-              .append("<cl:button std:sid=\"button-").append(genId())
-              .append("\" id=\"btn-").append(genId())
-              .append("\" value=\"")
-              .append(escapeXml(name))
-              .append("\"/>\n");
-        }
-    }
-
-    // leaf 노드 변환 (폼/버티컬/버튼 등)
-    private static void convertLeaf(StringBuilder sb, Map<String, Object> node, int depth) {
-        String type = (String) node.get("type");
-        String name = (String) node.getOrDefault("name", "");
         String indent = "    ".repeat(depth);
         // INSTANCE 타입 매핑
         if ("INSTANCE".equalsIgnoreCase(type)) {
