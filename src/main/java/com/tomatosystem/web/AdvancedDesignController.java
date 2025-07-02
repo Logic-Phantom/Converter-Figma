@@ -48,4 +48,38 @@ public class AdvancedDesignController {
             return ResponseEntity.internalServerError().body("오류: " + e.getMessage());
         }
     }
+
+    @RequestMapping("/convertFigmaToFormClx.do")
+    public ResponseEntity<String> convertFigmaToFormClx(String token, String fileKey, String outputPath) {
+        try {
+            // Figma API에서 JSON fetch
+            String url = "https://api.figma.com/v1/files/" + fileKey;
+            Map<String, Object> figmaJson = fetchFigmaData(url, token);
+            // 변환
+            String clxXml = com.tomatosystem.util.ClxLayoutUtil.convertFigmaJsonToClxXml(figmaJson);
+            com.tomatosystem.util.ClxLayoutUtil.saveClxToFile(clxXml, outputPath);
+            return ResponseEntity.ok("변환 완료: " + outputPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("오류: " + e.getMessage());
+        }
+    }
+
+    // fetchFigmaData 재사용
+    private Map<String, Object> fetchFigmaData(String url, String token) {
+        org.apache.http.client.methods.HttpGet getRequest = new org.apache.http.client.methods.HttpGet(url);
+        getRequest.addHeader("X-Figma-Token", token);
+        try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault();
+             org.apache.http.client.methods.CloseableHttpResponse response = client.execute(getRequest)) {
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String body = org.apache.http.util.EntityUtils.toString(response.getEntity());
+                com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                return objectMapper.readValue(body, Map.class);
+            } else {
+                throw new RuntimeException("Figma API 호출 실패: " + response.getStatusLine());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Figma 데이터 가져오기 실패", e);
+        }
+    }
 } 
