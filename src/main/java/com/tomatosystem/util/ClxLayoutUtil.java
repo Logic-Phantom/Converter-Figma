@@ -317,29 +317,21 @@ public class ClxLayoutUtil {
         String indent = "    ".repeat(depth);
         if ("TEXT".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" value=\"")
-              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>
-");
+              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>\n");
         } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\"/>
-");
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\"/>\n");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\"/>
-");
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\"/>\n");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\"/>
-");
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\"/>\n");
         } else if ("SEARCHINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\"/>
-");
+            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\"/>\n");
         } else if ("RADIOBUTTON".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\"/>
-");
+            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\"/>\n");
         } else if ("CHECKBOXGROUP".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\"/>
-");
+            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\"/>\n");
         } else if ("GRID".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\"/>
-");
+            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\"/>\n");
         } else {
             writeControlXml(sb, node, depth);
         }
