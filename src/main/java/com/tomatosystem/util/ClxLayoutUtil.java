@@ -137,7 +137,7 @@ public class ClxLayoutUtil {
                 }
                 colWidthsList.add(maxW);
             }
-            // <cl:formlayout> 한 번만 생성, rows/columns/컨트롤/그룹 모두 내부에만
+            // <cl:formlayout> 한 번만 생성, rows/columns/컨트롤만 내부에, 그룹은 바깥에
             sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
             for (Double h : rowHeightsList) {
                 if (h != null && h >= 40) {
@@ -153,7 +153,8 @@ public class ClxLayoutUtil {
                     sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
                 }
             }
-            // 컨트롤 배치: <cl:formdata row=... col=...>는 leaf 컨트롤에만, 그룹도 formlayout 내부에만
+            // 컨트롤 배치: <cl:formdata row=... col=...>는 leaf 컨트롤만, 그룹은 formlayout 바깥에
+            List<Map<String, Object>> groupChildren = new ArrayList<>();
             for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
                 List<Map<String, Object>> row = rows.get(rowIdx);
                 for (int colIdx = 0; colIdx < row.size(); colIdx++) {
@@ -161,12 +162,15 @@ public class ClxLayoutUtil {
                     if (item.get("children") == null) {
                         convertLeafWithFormdata(sb, item, depth + 2, rowIdx, colIdx);
                     } else {
-                        // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 중첩 허용 (formlayout 내부에서만)
-                        traverseFigmaNode(sb, item, depth + 2);
+                        groupChildren.add(item); // 그룹은 formlayout 바깥에 따로 처리
                     }
                 }
             }
             sb.append(indent).append("  </cl:formlayout>\n");
+            // formlayout 바깥에 그룹들 생성
+            for (Map<String, Object> groupChild : groupChildren) {
+                traverseFigmaNode(sb, groupChild, depth + 1);
+            }
             sb.append(indent).append("</cl:group>\n");
             return;
         }
