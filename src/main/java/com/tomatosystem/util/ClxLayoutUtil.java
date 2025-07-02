@@ -232,28 +232,70 @@ public class ClxLayoutUtil {
         String name = (String) node.getOrDefault("name", "");
         String indent = "    ".repeat(depth);
         String formdata = "<cl:formdata std:sid=\"f-data-" + genId() + "\" row=\"" + row + "\" col=\"" + col + "\"/>";
+        Double height = getHeight(node);
+        Double width = getWidth(node);
+        boolean needsGroup = (height != null || width != null);
+        if (needsGroup) {
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
+            if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
+            if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
+            sb.append(" autosize=\"none\"/>");
+            sb.append("\n");
+            // 실제 컨트롤
+            writeControlXml(sb, node, depth + 1);
+            sb.append(indent).append("</cl:group>\n");
+        } else {
+            // 단순 컨트롤: formdata + 컨트롤
+            if ("TEXT".equalsIgnoreCase(type)) {
+                sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
+                  .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
+                sb.append(indent).append("  ").append(formdata).append("\n");
+                sb.append(indent).append("</cl:output>\n");
+            } else if ("INPUT".equalsIgnoreCase(type)) {
+                sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\">\n");
+                sb.append(indent).append("  ").append(formdata).append("\n");
+                sb.append(indent).append("</cl:inputbox>\n");
+            } else if ("DATEINPUT".equalsIgnoreCase(type)) {
+                sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\">\n");
+                sb.append(indent).append("  ").append(formdata).append("\n");
+                sb.append(indent).append("</cl:dateinput>\n");
+            } else if ("COMBOBOX".equalsIgnoreCase(type)) {
+                sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\">\n");
+                sb.append(indent).append("  ").append(formdata).append("\n");
+                sb.append(indent).append("</cl:combobox>\n");
+            } else if ("BUTTON".equalsIgnoreCase(type)) {
+                sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
+                  .append(escapeXml(name)).append("\">\n");
+                sb.append(indent).append("  ").append(formdata).append("\n");
+                sb.append(indent).append("</cl:button>\n");
+            }
+        }
+    }
+
+    // 실제 컨트롤 XML만 출력 (formdata/verticaldata 없이)
+    private static void writeControlXml(StringBuilder sb, Map<String, Object> node, int depth) {
+        String type = (String) node.get("type");
+        String name = (String) node.getOrDefault("name", "");
+        String indent = "    ".repeat(depth);
         if ("TEXT".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
-              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
-            sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:output>\n");
+              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>
+");
         } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\">\n");
-            sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:inputbox>\n");
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\"/>
+");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\">\n");
-            sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:dateinput>\n");
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\"/>
+");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\">\n");
-            sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:combobox>\n");
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\"/>
+");
         } else if ("BUTTON".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
-              .append(escapeXml(name)).append("\">\n");
-            sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:button>\n");
+              .append(escapeXml(name)).append("\"/>
+");
         }
     }
 
