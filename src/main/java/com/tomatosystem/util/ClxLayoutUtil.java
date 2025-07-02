@@ -55,19 +55,117 @@ public class ClxLayoutUtil {
         String type = (String) node.get("type");
         List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
         String indent = "    ".repeat(depth);
-        // CANVAS/FRAME/GROUP 등은 내부 children을 그룹핑하여 변환
+        boolean isRoot = depth == 2; // body 바로 아래면 루트
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
-            // 그룹핑: <cl:group> 또는 <cl:verticallayout> 사용
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-            sb.append(indent).append("  <cl:verticallayout std:sid=\"v-layout-").append(genId()).append("\" spacing=\"12\"/>\n");
-            for (Map<String, Object> child : children) {
-                traverseFigmaNode(sb, child, depth + 2);
+            if (isRoot) {
+                sb.append(indent).append("  <cl:verticallayout std:sid=\"v-layout-").append(genId()).append("\" spacing=\"12\"/>\n");
+                for (Map<String, Object> child : children) {
+                    traverseFigmaNode(sb, child, depth + 2);
+                }
+            } else {
+                // --- 폼 레이아웃: y좌표로 행, x좌표로 열 배치 ---
+                // 1. 좌표 추출 및 그룹핑
+                List<Map<String, Object>> leafs = new ArrayList<>();
+                for (Map<String, Object> child : children) {
+                    if (child.get("children") == null) leafs.add(child);
+                }
+                // tolerance: 같은 행으로 묶을 y 오차(px)
+                int tolerance = 10;
+                // y좌표 기준 그룹핑
+                List<List<Map<String, Object>>> rows = new ArrayList<>();
+                List<Double> rowYs = new ArrayList<>();
+                for (Map<String, Object> leaf : leafs) {
+                    Double y = getY(leaf);
+                    boolean placed = false;
+                    for (int i = 0; i < rowYs.size(); i++) {
+                        if (Math.abs(rowYs.get(i) - y) <= tolerance) {
+                            rows.get(i).add(leaf);
+                            placed = true;
+                            break;
+                        }
+                    }
+                    if (!placed) {
+                        rowYs.add(y);
+                        List<Map<String, Object>> newRow = new ArrayList<>();
+                        newRow.add(leaf);
+                        rows.add(newRow);
+                    }
+                }
+                // 각 행 내 x좌표 정렬
+                for (List<Map<String, Object>> row : rows) {
+                    row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
+                }
+                int rowCount = rows.size();
+                int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
+                // formlayout, rows, columns 태그 생성
+                sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+                sb.append(indent).append("    <cl:rows length=\"").append(rowCount).append("\" unit=\"FRACTION\"/>\n");
+                sb.append(indent).append("    <cl:columns length=\"").append(colCount).append("\" unit=\"FRACTION\"/>\n");
+                sb.append(indent).append("  </cl:formlayout>\n");
+                // 컨트롤 배치
+                for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
+                    List<Map<String, Object>> row = rows.get(rowIdx);
+                    for (int colIdx = 0; colIdx < row.size(); colIdx++) {
+                        Map<String, Object> leaf = row.get(colIdx);
+                        convertLeafWithFormdata(sb, leaf, depth + 1, rowIdx, colIdx);
+                    }
+                }
+                // 하위에 또 그룹/프레임이 있으면 재귀
+                for (Map<String, Object> child : children) {
+                    if (child.get("children") != null) {
+                        traverseFigmaNode(sb, child, depth + 2);
+                    }
+                }
             }
             sb.append(indent).append("</cl:group>\n");
             return;
         }
         // leaf 노드(텍스트, 인풋 등)는 폼/버티컬/버튼 등으로 변환
         convertLeaf(sb, node, depth);
+    }
+
+    // 좌표 추출 유틸
+    private static Double getY(Map<String, Object> node) {
+        Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
+        if (box != null && box.get("y") != null) return ((Number) box.get("y")).doubleValue();
+        return 0.0;
+    }
+    private static Double getX(Map<String, Object> node) {
+        Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
+        if (box != null && box.get("x") != null) return ((Number) box.get("x")).doubleValue();
+        return 0.0;
+    }
+
+    // leaf 노드 변환 (폼/버티컬/버튼 등) + formdata
+    private static void convertLeafWithFormdata(StringBuilder sb, Map<String, Object> node, int depth, int row, int col) {
+        String type = (String) node.get("type");
+        String name = (String) node.getOrDefault("name", "");
+        String indent = "    ".repeat(depth);
+        String formdata = "<cl:formdata std:sid=\"f-data-" + genId() + "\" row=\"" + row + "\" col=\"" + col + "\"/>";
+        if ("TEXT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
+              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:output>)\n");
+        } else if ("INPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:inputbox>)\n");
+        } else if ("DATEINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:dateinput>)\n");
+        } else if ("COMBOBOX".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:combobox>)\n");
+        } else if ("BUTTON".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
+              .append(escapeXml(name)).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:button>)\n");
+        }
     }
 
     // leaf 노드 변환 (폼/버티컬/버튼 등)
