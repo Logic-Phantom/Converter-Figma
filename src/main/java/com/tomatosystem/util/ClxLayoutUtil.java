@@ -167,7 +167,7 @@ public class ClxLayoutUtil {
                 }
                 colWidthsList.add(maxW);
             }
-            // group + 컨트롤 + formlayout 구조
+            // group + verticaldata + formlayout 구조 (컨트롤/폼데이터 없음)
             String groupId = "grp-" + genId();
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
             if (name != null && !name.isEmpty()) {
@@ -182,13 +182,6 @@ public class ClxLayoutUtil {
               .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
               .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
               .append("/>\n");
-            for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
-                List<Map<String, Object>> row = rows.get(rowIdx);
-                for (int colIdx = 0; colIdx < row.size(); colIdx++) {
-                    Map<String, Object> item = row.get(colIdx);
-                    convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
-                }
-            }
             sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
             for (Double h : rowHeightsList) {
                 if (h != null && h >= 40) {
