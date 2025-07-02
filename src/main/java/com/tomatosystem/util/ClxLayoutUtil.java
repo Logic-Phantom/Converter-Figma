@@ -88,7 +88,8 @@ public class ClxLayoutUtil {
             sb.append(indent).append("</cl:udc>\n");
             return;
         }
-        // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 생성
+
+        // 그룹핑이 필요한 경우만 <cl:group> 생성
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
             // <cl:group> 생성
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\"");
@@ -96,7 +97,7 @@ public class ClxLayoutUtil {
                 sb.append(" class=\"").append(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()).append("\"");
             }
             sb.append(">\n");
-            // verticaldata
+            // verticaldata/attribute at the top
             Double height = getHeight(node);
             Double width = getWidth(node);
             sb.append(indent)
@@ -105,7 +106,6 @@ public class ClxLayoutUtil {
               .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
               .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
               .append("/>\n");
-            // attribute 예시: name에 'search' 포함시 search-box 등
             if (name.toLowerCase().contains("search")) {
                 sb.append(indent).append("  <cl:attribute name=\"mobile-column-count\" value=\"2\"/>\n");
                 sb.append(indent).append("  <cl:attribute name=\"tablet-column-count\" value=\"2\"/>\n");
@@ -158,16 +158,16 @@ public class ClxLayoutUtil {
                 }
                 colWidthsList.add(maxW);
             }
-            // formlayout 필요 여부: leaf 컨트롤이 하나라도 있으면 생성
-            boolean hasLeaf = false;
-            List<Map<String, Object>> groupChildren = new ArrayList<>();
+            // formlayout 필요 여부: 2개 이상 row/col이 있으면 생성
+            boolean needsFormlayout = false;
+            int leafCount = 0;
             for (List<Map<String, Object>> row : rows) {
                 for (Map<String, Object> item : row) {
-                    if (item.get("children") == null) hasLeaf = true;
-                    else groupChildren.add(item);
+                    if (item.get("children") == null) leafCount++;
                 }
             }
-            if (hasLeaf) {
+            if (rows.size() > 1 || colCount > 1) needsFormlayout = true;
+            if (needsFormlayout && leafCount > 0) {
                 sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
                 for (Double h : rowHeightsList) {
                     if (h != null && h >= 40) {
@@ -193,10 +193,17 @@ public class ClxLayoutUtil {
                     }
                 }
                 sb.append(indent).append("  </cl:formlayout>\n");
-            }
-            // formlayout 바깥에 그룹들 생성 (중첩 group)
-            for (Map<String, Object> groupChild : groupChildren) {
-                traverseFigmaNode(sb, groupChild, depth + 1);
+            } else {
+                // formlayout 없이 그룹 내 컨트롤/그룹 재귀 출력
+                for (List<Map<String, Object>> row : rows) {
+                    for (Map<String, Object> item : row) {
+                        if (item.get("children") == null) {
+                            convertLeaf(sb, item, depth + 1);
+                        } else {
+                            traverseFigmaNode(sb, item, depth + 1);
+                        }
+                    }
+                }
             }
             sb.append(indent).append("</cl:group>\n");
             return;
