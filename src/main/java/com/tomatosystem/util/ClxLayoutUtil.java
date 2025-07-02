@@ -53,52 +53,44 @@ public class ClxLayoutUtil {
     // 중간 계층(CANVAS/FRAME/GROUP 등) 재귀 순회
     private static void traverseFigmaNode(StringBuilder sb, Map<String, Object> node, int depth) {
         String type = (String) node.get("type");
+        String name = (String) node.getOrDefault("name", "");
         List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
         String indent = "    ".repeat(depth);
         boolean isRoot = depth == 2; // body 바로 아래면 루트
+
+        // UDC 헤더 처리: FRAME이고 이름에 title이 포함된 경우
+        if ("FRAME".equalsIgnoreCase(type) && name.toLowerCase().contains("title")) {
+            String udcId = "ud-control-" + genId();
+            sb.append(indent).append("<cl:udc std:sid=\"").append(udcId).append("\" id=\"udcComAppHeader\" type=\"udc.udcComAppHeader\">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
+            if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
+            if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
+            sb.append(" autosize=\"none\"/>");
+            sb.append("\n");
+            sb.append(indent).append("</cl:udc>\n");
+            return;
+        }
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
             if (isRoot) {
                 sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-                sb.append(indent).append("  <cl:verticallayout std:sid=\"v-layout-").append(genId()).append("\" spacing=\"12\"/>\n");
-                for (Map<String, Object> child : children) {
-                    traverseFigmaNode(sb, child, depth + 2);
+                // verticaldata, etc.
+                Double height = getHeight(node);
+                Double width = getWidth(node);
+                if (height != null || width != null) {
+                    sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
+                    if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
+                    if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
+                    sb.append(" autosize=\"");
+                    sb.append((height != null) ? "height" : (width != null) ? "width" : "none");
+                    sb.append("\"/>\n");
                 }
-                sb.append(indent).append("</cl:group>\n");
-                return;
-            }
-            // 그룹/섹션별 verticaldata(높이/폭) 출력
-            Double height = getHeight(node);
-            Double width = getWidth(node);
-            if (height != null || width != null) {
-                sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
-                if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
-                if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-                sb.append(" autosize=\"");
-                sb.append((height != null) ? "height" : (width != null) ? "width" : "none");
-                sb.append("\"/>\n");
-            }
-            // 중첩 최소화: 자식이 1개면 group/formlayout 감싸지 않고 바로 출력
-            if (children.size() == 1 && children.get(0).get("children") == null) {
-                convertLeafWithFormdata(sb, children.get(0), depth, 0, 0);
-                return;
-            }
-            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-            // leaf와 container 분리
-            List<Map<String, Object>> leafs = new ArrayList<>();
-            List<Map<String, Object>> containers = new ArrayList<>();
-            for (Map<String, Object> child : children) {
-                if (child.get("children") == null) leafs.add(child);
-                else containers.add(child);
-            }
-            List<Map<String, Object>> all = new ArrayList<>();
-            all.addAll(leafs);
-            all.addAll(containers);
-            if (!all.isEmpty()) {
+                // 행/열 추출 및 formlayout 한 번만 생성
                 int tolerance = 10;
                 List<List<Map<String, Object>>> rows = new ArrayList<>();
                 List<Double> rowYs = new ArrayList<>();
-                List<List<Double>> rowHeights = new ArrayList<>();
-                List<List<Double>> colWidths = new ArrayList<>();
+                List<Map<String, Object>> all = new ArrayList<>(children);
                 for (Map<String, Object> item : all) {
                     Double y = getY(item);
                     boolean placed = false;
@@ -141,9 +133,7 @@ public class ClxLayoutUtil {
                     }
                     colWidthsList.add(maxW);
                 }
-                int rowCount = rows.size();
                 sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
-                // 행 크기: 40px 이상이면 PIXEL, 아니면 FRACTION
                 for (Double h : rowHeightsList) {
                     if (h != null && h >= 40) {
                         sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
@@ -151,7 +141,6 @@ public class ClxLayoutUtil {
                         sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
                     }
                 }
-                // 열 크기: 80px 이상이면 PIXEL, 아니면 FRACTION
                 for (Double w : colWidthsList) {
                     if (w != null && w >= 80) {
                         sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
@@ -166,20 +155,25 @@ public class ClxLayoutUtil {
                         Map<String, Object> item = row.get(colIdx);
                         if (item.get("children") == null) {
                             convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
-                        } else if (((List<Map<String, Object>>)item.get("children")).size() == 1 && ((List<Map<String, Object>>)item.get("children")).get(0).get("children") == null) {
-                            convertLeafWithFormdata(sb, ((List<Map<String, Object>>)item.get("children")).get(0), depth + 1, rowIdx, colIdx);
                         } else {
-                            String groupIndent = "    ".repeat(depth + 1);
-                            sb.append(groupIndent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-                            sb.append(groupIndent).append("  <cl:formdata std:sid=\"f-data-").append(genId()).append("\" row=\"").append(rowIdx).append("\" col=\"").append(colIdx).append("\"/>\n");
-                            traverseFigmaNode(sb, item, depth + 2);
-                            sb.append(groupIndent).append("</cl:group>\n");
+                            // 진짜 묶음(컨트롤 번들)만 group+formlayout, 아니면 그냥 컨트롤만
+                            traverseFigmaNode(sb, item, depth + 1);
                         }
                     }
                 }
+                sb.append(indent).append("</cl:group>\n");
+                return;
+            } else {
+                // 내부 그룹/묶음은 group/formlayout을 만들지 않고, 컨트롤만 flat하게 배치
+                for (Map<String, Object> child : children) {
+                    if (child.get("children") == null) {
+                        convertLeafWithFormdata(sb, child, depth, 0, 0); // row/col은 상황에 따라
+                    } else {
+                        traverseFigmaNode(sb, child, depth);
+                    }
+                }
+                return;
             }
-            sb.append(indent).append("</cl:group>\n");
-            return;
         }
         convertLeaf(sb, node, depth);
     }
