@@ -49,8 +49,18 @@ public class ClxLayoutUtil {
         sb.append("  </std:studiosetting>\n");
         sb.append("</html>\n");
         String clxXml = sb.toString();
-        System.out.println(clxXml); // 변환된 XML을 콘솔에 출력 (디버깅용)
+        // 콘솔 출력 대신 txt 파일로 저장
+        saveClxToTxtFile(clxXml, "C:/Users/LCM/git/Converter-Figma/clx-src/convertTest/변환결과.txt");
         return clxXml;
+    }
+
+    // txt 파일로 저장하는 메서드
+    public static void saveClxToTxtFile(String clxXml, String filePath) {
+        try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
+            writer.write(clxXml);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // 중간 계층(CANVAS/FRAME/GROUP 등) 재귀 순회
@@ -59,7 +69,6 @@ public class ClxLayoutUtil {
         String name = (String) node.getOrDefault("name", "");
         List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
         String indent = "    ".repeat(depth);
-        boolean isRoot = depth == 2; // body 바로 아래면 루트
 
         // UDC 헤더 처리: FRAME이고 이름에 title이 포함된 경우
         if ("FRAME".equalsIgnoreCase(type) && name.toLowerCase().contains("title")) {
@@ -81,9 +90,8 @@ public class ClxLayoutUtil {
         }
         // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 생성
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
-            // <cl:group> 생성 (루트 또는 그룹핑 필요시)
+            // <cl:group> 생성
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\"");
-            // class/id 매핑
             if (name != null && !name.isEmpty()) {
                 sb.append(" class=\"").append(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()).append("\"");
             }
@@ -186,14 +194,14 @@ public class ClxLayoutUtil {
                 }
                 sb.append(indent).append("  </cl:formlayout>\n");
             }
-            // formlayout 바깥에 그룹들 생성
+            // formlayout 바깥에 그룹들 생성 (중첩 group)
             for (Map<String, Object> groupChild : groupChildren) {
                 traverseFigmaNode(sb, groupChild, depth + 1);
             }
             sb.append(indent).append("</cl:group>\n");
             return;
         }
-        // leaf 컨트롤 처리
+        // leaf 컨트롤 처리 (formlayout 내부에서만 호출됨)
         convertLeaf(sb, node, depth);
     }
 
