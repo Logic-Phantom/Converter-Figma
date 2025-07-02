@@ -115,8 +115,7 @@ public class ClxLayoutUtil {
                                 // 그룹/컨테이너: formdata 먼저, 그 다음 재귀
                                 String groupIndent = "    ".repeat(depth + 1);
                                 sb.append(groupIndent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-                                sb.append(groupIndent).append("  <cl:formdata std:sid=\"f-data-").append(genId()).append("\" row=\"").append(rowIdx).append("\" col=\"").append(colIdx).append("\"/>
-");
+                                sb.append(groupIndent).append("  <cl:formdata std:sid=\"f-data-").append(genId()).append("\" row=\"").append(rowIdx).append("\" col=\"").append(colIdx).append("\"/>\n");
                                 // 컨테이너 내부 재귀
                                 traverseFigmaNode(sb, item, depth + 2);
                                 sb.append(groupIndent).append("</cl:group>\n");
