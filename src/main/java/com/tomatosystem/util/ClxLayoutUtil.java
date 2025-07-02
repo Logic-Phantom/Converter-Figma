@@ -98,20 +98,17 @@ public class ClxLayoutUtil {
         List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
         String indent = "    ".repeat(depth);
 
-        // UDC 헤더 처리
+        // UDC 헤더 처리 (예: 타이틀)
         if ("FRAME".equalsIgnoreCase(type) && name.toLowerCase().contains("title")) {
             String udcId = "ud-control-" + genId();
-            sb.append(indent).append("<cl:udc std:sid=\"").append(udcId).append("\" id=\"udcComAppHeader\" type=\"udc.udcComAppHeader\">\n");
+            sb.append(indent).append("<cl:udc std:sid=\"").append(udcId).append("\" id=\"udccomappheader1\" type=\"udc.com.udcComAppHeader\">\n");
             Double height = getHeight(node);
             Double width = getWidth(node);
             sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
             if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
             if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append("/>\n");
-            String titleText = findFirstTextValue(node);
-            if (titleText != null && !titleText.isEmpty()) {
-                sb.append(indent).append("  <cl:property name=\"title\" value=\"").append(escapeXml(titleText)).append("\" type=\"string\"/>\n");
-            }
+            sb.append(" autosize=\"height\"/>");
+            sb.append("\n");
             sb.append(indent).append("</cl:udc>\n");
             return;
         }
@@ -119,8 +116,9 @@ public class ClxLayoutUtil {
         // 빈 그룹/레이아웃 생성 방지
         if (children == null || children.isEmpty()) return;
 
-        // formlayout: leaf가 2개 이상, 실제 행/열 배치가 필요한 경우만
+        // 그룹 내 leaf 컨트롤이 여러 개면 formlayout+formdata 구조로 변환
         if (children != null && children.size() > 1 && children.stream().allMatch(child -> child.get("children") == null)) {
+            // 위치(x/y)로 행/열 자동 배치
             int tolerance = 20; // px
             List<List<Map<String, Object>>> rows = new ArrayList<>();
             List<Double> rowYs = new ArrayList<>();
@@ -146,28 +144,8 @@ public class ClxLayoutUtil {
             for (List<Map<String, Object>> row : rows) {
                 row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
             }
-            List<Double> rowHeightsList = new ArrayList<>();
-            List<Double> colWidthsList = new ArrayList<>();
-            for (List<Map<String, Object>> row : rows) {
-                double maxH = 0;
-                for (Map<String, Object> item : row) {
-                    Double h = getHeight(item);
-                    if (h != null && h > maxH) maxH = h;
-                }
-                rowHeightsList.add(maxH);
-            }
             int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
-            for (int c = 0; c < colCount; c++) {
-                double maxW = 0;
-                for (List<Map<String, Object>> row : rows) {
-                    if (c < row.size()) {
-                        Double w = getWidth(row.get(c));
-                        if (w != null && w > maxW) maxW = w;
-                    }
-                }
-                colWidthsList.add(maxW);
-            }
-            // group + verticaldata + formlayout 구조 (컨트롤/폼데이터 없음)
+            // group + verticaldata + formlayout 구조
             String groupId = "grp-" + genId();
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
             if (name != null && !name.isEmpty()) {
@@ -181,20 +159,21 @@ public class ClxLayoutUtil {
               .append(genId()).append("\"")
               .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
               .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
-              .append("/>\n");
-            sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
-            for (Double h : rowHeightsList) {
-                if (h != null && h >= 40) {
-                    sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                } else {
-                    sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
-                }
+              .append(" autosize=\"height\"/>")
+              .append("\n");
+            sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"8px\" vspace=\"8px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+            // 행/열 정보
+            for (int r = 0; r < rows.size(); r++) {
+                sb.append(indent).append("    <cl:rows length=\"26\" unit=\"PIXEL\"/>\n");
             }
-            for (Double w : colWidthsList) {
-                if (w != null && w >= 80) {
-                    sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                } else {
-                    sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
+            for (int c = 0; c < colCount; c++) {
+                sb.append(indent).append("    <cl:columns length=\"110\" unit=\"PIXEL\" autoSizing=\"true\" minlength=\"70\" syncminlength=\"false\"/>\n");
+            }
+            // 컨트롤 배치
+            for (int r = 0; r < rows.size(); r++) {
+                List<Map<String, Object>> row = rows.get(r);
+                for (int c = 0; c < row.size(); c++) {
+                    convertLeafWithFormdata(sb, row.get(c), depth + 2, r, c);
                 }
             }
             sb.append(indent).append("  </cl:formlayout>\n");
@@ -217,7 +196,8 @@ public class ClxLayoutUtil {
               .append(genId()).append("\"")
               .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
               .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
-              .append("/>\n");
+              .append(" autosize=\"height\"/>")
+              .append("\n");
             for (Map<String, Object> child : children) {
                 traverseFigmaNode(sb, child, depth + 1);
             }
@@ -240,7 +220,8 @@ public class ClxLayoutUtil {
               .append(genId()).append("\"")
               .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
               .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
-              .append("/>\n");
+              .append(" autosize=\"height\"/>")
+              .append("\n");
             traverseFigmaNode(sb, children.get(0), depth + 1);
             sb.append(indent).append("</cl:group>\n");
             return;
@@ -297,39 +278,54 @@ public class ClxLayoutUtil {
         String type = (String) node.get("type");
         String name = (String) node.getOrDefault("name", "");
         String indent = "    ".repeat(depth);
+        String className = name != null && !name.isEmpty() ? " class=\"" + escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()) + "\"" : "";
+        String value = node.getOrDefault("characters", "").toString();
         String formdata = "<cl:formdata std:sid=\"f-data-" + genId() + "\" row=\"" + row + "\" col=\"" + col + "\"/>";
         if ("TEXT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" value=\"")
-              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
+            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\"").append(className).append(" value=\"")
+              .append(escapeXml(value)).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:output>\n");
         } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\"").append(className).append(">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:inputbox>\n");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\"").append(className).append(" value=\"20241231\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:dateinput>\n");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\"").append(className).append(">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:combobox>\n");
         } else if ("SEARCHINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\"").append(className).append(">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
             sb.append(indent).append("</cl:searchinput>\n");
         } else if ("RADIOBUTTON".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\"").append(className).append(" value=\"value1\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"예\" value=\"value1\"/>\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아니오\" value=\"value2\"/>\n");
             sb.append(indent).append("</cl:radiobutton>\n");
         } else if ("CHECKBOXGROUP".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\"").append(className).append(">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아이템\" value=\"value1\"/>\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아이템\" value=\"value2\"/>\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아이템\" value=\"value3\"/>\n");
             sb.append(indent).append("</cl:checkboxgroup>\n");
         } else if ("GRID".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\">\n");
+            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\"").append(className).append(">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("  <cl:gridcolumn std:sid=\"g-column-").append(genId()).append("\"/>\n");
+            sb.append(indent).append("  <cl:gridcolumn std:sid=\"g-column-").append(genId()).append("\"/>\n");
+            sb.append(indent).append("  <cl:gridheader std:sid=\"gh-band-").append(genId()).append("\">\n");
+            sb.append(indent).append("    <cl:gridrow std:sid=\"g-row-").append(genId()).append("\" height=\"33px\"/>\n");
+            sb.append(indent).append("  </cl:gridheader>\n");
+            sb.append(indent).append("  <cl:griddetail std:sid=\"gd-band-").append(genId()).append("\">\n");
+            sb.append(indent).append("    <cl:gridrow std:sid=\"g-row-").append(genId()).append("\" height=\"33px\"/>\n");
+            sb.append(indent).append("  </cl:griddetail>\n");
             sb.append(indent).append("</cl:grid>\n");
         } else {
             writeControlXml(sb, node, depth);
