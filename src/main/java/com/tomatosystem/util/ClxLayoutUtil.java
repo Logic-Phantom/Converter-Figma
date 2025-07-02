@@ -71,17 +71,20 @@ public class ClxLayoutUtil {
                     if (child.get("children") == null) leafs.add(child);
                     else containers.add(child);
                 }
-                // leafs가 있을 때만 formlayout 생성
-                if (!leafs.isEmpty()) {
+                // leafs와 containers 모두 formlayout 하위에 배치, 각각 formdata 부여
+                List<Map<String, Object>> all = new ArrayList<>();
+                all.addAll(leafs);
+                all.addAll(containers);
+                if (!all.isEmpty()) {
                     int tolerance = 10;
                     List<List<Map<String, Object>>> rows = new ArrayList<>();
                     List<Double> rowYs = new ArrayList<>();
-                    for (Map<String, Object> leaf : leafs) {
-                        Double y = getY(leaf);
+                    for (Map<String, Object> item : all) {
+                        Double y = getY(item);
                         boolean placed = false;
                         for (int i = 0; i < rowYs.size(); i++) {
                             if (Math.abs(rowYs.get(i) - y) <= tolerance) {
-                                rows.get(i).add(leaf);
+                                rows.get(i).add(item);
                                 placed = true;
                                 break;
                             }
@@ -89,7 +92,7 @@ public class ClxLayoutUtil {
                         if (!placed) {
                             rowYs.add(y);
                             List<Map<String, Object>> newRow = new ArrayList<>();
-                            newRow.add(leaf);
+                            newRow.add(item);
                             rows.add(newRow);
                         }
                     }
@@ -105,14 +108,21 @@ public class ClxLayoutUtil {
                     for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
                         List<Map<String, Object>> row = rows.get(rowIdx);
                         for (int colIdx = 0; colIdx < row.size(); colIdx++) {
-                            Map<String, Object> leaf = row.get(colIdx);
-                            convertLeafWithFormdata(sb, leaf, depth + 1, rowIdx, colIdx);
+                            Map<String, Object> item = row.get(colIdx);
+                            if (item.get("children") == null) {
+                                convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
+                            } else {
+                                // 그룹/컨테이너: formdata 먼저, 그 다음 재귀
+                                String groupIndent = "    ".repeat(depth + 1);
+                                sb.append(groupIndent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+                                sb.append(groupIndent).append("  <cl:formdata std:sid=\"f-data-").append(genId()).append("\" row=\"").append(rowIdx).append("\" col=\"").append(colIdx).append("\"/>
+");
+                                // 컨테이너 내부 재귀
+                                traverseFigmaNode(sb, item, depth + 2);
+                                sb.append(groupIndent).append("</cl:group>\n");
+                            }
                         }
                     }
-                }
-                // containers(그룹/프레임)는 별도로 traverse
-                for (Map<String, Object> container : containers) {
-                    traverseFigmaNode(sb, container, depth + 2);
                 }
             }
             sb.append(indent).append("</cl:group>\n");
