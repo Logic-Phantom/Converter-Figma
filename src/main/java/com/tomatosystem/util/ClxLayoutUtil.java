@@ -69,6 +69,11 @@ public class ClxLayoutUtil {
             if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
             sb.append(" autosize=\"none\"/>");
             sb.append("\n");
+            // UDC 내부 property: 첫 TEXT 추출
+            String titleText = findFirstTextValue(node);
+            if (titleText != null && !titleText.isEmpty()) {
+                sb.append(indent).append("  <cl:property name=\"title\" value=\"").append(escapeXml(titleText)).append("\" type=\"string\"/>\n");
+            }
             sb.append(indent).append("</cl:udc>\n");
             return;
         }
@@ -202,6 +207,25 @@ public class ClxLayoutUtil {
         return null;
     }
 
+    // UDC 내부 property용: 첫 TEXT 찾기
+    private static String findFirstTextValue(Map<String, Object> node) {
+        String type = (String) node.get("type");
+        if ("TEXT".equalsIgnoreCase(type)) {
+            Object characters = node.get("characters");
+            return characters != null ? characters.toString() : null;
+        }
+        List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
+        if (children != null) {
+            for (Map<String, Object> child : children) {
+                String result = findFirstTextValue(child);
+                if (result != null && !result.isEmpty()) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
     // leaf 노드 변환 (폼/버티컬/버튼 등) + formdata
     private static void convertLeafWithFormdata(StringBuilder sb, Map<String, Object> node, int depth, int row, int col) {
         String type = (String) node.get("type");
@@ -241,16 +265,21 @@ public class ClxLayoutUtil {
         // 예시: TEXT → output, INPUT → inputbox, BUTTON → button 등
         if ("TEXT".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
-              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>)\n");
+              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>
+");
         } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\"/>)\n");
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\"/>
+");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\"/>)\n");
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\"/>
+");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\"/>)\n");
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\"/>
+");
         } else if ("BUTTON".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
-              .append(escapeXml(name)).append("\"/>)\n");
+              .append(escapeXml(name)).append("\"/>
+");
         }
     }
 
