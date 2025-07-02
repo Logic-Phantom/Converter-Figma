@@ -48,7 +48,9 @@ public class ClxLayoutUtil {
         sb.append("    <std:vruler/>\n");
         sb.append("  </std:studiosetting>\n");
         sb.append("</html>\n");
-        return sb.toString();
+        String clxXml = sb.toString();
+        System.out.println(clxXml); // 변환된 XML을 콘솔에 출력 (디버깅용)
+        return clxXml;
     }
 
     // 중간 계층(CANVAS/FRAME/GROUP 등) 재귀 순회
