@@ -78,109 +78,102 @@ public class ClxLayoutUtil {
             sb.append(indent).append("</cl:udc>\n");
             return;
         }
+        // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 생성
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
-            if (isRoot) {
-                sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-                // verticaldata, etc.
-                Double height = getHeight(node);
-                Double width = getWidth(node);
-                if (height != null || width != null) {
-                    sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
-                    if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
-                    if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-                    sb.append(" autosize=\"");
-                    sb.append((height != null) ? "height" : (width != null) ? "width" : "none");
-                    sb.append("\"/>\n");
-                }
-                // 행/열 추출 및 formlayout 한 번만 생성
-                int tolerance = 10;
-                List<List<Map<String, Object>>> rows = new ArrayList<>();
-                List<Double> rowYs = new ArrayList<>();
-                List<Map<String, Object>> all = new ArrayList<>(children);
-                for (Map<String, Object> item : all) {
-                    Double y = getY(item);
-                    boolean placed = false;
-                    for (int i = 0; i < rowYs.size(); i++) {
-                        if (Math.abs(rowYs.get(i) - y) <= tolerance) {
-                            rows.get(i).add(item);
-                            placed = true;
-                            break;
-                        }
-                    }
-                    if (!placed) {
-                        rowYs.add(y);
-                        List<Map<String, Object>> newRow = new ArrayList<>();
-                        newRow.add(item);
-                        rows.add(newRow);
-                    }
-                }
-                for (List<Map<String, Object>> row : rows) {
-                    row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
-                }
-                // 행/열별 크기 추정
-                List<Double> rowHeightsList = new ArrayList<>();
-                List<Double> colWidthsList = new ArrayList<>();
-                for (List<Map<String, Object>> row : rows) {
-                    double maxH = 0;
-                    for (Map<String, Object> item : row) {
-                        Double h = getHeight(item);
-                        if (h != null && h > maxH) maxH = h;
-                    }
-                    rowHeightsList.add(maxH);
-                }
-                int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
-                for (int c = 0; c < colCount; c++) {
-                    double maxW = 0;
-                    for (List<Map<String, Object>> row : rows) {
-                        if (c < row.size()) {
-                            Double w = getWidth(row.get(c));
-                            if (w != null && w > maxW) maxW = w;
-                        }
-                    }
-                    colWidthsList.add(maxW);
-                }
-                sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
-                for (Double h : rowHeightsList) {
-                    if (h != null && h >= 40) {
-                        sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                    } else {
-                        sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
-                    }
-                }
-                for (Double w : colWidthsList) {
-                    if (w != null && w >= 80) {
-                        sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                    } else {
-                        sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
-                    }
-                }
-                sb.append(indent).append("  </cl:formlayout>\n");
-                for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
-                    List<Map<String, Object>> row = rows.get(rowIdx);
-                    for (int colIdx = 0; colIdx < row.size(); colIdx++) {
-                        Map<String, Object> item = row.get(colIdx);
-                        if (item.get("children") == null) {
-                            convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
-                        } else {
-                            // 진짜 묶음(컨트롤 번들)만 group+formlayout, 아니면 그냥 컨트롤만
-                            traverseFigmaNode(sb, item, depth + 1);
-                        }
-                    }
-                }
-                sb.append(indent).append("</cl:group>\n");
-                return;
-            } else {
-                // 내부 그룹/묶음은 group/formlayout을 만들지 않고, 컨트롤만 flat하게 배치
-                for (Map<String, Object> child : children) {
-                    if (child.get("children") == null) {
-                        convertLeafWithFormdata(sb, child, depth, 0, 0); // row/col은 상황에 따라
-                    } else {
-                        traverseFigmaNode(sb, child, depth);
-                    }
-                }
-                return;
+            // <cl:group> 생성 (루트 또는 그룹핑 필요시)
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            if (height != null || width != null) {
+                sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
+                if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
+                if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
+                sb.append(" autosize=\"");
+                sb.append((height != null) ? "height" : (width != null) ? "width" : "none");
+                sb.append("\"/>\n");
             }
+            // row/col 그룹핑
+            int tolerance = 20; // px
+            List<List<Map<String, Object>>> rows = new ArrayList<>();
+            List<Double> rowYs = new ArrayList<>();
+            List<Map<String, Object>> all = new ArrayList<>(children);
+            all.sort(Comparator.comparingDouble(ClxLayoutUtil::getY));
+            for (Map<String, Object> item : all) {
+                Double y = getY(item);
+                boolean placed = false;
+                for (int i = 0; i < rowYs.size(); i++) {
+                    if (Math.abs(rowYs.get(i) - y) <= tolerance) {
+                        rows.get(i).add(item);
+                        placed = true;
+                        break;
+                    }
+                }
+                if (!placed) {
+                    rowYs.add(y);
+                    List<Map<String, Object>> newRow = new ArrayList<>();
+                    newRow.add(item);
+                    rows.add(newRow);
+                }
+            }
+            for (List<Map<String, Object>> row : rows) {
+                row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
+            }
+            // 행/열별 크기 추정
+            List<Double> rowHeightsList = new ArrayList<>();
+            List<Double> colWidthsList = new ArrayList<>();
+            for (List<Map<String, Object>> row : rows) {
+                double maxH = 0;
+                for (Map<String, Object> item : row) {
+                    Double h = getHeight(item);
+                    if (h != null && h > maxH) maxH = h;
+                }
+                rowHeightsList.add(maxH);
+            }
+            int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
+            for (int c = 0; c < colCount; c++) {
+                double maxW = 0;
+                for (List<Map<String, Object>> row : rows) {
+                    if (c < row.size()) {
+                        Double w = getWidth(row.get(c));
+                        if (w != null && w > maxW) maxW = w;
+                    }
+                }
+                colWidthsList.add(maxW);
+            }
+            // <cl:formlayout> 한 번만 생성
+            sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+            for (Double h : rowHeightsList) {
+                if (h != null && h >= 40) {
+                    sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                } else {
+                    sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
+                }
+            }
+            for (Double w : colWidthsList) {
+                if (w != null && w >= 80) {
+                    sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                } else {
+                    sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
+                }
+            }
+            // 컨트롤 배치: <cl:formdata row=... col=...>는 leaf 컨트롤에만
+            for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
+                List<Map<String, Object>> row = rows.get(rowIdx);
+                for (int colIdx = 0; colIdx < row.size(); colIdx++) {
+                    Map<String, Object> item = row.get(colIdx);
+                    if (item.get("children") == null) {
+                        convertLeafWithFormdata(sb, item, depth + 2, rowIdx, colIdx);
+                    } else {
+                        // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 중첩 허용
+                        traverseFigmaNode(sb, item, depth + 2);
+                    }
+                }
+            }
+            sb.append(indent).append("  </cl:formlayout>\n");
+            sb.append(indent).append("</cl:group>\n");
+            return;
         }
+        // leaf 컨트롤 처리
         convertLeaf(sb, node, depth);
     }
 
@@ -235,53 +228,32 @@ public class ClxLayoutUtil {
         String formdata = "<cl:formdata std:sid=\"f-data-" + genId() + "\" row=\"" + row + "\" col=\"" + col + "\"/>";
         Double height = getHeight(node);
         Double width = getWidth(node);
-        boolean needsGroup = (height != null || width != null);
-        // INSTANCE 타입 매핑
-        if ("INSTANCE".equalsIgnoreCase(type)) {
-            String lowerName = name.toLowerCase();
-            if (lowerName.contains("button")) type = "BUTTON";
-            else if (lowerName.contains("input")) type = "INPUT";
-            else if (lowerName.contains("combobox")) type = "COMBOBOX";
-            else if (lowerName.contains("date")) type = "DATEINPUT";
-            else if (lowerName.contains("radio")) return; // 라디오는 그룹에서 처리
-            // else: 기타는 group/container로 처리(여기선 무시)
-        }
-        if (needsGroup) {
-            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+        // leaf 컨트롤만 <cl:formdata>와 함께 출력
+        if ("TEXT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
+              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
-            if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
-            if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append(" autosize=\"none\"/>");
-            sb.append("\n");
-            // 실제 컨트롤
-            writeControlXml(sb, node, depth + 1, type, name);
-            sb.append(indent).append("</cl:group>\n");
+            sb.append(indent).append("</cl:output>\n");
+        } else if ("INPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:inputbox>\n");
+        } else if ("DATEINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:dateinput>\n");
+        } else if ("COMBOBOX".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:combobox>\n");
+        } else if ("BUTTON".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
+              .append(escapeXml(name)).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:button>\n");
         } else {
-            // 단순 컨트롤: formdata + 컨트롤
-            if ("TEXT".equalsIgnoreCase(type)) {
-                sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
-                  .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
-                sb.append(indent).append("  ").append(formdata).append("\n");
-                sb.append(indent).append("</cl:output>\n");
-            } else if ("INPUT".equalsIgnoreCase(type)) {
-                sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\">\n");
-                sb.append(indent).append("  ").append(formdata).append("\n");
-                sb.append(indent).append("</cl:inputbox>\n");
-            } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-                sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\">\n");
-                sb.append(indent).append("  ").append(formdata).append("\n");
-                sb.append(indent).append("</cl:dateinput>\n");
-            } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-                sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\">\n");
-                sb.append(indent).append("  ").append(formdata).append("\n");
-                sb.append(indent).append("</cl:combobox>\n");
-            } else if ("BUTTON".equalsIgnoreCase(type)) {
-                sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
-                  .append(escapeXml(name)).append("\">\n");
-                sb.append(indent).append("  ").append(formdata).append("\n");
-                sb.append(indent).append("</cl:button>\n");
-            }
+            // 기타 컨트롤은 기존 방식대로 처리
+            writeControlXml(sb, node, depth);
         }
     }
 
