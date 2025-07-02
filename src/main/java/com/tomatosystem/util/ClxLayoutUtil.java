@@ -137,7 +137,7 @@ public class ClxLayoutUtil {
         }
 
         // row/col 그룹핑 (formlayout 필요 여부 판단)
-        if (("GROUP".equalsIgnoreCase(type) || (children != null && !children.isEmpty())) && children != null && !children.isEmpty()) {
+        if (children != null && !children.isEmpty()) {
             int tolerance = 20; // px
             List<List<Map<String, Object>>> rows = new ArrayList<>();
             List<Double> rowYs = new ArrayList<>();
@@ -186,14 +186,14 @@ public class ClxLayoutUtil {
                 colWidthsList.add(maxW);
             }
             // formlayout 필요 여부: 2개 이상 row/col이 있으면 생성
-            boolean needsFormlayout = false;
+            boolean needsFormlayout = (rows.size() > 1 || colCount > 1);
             int leafCount = 0;
             for (List<Map<String, Object>> row : rows) {
                 for (Map<String, Object> item : row) {
                     if (item.get("children") == null) leafCount++;
                 }
             }
-            if ((rows.size() > 1 || colCount > 1) && leafCount > 0) {
+            if (needsFormlayout && leafCount > 0) {
                 sb.append(indent).append("<cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
                 for (Double h : rowHeightsList) {
                     if (h != null && h >= 40) {
