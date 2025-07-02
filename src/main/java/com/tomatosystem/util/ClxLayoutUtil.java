@@ -99,11 +99,12 @@ public class ClxLayoutUtil {
             sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
             if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
             if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append("/>\n");
-            // UDC 내부 property: 첫 TEXT 추출
+            sb.append("/>");
+            sb.append("\n");
             String titleText = findFirstTextValue(node);
             if (titleText != null && !titleText.isEmpty()) {
-                sb.append(indent).append("  <cl:property name=\"title\" value=\"").append(escapeXml(titleText)).append("\" type=\"string\"/>\n");
+                sb.append(indent).append("  <cl:property name=\"title\" value=\"").append(escapeXml(titleText)).append("\" type=\"string\"/>");
+                sb.append("\n");
             }
             sb.append(indent).append("</cl:udc>\n");
             return;
@@ -124,11 +125,6 @@ public class ClxLayoutUtil {
               .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
               .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
               .append("/>\n");
-            if (name.toLowerCase().contains("search")) {
-                sb.append(indent).append("  <cl:attribute name=\"mobile-column-count\" value=\"2\"/>\n");
-                sb.append(indent).append("  <cl:attribute name=\"tablet-column-count\" value=\"2\"/>\n");
-            }
-            // group 내부에 UDC가 있으면 1회만 생성
             boolean udcCreated = false;
             for (Map<String, Object> child : children) {
                 String childType = (String) child.get("type");
@@ -144,7 +140,7 @@ public class ClxLayoutUtil {
             return;
         }
 
-        // children이 모두 leaf(컨트롤)이고 2개 이상이면 formlayout 생성, 아니면 컨트롤만 나열
+        // children이 모두 leaf(컨트롤)이고 2개 이상이며, 실제 row/col 그리드가 필요한 경우에만 formlayout 생성
         if (children != null && !children.isEmpty()) {
             boolean allLeaf = true;
             for (Map<String, Object> child : children) {
@@ -154,7 +150,7 @@ public class ClxLayoutUtil {
                 }
             }
             if (allLeaf && children.size() > 1) {
-                // formlayout 생성
+                // formlayout 1회만 생성, 그 안에 컨트롤+formdata만 나열
                 int tolerance = 20; // px
                 List<List<Map<String, Object>>> rows = new ArrayList<>();
                 List<Double> rowYs = new ArrayList<>();
@@ -180,7 +176,6 @@ public class ClxLayoutUtil {
                 for (List<Map<String, Object>> row : rows) {
                     row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
                 }
-                // 행/열별 크기 추정
                 List<Double> rowHeightsList = new ArrayList<>();
                 List<Double> colWidthsList = new ArrayList<>();
                 for (List<Map<String, Object>> row : rows) {
@@ -227,7 +222,7 @@ public class ClxLayoutUtil {
                 sb.append(indent).append("</cl:formlayout>\n");
                 return;
             } else {
-                // 컨트롤만 나열
+                // 컨트롤만 나열 (formlayout 없이)
                 for (Map<String, Object> child : children) {
                     if (child.get("children") == null) {
                         convertLeaf(sb, child, depth + 1);
