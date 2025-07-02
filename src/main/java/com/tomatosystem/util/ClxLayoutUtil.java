@@ -89,15 +89,13 @@ public class ClxLayoutUtil {
             return;
         }
 
-        // 그룹핑이 필요한 경우만 <cl:group> 생성
-        if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
-            // <cl:group> 생성
+        // 큰 섹션 단위로만 group 생성 (CANVAS/FRAME만)
+        if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\"");
             if (name != null && !name.isEmpty()) {
                 sb.append(" class=\"").append(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()).append("\"");
             }
             sb.append(">\n");
-            // verticaldata/attribute at the top
             Double height = getHeight(node);
             Double width = getWidth(node);
             sb.append(indent)
@@ -110,7 +108,16 @@ public class ClxLayoutUtil {
                 sb.append(indent).append("  <cl:attribute name=\"mobile-column-count\" value=\"2\"/>\n");
                 sb.append(indent).append("  <cl:attribute name=\"tablet-column-count\" value=\"2\"/>\n");
             }
-            // row/col 그룹핑 (formlayout 필요 여부 판단)
+            // 섹션 내부는 formlayout 또는 하위 group/컨트롤로 재귀
+            for (Map<String, Object> child : children) {
+                traverseFigmaNode(sb, child, depth + 1);
+            }
+            sb.append(indent).append("</cl:group>\n");
+            return;
+        }
+
+        // row/col 그룹핑 (formlayout 필요 여부 판단)
+        if (("GROUP".equalsIgnoreCase(type) || (children != null && !children.isEmpty())) && children != null && !children.isEmpty()) {
             int tolerance = 20; // px
             List<List<Map<String, Object>>> rows = new ArrayList<>();
             List<Double> rowYs = new ArrayList<>();
@@ -166,21 +173,20 @@ public class ClxLayoutUtil {
                     if (item.get("children") == null) leafCount++;
                 }
             }
-            if (rows.size() > 1 || colCount > 1) needsFormlayout = true;
-            if (needsFormlayout && leafCount > 0) {
-                sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+            if ((rows.size() > 1 || colCount > 1) && leafCount > 0) {
+                sb.append(indent).append("<cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
                 for (Double h : rowHeightsList) {
                     if (h != null && h >= 40) {
-                        sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                        sb.append(indent).append("  <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
                     } else {
-                        sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
+                        sb.append(indent).append("  <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
                     }
                 }
                 for (Double w : colWidthsList) {
                     if (w != null && w >= 80) {
-                        sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                        sb.append(indent).append("  <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
                     } else {
-                        sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
+                        sb.append(indent).append("  <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
                     }
                 }
                 for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
@@ -188,24 +194,21 @@ public class ClxLayoutUtil {
                     for (int colIdx = 0; colIdx < row.size(); colIdx++) {
                         Map<String, Object> item = row.get(colIdx);
                         if (item.get("children") == null) {
-                            convertLeafWithFormdata(sb, item, depth + 2, rowIdx, colIdx);
+                            convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
                         }
                     }
                 }
-                sb.append(indent).append("  </cl:formlayout>\n");
+                sb.append(indent).append("</cl:formlayout>\n");
             } else {
-                // formlayout 없이 그룹 내 컨트롤/그룹 재귀 출력
+                // formlayout 없이 컨트롤만 순서대로 출력 (group 없이)
                 for (List<Map<String, Object>> row : rows) {
                     for (Map<String, Object> item : row) {
                         if (item.get("children") == null) {
                             convertLeaf(sb, item, depth + 1);
-                        } else {
-                            traverseFigmaNode(sb, item, depth + 1);
                         }
                     }
                 }
             }
-            sb.append(indent).append("</cl:group>\n");
             return;
         }
         // leaf 컨트롤 처리 (formlayout 내부에서만 호출됨)
@@ -255,14 +258,12 @@ public class ClxLayoutUtil {
         return null;
     }
 
-    // leaf 노드 변환 (폼/버티컬/버튼 등) + formdata
+    // leaf 노드 변환 (폼/버티컬/버튼 등) + formdata (항상 포함)
     private static void convertLeafWithFormdata(StringBuilder sb, Map<String, Object> node, int depth, int row, int col) {
         String type = (String) node.get("type");
         String name = (String) node.getOrDefault("name", "");
         String indent = "    ".repeat(depth);
         String formdata = "<cl:formdata std:sid=\"f-data-" + genId() + "\" row=\"" + row + "\" col=\"" + col + "\"/>";
-        Double height = getHeight(node);
-        Double width = getWidth(node);
         // leaf 컨트롤만 <cl:formdata>와 함께 출력
         if ("TEXT".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
