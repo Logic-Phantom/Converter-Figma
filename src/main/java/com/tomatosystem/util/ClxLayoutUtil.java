@@ -8,57 +8,77 @@ import java.util.stream.Collectors;
 public class ClxLayoutUtil {
     public static String convertFigmaJsonToClxXml(Map<String, Object> figmaJson) {
         StringBuilder sb = new StringBuilder();
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:cl=\"http://tomatosystem.co.kr/cleopatra\" xmlns:std=\"http://tomatosystem.co.kr/cleopatra/studio\" std:sid=\"html-20d521fc\" version=\"1.0.5306\">\n");
-        sb.append("  <head std:sid=\"head-009ed883\">\n");
-        sb.append("    <std:metadata>\n");
-        sb.append("      <std:property key=\"template-file\" value=\"templates/일반화면/1.그리드/V_그리드_수정X.clx\"/>\n");
-        sb.append("    </std:metadata>\n");
-        sb.append("    <screen std:sid=\"screen-a2592236\" id=\"PC\" name=\"PC\" width=\"1654px\" height=\"940px\" useCustomWidth=\"false\" useCustomHeight=\"false\" customHeight=\"600\" customWidth=\"800\" active=\"true\"/>\n");
-        sb.append("    <screen std:sid=\"screen-eec030c4\" id=\"TABLET\" name=\"TABLET\" width=\"800px\" height=\"768px\" useCustomWidth=\"false\" useCustomHeight=\"false\" customHeight=\"768\" customWidth=\"390\"/>\n");
-        sb.append("    <cl:model std:sid=\"model-de3b6abf\">\n");
-        sb.append("      <cl:dataset std:sid=\"d-set-f5adb997\" id=\"dsAddFile\">\n");
-        sb.append("        <cl:datacolumnlist>\n");
-        sb.append("          <cl:datacolumn comment=\"파일명\" std:sid=\"d-column-96a12e43\" name=\"column1\"/>\n");
-        sb.append("          <cl:datacolumn comment=\"파일크기\" std:sid=\"d-column-76c32eca\" name=\"column2\"/>\n");
-        sb.append("          <cl:datacolumn comment=\"파일찾기\" std:sid=\"d-column-e00f56dd\" name=\"column3\"/>\n");
-        sb.append("        </cl:datacolumnlist>\n");
-        sb.append("        <cl:datarowlist/>\n");
-        sb.append("      </cl:dataset>\n");
-        sb.append("    </cl:model>\n");
-        sb.append("    <cl:appspec/>\n");
-        sb.append("  </head>\n");
-        sb.append("  <body std:sid=\"body-64c95367\" class=\"content-wrapper\">\n");
-        sb.append("  <cl:verticallayout std:sid=\"v-layout-78e61a9f\"/>\n");
+        try {
+            sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:cl=\"http://tomatosystem.co.kr/cleopatra\" xmlns:std=\"http://tomatosystem.co.kr/cleopatra/studio\" std:sid=\"html-20d521fc\" version=\"1.0.5306\">\n");
+            sb.append("  <head std:sid=\"head-009ed883\">\n");
+            sb.append("    <std:metadata>\n");
+            sb.append("      <std:property key=\"template-file\" value=\"templates/일반화면/1.그리드/V_그리드_수정X.clx\"/>\n");
+            sb.append("    </std:metadata>\n");
+            sb.append("    <screen std:sid=\"screen-a2592236\" id=\"PC\" name=\"PC\" width=\"1654px\" height=\"940px\" useCustomWidth=\"false\" useCustomHeight=\"false\" customHeight=\"600\" customWidth=\"800\" active=\"true\"/>\n");
+            sb.append("    <screen std:sid=\"screen-eec030c4\" id=\"TABLET\" name=\"TABLET\" width=\"800px\" height=\"768px\" useCustomWidth=\"false\" useCustomHeight=\"false\" customHeight=\"768\" customWidth=\"390\"/>\n");
+            sb.append("    <cl:model std:sid=\"model-de3b6abf\">\n");
+            sb.append("      <cl:dataset std:sid=\"d-set-f5adb997\" id=\"dsAddFile\">\n");
+            sb.append("        <cl:datacolumnlist>\n");
+            sb.append("          <cl:datacolumn comment=\"파일명\" std:sid=\"d-column-96a12e43\" name=\"column1\"/>\n");
+            sb.append("          <cl:datacolumn comment=\"파일크기\" std:sid=\"d-column-76c32eca\" name=\"column2\"/>\n");
+            sb.append("          <cl:datacolumn comment=\"파일찾기\" std:sid=\"d-column-e00f56dd\" name=\"column3\"/>\n");
+            sb.append("        </cl:datacolumnlist>\n");
+            sb.append("        <cl:datarowlist/>\n");
+            sb.append("      </cl:dataset>\n");
+            sb.append("    </cl:model>\n");
+            sb.append("    <cl:appspec/>\n");
+            sb.append("  </head>\n");
+            sb.append("  <body std:sid=\"body-64c95367\" class=\"content-wrapper\">\n");
+            sb.append("  <cl:verticallayout std:sid=\"v-layout-78e61a9f\"/>\n");
 
-        // Figma JSON 계층 순회 (CANVAS/FRAME/GROUP 등 중간 계층 모두 재귀)
-        Map<String, Object> document = (Map<String, Object>) figmaJson.get("document");
-        if (document != null) {
-            List<Map<String, Object>> children = (List<Map<String, Object>>) document.get("children");
-            if (children != null) {
-                for (Map<String, Object> child : children) {
-                    traverseFigmaNode(sb, child, 2);
+            // Figma JSON 계층 순회 (CANVAS/FRAME/GROUP 등 중간 계층 모두 재귀)
+            Map<String, Object> document = (Map<String, Object>) figmaJson.get("document");
+            if (document != null) {
+                List<Map<String, Object>> children = (List<Map<String, Object>>) document.get("children");
+                if (children != null) {
+                    for (Map<String, Object> child : children) {
+                        traverseFigmaNode(sb, child, 2);
+                    }
                 }
             }
-        }
 
-        sb.append("  </body>\n");
-        sb.append("  <std:studiosetting>\n");
-        sb.append("    <std:hruler/>\n");
-        sb.append("    <std:vruler/>\n");
-        sb.append("  </std:studiosetting>\n");
-        sb.append("</html>\n");
+            sb.append("  </body>\n");
+            sb.append("  <std:studiosetting>\n");
+            sb.append("    <std:hruler/>\n");
+            sb.append("    <std:vruler/>\n");
+            sb.append("  </std:studiosetting>\n");
+            sb.append("</html>\n");
+        } catch (Exception e) {
+            sb.append("\n<!-- XML GENERATION ERROR: " + e.getMessage() + " -->\n");
+            e.printStackTrace();
+        }
         String clxXml = sb.toString();
-        // 콘솔 출력 대신 txt 파일로 저장
+        // 태그 닫힘 검증
+        if (!clxXml.trim().endsWith("</html>")) {
+            System.err.println("[ClxLayoutUtil] WARNING: XML does not end with </html>!\n");
+        }
         saveClxToTxtFile(clxXml, "C:/Users/LCM/git/Converter-Figma/clx-src/convertTest/변환결과.txt");
         return clxXml;
     }
 
     // txt 파일로 저장하는 메서드
     public static void saveClxToTxtFile(String clxXml, String filePath) {
-        try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
-            writer.write(clxXml);
+        try {
+            java.nio.file.Files.createDirectories(java.nio.file.Paths.get(new java.io.File(filePath).getParent()));
+            try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
+                writer.write(clxXml);
+            }
+            // 디버깅용: 생성된 XML 길이와 앞/뒤 일부 출력
+            System.out.println("[ClxLayoutUtil] XML length: " + (clxXml != null ? clxXml.length() : 0));
+            if (clxXml != null && clxXml.length() > 200) {
+                System.out.println("[ClxLayoutUtil] XML head: " + clxXml.substring(0, 200));
+                System.out.println("[ClxLayoutUtil] XML tail: " + clxXml.substring(clxXml.length() - 200));
+            } else if (clxXml != null) {
+                System.out.println("[ClxLayoutUtil] XML: " + clxXml);
+            }
         } catch (Exception e) {
+            System.err.println("[ClxLayoutUtil] Failed to save file: " + filePath);
             e.printStackTrace();
         }
     }
@@ -396,7 +416,10 @@ public class ClxLayoutUtil {
     }
     // 유틸: 랜덤 ID
     private static String genId() {
-        return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+        // UUID를 8자리로 자르되, 중복 방지 및 예외 방지
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        if (uuid.length() < 8) return String.valueOf(System.currentTimeMillis()).substring(0, 8);
+        return uuid.substring(0, 8);
     }
     // 외부 경로로 저장
     public static void saveClxToFile(String clxXml, String filePath) throws IOException {
