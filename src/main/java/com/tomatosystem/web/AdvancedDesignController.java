@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/design")
@@ -50,15 +51,24 @@ public class AdvancedDesignController {
     }
 
     @RequestMapping("/convertFigmaToFormClx.do")
-    public ResponseEntity<String> convertFigmaToFormClx(String token, String fileKey, String outputPath) {
+    public ResponseEntity<String> convertFigmaToFormClx(String token, String fileKey, String outputDir) {
         try {
+            String today = java.time.LocalDate.now().toString();
+            String fileName = today + "_form_" + UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+            String clxPath = outputDir + fileName + ".clx";
+            String jsPath = outputDir + fileName + ".js";
+
             // Figma API에서 JSON fetch
             String url = "https://api.figma.com/v1/files/" + fileKey;
             Map<String, Object> figmaJson = fetchFigmaData(url, token);
             // 변환
             String clxXml = com.tomatosystem.util.ClxLayoutUtil.convertFigmaJsonToClxXml(figmaJson);
-            com.tomatosystem.util.ClxLayoutUtil.saveClxToFile(clxXml, outputPath);
-            return ResponseEntity.ok("변환 완료: " + outputPath);
+            com.tomatosystem.util.ClxLayoutUtil.saveClxToFile(clxXml, clxPath);
+            // JS 파일(빈 내용) 생성
+            try (java.io.FileWriter jsWriter = new java.io.FileWriter(jsPath)) {
+                jsWriter.write("");
+            }
+            return ResponseEntity.ok("변환 완료: " + clxPath + ", " + jsPath);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("오류: " + e.getMessage());
