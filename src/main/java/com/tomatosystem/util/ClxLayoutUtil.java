@@ -143,24 +143,24 @@ public class ClxLayoutUtil {
             sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
               .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:output>)\n");
+            sb.append(indent).append("</cl:output>\n");
         } else if ("INPUT".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:inputbox>)\n");
+            sb.append(indent).append("</cl:inputbox>\n");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:dateinput>)\n");
+            sb.append(indent).append("</cl:dateinput>\n");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:combobox>)\n");
+            sb.append(indent).append("</cl:combobox>\n");
         } else if ("BUTTON".equalsIgnoreCase(type)) {
             sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
               .append(escapeXml(name)).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
-            sb.append(indent).append("</cl:button>)\n");
+            sb.append(indent).append("</cl:button>\n");
         }
     }
 
