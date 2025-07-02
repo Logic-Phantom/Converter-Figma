@@ -82,16 +82,14 @@ public class ClxLayoutUtil {
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
             // <cl:group> 생성 (루트 또는 그룹핑 필요시)
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+            // verticaldata, etc.
             Double height = getHeight(node);
             Double width = getWidth(node);
-            if (height != null || width != null) {
-                sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
-                if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
-                if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-                sb.append(" autosize=\"");
-                sb.append((height != null) ? "height" : (width != null) ? "width" : "none");
-                sb.append("\"/>\n");
-            }
+            sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
+            if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
+            if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
+            sb.append("/>");
+            sb.append("\n");
             // row/col 그룹핑
             int tolerance = 20; // px
             List<List<Map<String, Object>>> rows = new ArrayList<>();
