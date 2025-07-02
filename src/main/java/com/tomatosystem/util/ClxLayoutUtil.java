@@ -119,36 +119,6 @@ public class ClxLayoutUtil {
         // 빈 그룹/레이아웃 생성 방지
         if (children == null || children.isEmpty()) return;
 
-        // 실제로 그룹핑이 필요한 경우만 group 생성
-        if ((isGroupType(type)) && children != null && !children.isEmpty()) {
-            String groupId = "grp-" + genId();
-            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
-            if (name != null && !name.isEmpty()) {
-                sb.append(" class=\"").append(escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase())).append("\"");
-            }
-            sb.append(">\n");
-            Double height = getHeight(node);
-            Double width = getWidth(node);
-            sb.append(indent)
-              .append("  <cl:verticaldata std:sid=\"v-data-")
-              .append(genId()).append("\"")
-              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
-              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
-              .append("/>\n");
-            // 컨트롤이 여러 개면 formlayout/verticallayout 등으로 감싸기
-            if (children.size() > 1) {
-                sb.append(indent).append("  <cl:verticallayout std:sid=\"v-layout-").append(genId()).append("\">\n");
-                for (Map<String, Object> child : children) {
-                    traverseFigmaNode(sb, child, depth + 2);
-                }
-                sb.append(indent).append("  </cl:verticallayout>\n");
-            } else {
-                traverseFigmaNode(sb, children.get(0), depth + 1);
-            }
-            sb.append(indent).append("</cl:group>\n");
-            return;
-        }
-
         // formlayout: leaf가 2개 이상, 실제 행/열 배치가 필요한 경우만
         if (children != null && children.size() > 1 && children.stream().allMatch(child -> child.get("children") == null)) {
             int tolerance = 20; // px
@@ -197,21 +167,21 @@ public class ClxLayoutUtil {
                 }
                 colWidthsList.add(maxW);
             }
-            sb.append(indent).append("<cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
-            for (Double h : rowHeightsList) {
-                if (h != null && h >= 40) {
-                    sb.append(indent).append("  <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                } else {
-                    sb.append(indent).append("  <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
-                }
+            // group + 컨트롤 + formlayout 구조
+            String groupId = "grp-" + genId();
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
+            if (name != null && !name.isEmpty()) {
+                sb.append(" class=\"").append(escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase())).append("\"");
             }
-            for (Double w : colWidthsList) {
-                if (w != null && w >= 80) {
-                    sb.append(indent).append("  <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                } else {
-                    sb.append(indent).append("  <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
-                }
-            }
+            sb.append(">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent)
+              .append("  <cl:verticaldata std:sid=\"v-data-")
+              .append(genId()).append("\"")
+              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
+              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
+              .append("/>\n");
             for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
                 List<Map<String, Object>> row = rows.get(rowIdx);
                 for (int colIdx = 0; colIdx < row.size(); colIdx++) {
@@ -219,14 +189,67 @@ public class ClxLayoutUtil {
                     convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
                 }
             }
-            sb.append(indent).append("</cl:formlayout>\n");
+            sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+            for (Double h : rowHeightsList) {
+                if (h != null && h >= 40) {
+                    sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                } else {
+                    sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
+                }
+            }
+            for (Double w : colWidthsList) {
+                if (w != null && w >= 80) {
+                    sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                } else {
+                    sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
+                }
+            }
+            sb.append(indent).append("  </cl:formlayout>\n");
+            sb.append(indent).append("</cl:group>\n");
             return;
         }
-        // 컨트롤이 1개면 verticallayout으로 감싸기
+
+        // group(verticallayout) 구조: 컨트롤 직접 나열
+        if (isGroupType(type) && children != null && !children.isEmpty()) {
+            String groupId = "grp-" + genId();
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
+            if (name != null && !name.isEmpty()) {
+                sb.append(" class=\"").append(escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase())).append("\"");
+            }
+            sb.append(">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent)
+              .append("  <cl:verticaldata std:sid=\"v-data-")
+              .append(genId()).append("\"")
+              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
+              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
+              .append("/>\n");
+            for (Map<String, Object> child : children) {
+                traverseFigmaNode(sb, child, depth + 1);
+            }
+            sb.append(indent).append("</cl:group>\n");
+            return;
+        }
+
+        // 컨트롤이 1개면 group으로 감싸기
         if (children != null && children.size() == 1) {
-            sb.append(indent).append("<cl:verticallayout std:sid=\"v-layout-").append(genId()).append("\">\n");
+            String groupId = "grp-" + genId();
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
+            if (name != null && !name.isEmpty()) {
+                sb.append(" class=\"").append(escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase())).append("\"");
+            }
+            sb.append(">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent)
+              .append("  <cl:verticaldata std:sid=\"v-data-")
+              .append(genId()).append("\"")
+              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
+              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
+              .append("/>\n");
             traverseFigmaNode(sb, children.get(0), depth + 1);
-            sb.append(indent).append("</cl:verticallayout>\n");
+            sb.append(indent).append("</cl:group>\n");
             return;
         }
         // leaf 컨트롤 처리
