@@ -9,152 +9,225 @@ public class ClxLayoutUtil {
     // 중복 방지용 id 저장
     private static final Set<String> usedIds = new HashSet<>();
 
-    /**
-     * Figma JSON을 CLEOPATRA XML로 변환 (전체 구조)
-     */
     public static String convertFigmaJsonToClxXml(Map<String, Object> figmaJson) {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:cl=\"http://tomatosystem.co.kr/cleopatra\" xmlns:std=\"http://tomatosystem.co.kr/cleopatra/studio\" std:sid=\"html-").append(genId()).append("\" version=\"1.0.0000\">\n");
-            sb.append("  <head std:sid=\"head-").append(genId()).append("\">\n");
-            parseMetadata(sb, figmaJson);
-            parseScreens(sb, figmaJson);
-            parseModel(sb, figmaJson);
+            sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:cl=\"http://tomatosystem.co.kr/cleopatra\" xmlns:std=\"http://tomatosystem.co.kr/cleopatra/studio\" std:sid=\"html-20d521fc\" version=\"1.0.5306\">\n");
+            sb.append("  <head std:sid=\"head-009ed883\">\n");
+            sb.append("    <std:metadata>\n");
+            sb.append("      <std:property key=\"template-file\" value=\"templates/일반화면/1.그리드/V_그리드_수정X.clx\"/>\n");
+            sb.append("    </std:metadata>\n");
+            sb.append("    <screen std:sid=\"screen-a2592236\" id=\"PC\" name=\"PC\" width=\"1654px\" height=\"940px\" useCustomWidth=\"false\" useCustomHeight=\"false\" customHeight=\"600\" customWidth=\"800\" active=\"true\"/>\n");
+            sb.append("    <screen std:sid=\"screen-eec030c4\" id=\"TABLET\" name=\"TABLET\" width=\"800px\" height=\"768px\" useCustomWidth=\"false\" useCustomHeight=\"false\" customHeight=\"768\" customWidth=\"390\"/>\n");
+            sb.append("    <cl:model std:sid=\"model-de3b6abf\">\n");
+            sb.append("      <cl:dataset std:sid=\"d-set-f5adb997\" id=\"dsAddFile\">\n");
+            sb.append("        <cl:datacolumnlist>\n");
+            sb.append("          <cl:datacolumn comment=\"파일명\" std:sid=\"d-column-96a12e43\" name=\"column1\"/>\n");
+            sb.append("          <cl:datacolumn comment=\"파일크기\" std:sid=\"d-column-76c32eca\" name=\"column2\"/>\n");
+            sb.append("          <cl:datacolumn comment=\"파일찾기\" std:sid=\"d-column-e00f56dd\" name=\"column3\"/>\n");
+            sb.append("        </cl:datacolumnlist>\n");
+            sb.append("        <cl:datarowlist/>\n");
+            sb.append("      </cl:dataset>\n");
+            sb.append("    </cl:model>\n");
             sb.append("    <cl:appspec/>\n");
             sb.append("  </head>\n");
-            sb.append("  <body std:sid=\"body-").append(genId()).append("\" class=\"content-wrapper\">\n");
-            parseBody(sb, figmaJson);
+            sb.append("  <body std:sid=\"body-64c95367\" class=\"content-wrapper\">\n");
+            sb.append("  <cl:verticallayout std:sid=\"v-layout-78e61a9f\"/>\n");
+
+            // Figma JSON 계층 순회 (CANVAS/FRAME/GROUP 등 중간 계층 모두 재귀)
+            Map<String, Object> document = (Map<String, Object>) figmaJson.get("document");
+            if (document != null) {
+                List<Map<String, Object>> children = (List<Map<String, Object>>) document.get("children");
+                if (children != null) {
+                    for (Map<String, Object> child : children) {
+                        traverseFigmaNode(sb, child, 2);
+                    }
+                }
+            }
+
             sb.append("  </body>\n");
-            sb.append("  <std:studiosetting>\n    <std:hruler/>\n    <std:vruler/>\n  </std:studiosetting>\n");
+            sb.append("  <std:studiosetting>\n");
+            sb.append("    <std:hruler/>\n");
+            sb.append("    <std:vruler/>\n");
+            sb.append("  </std:studiosetting>\n");
             sb.append("</html>\n");
         } catch (Exception e) {
             sb.append("\n<!-- XML GENERATION ERROR: " + e.getMessage() + " -->\n");
             e.printStackTrace();
         }
         String clxXml = sb.toString();
+        // 태그 닫힘 검증
+        if (!clxXml.trim().endsWith("</html>")) {
+            System.err.println("[ClxLayoutUtil] WARNING: XML does not end with </html>!\n");
+        }
         saveClxToTxtFile(clxXml, "C:/Users/LCM/git/Converter-Figma/clx-src/convertTest/변환결과.txt");
         return clxXml;
     }
 
-    // <std:metadata> 등 헤더 메타데이터
-    private static void parseMetadata(StringBuilder sb, Map<String, Object> figmaJson) {
-        sb.append("    <std:metadata>\n");
-        sb.append("      <std:property key=\"template-file\" value=\"templates/일반화면/1.그리드/V_그리드_수정X.clx\"/>\n");
-        sb.append("    </std:metadata>\n");
+    // txt 파일로 저장하는 메서드
+    public static void saveClxToTxtFile(String clxXml, String filePath) {
+        try {
+            java.nio.file.Files.createDirectories(java.nio.file.Paths.get(new java.io.File(filePath).getParent()));
+            try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
+                writer.write(clxXml);
+            }
+            // 디버깅용: 생성된 XML 길이와 앞/뒤 일부 출력
+            System.out.println("[ClxLayoutUtil] XML length: " + (clxXml != null ? clxXml.length() : 0));
+            if (clxXml != null && clxXml.length() > 200) {
+                System.out.println("[ClxLayoutUtil] XML head: " + clxXml.substring(0, 200));
+                System.out.println("[ClxLayoutUtil] XML tail: " + clxXml.substring(clxXml.length() - 200));
+            } else if (clxXml != null) {
+                System.out.println("[ClxLayoutUtil] XML: " + clxXml);
+            }
+        } catch (Exception e) {
+            System.err.println("[ClxLayoutUtil] Failed to save file: " + filePath);
+            e.printStackTrace();
+        }
     }
 
-    // <screen> 여러 개 생성 (예시: PC, TABLET 등)
-    private static void parseScreens(StringBuilder sb, Map<String, Object> figmaJson) {
-        // 실제로는 figmaJson에서 화면별 정보 추출 필요
-        sb.append("    <screen std:sid=\"screen-").append(genId()).append("\" id=\"PC\" name=\"PC\" width=\"1920px\" height=\"1080px\" useCustomWidth=\"false\" useCustomHeight=\"false\" customHeight=\"600\" customWidth=\"800\" active=\"true\"/>\n");
-        sb.append("    <screen std:sid=\"screen-").append(genId()).append("\" id=\"EXB-DIV\" name=\"EXB-DIV\" width=\"1024px\" height=\"860px\"/>\n");
-        sb.append("    <screen std:sid=\"screen-").append(genId()).append("\" id=\"EXB-PART\" name=\"EXB-PART\" width=\"768px\" height=\"860px\"/>\n");
-        sb.append("    <screen std:sid=\"screen-").append(genId()).append("\" id=\"EXB-POP\" name=\"EXB-POP\" width=\"480px\" height=\"580px\"/>\n");
+    // 그룹 타입 판별
+    private static boolean isGroupType(String type) {
+        return "CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type);
     }
 
-    // <cl:model> 등 데이터셋/맵/서브미션 (예시)
-    private static void parseModel(StringBuilder sb, Map<String, Object> figmaJson) {
-        sb.append("    <cl:model std:sid=\"model-").append(genId()).append("\">\n");
-        sb.append("      <cl:dataset std:sid=\"d-set-").append(genId()).append("\" id=\"dsBaseCardList\">\n");
-        sb.append("        <cl:datacolumnlist>\n");
-        sb.append("          <cl:datacolumn comment=\"예산연도\" std:sid=\"d-column-").append(genId()).append("\" info=\"예산연도\" name=\"yyyy\"/>\n");
-        sb.append("          <cl:datacolumn comment=\"보건소장위임여부\" std:sid=\"d-column-").append(genId()).append("\" name=\"cardRegNo\" datatype=\"string\"/>\n");
-        sb.append("        </cl:datacolumnlist>\n");
-        sb.append("      </cl:dataset>\n");
-        sb.append("      <cl:datamap comment=\"조회조건 dm\" std:sid=\"d-map-").append(genId()).append("\" id=\"dmBaseCardListForm\">\n");
-        sb.append("        <cl:datacolumnlist>\n");
-        sb.append("          <cl:datacolumn std:sid=\"d-column-").append(genId()).append("\" name=\"psnYyyy\"/>\n");
-        sb.append("          <cl:datacolumn std:sid=\"d-column-").append(genId()).append("\" name=\"phcSym\"/>\n");
-        sb.append("        </cl:datacolumnlist>\n");
-        sb.append("      </cl:datamap>\n");
-        sb.append("      <cl:submission std:sid=\"submission-").append(genId()).append("\" id=\"sub1\" action=\"/regist/selectPersonCardList.do\" mediatype=\"application/json\">\n");
-        sb.append("        <cl:requestdata dataid=\"dmBaseCardListForm\"/>\n");
-        sb.append("        <cl:responsedata dataid=\"dsBaseCardList\"/>\n");
-        sb.append("      </cl:submission>\n");
-        sb.append("    </cl:model>\n");
-    }
+    // 중간 계층(CANVAS/FRAME/GROUP 등) 재귀 순회
+    private static void traverseFigmaNode(StringBuilder sb, Map<String, Object> node, int depth) {
+        String type = (String) node.get("type");
+        String name = (String) node.getOrDefault("name", "");
+        List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
+        String indent = "    ".repeat(depth);
 
-    // <body> 내부 변환 (그룹/컨트롤/레이아웃)
-    private static void parseBody(StringBuilder sb, Map<String, Object> figmaJson) {
-        Map<String, Object> document = (Map<String, Object>) figmaJson.get("document");
-        if (document != null) {
-            List<Map<String, Object>> children = (List<Map<String, Object>>) document.get("children");
-            if (children != null) {
-                // 그룹핑 및 row/col 자동 배치
-                List<Map<String, Object>> textNodes = children.stream()
-                        .flatMap(node -> flattenTextNodes(node).stream())
-                        .collect(Collectors.toList());
-                List<List<Map<String, Object>>> rows = groupByRow(textNodes, 30.0); // tolerance 30px
-                for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
-                    List<Map<String, Object>> row = rows.get(rowIdx);
-                    row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
-                    for (int colIdx = 0; colIdx < row.size(); colIdx++) {
-                        Map<String, Object> node = row.get(colIdx);
-                        parseTextNode(sb, node, rowIdx, colIdx);
+        // UDC 헤더 처리 (예: 타이틀)
+        if ("FRAME".equalsIgnoreCase(type) && name.toLowerCase().contains("title")) {
+            String udcId = "ud-control-" + genId();
+            sb.append(indent).append("<cl:udc std:sid=\"").append(udcId).append("\" id=\"udccomappheader1\" type=\"udc.com.udcComAppHeader\">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
+            if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
+            if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
+            sb.append(" autosize=\"height\"/>");
+            sb.append("\n");
+            sb.append(indent).append("</cl:udc>\n");
+            return;
+        }
+
+        // 빈 그룹/레이아웃 생성 방지
+        if (children == null || children.isEmpty()) return;
+
+        // 그룹 내 leaf 컨트롤이 여러 개면 formlayout+formdata 구조로 변환
+        if (children != null && children.size() > 1 && children.stream().allMatch(child -> child.get("children") == null)) {
+            // 위치(x/y)로 행/열 자동 배치
+            int tolerance = 20; // px
+            List<List<Map<String, Object>>> rows = new ArrayList<>();
+            List<Double> rowYs = new ArrayList<>();
+            List<Map<String, Object>> all = new ArrayList<>(children);
+            all.sort(Comparator.comparingDouble(ClxLayoutUtil::getY));
+            for (Map<String, Object> item : all) {
+                Double y = getY(item);
+                boolean placed = false;
+                for (int i = 0; i < rowYs.size(); i++) {
+                    if (Math.abs(rowYs.get(i) - y) <= tolerance) {
+                        rows.get(i).add(item);
+                        placed = true;
+                        break;
                     }
                 }
-            }
-        }
-    }
-
-    // TEXT 노드만 flatten
-    private static List<Map<String, Object>> flattenTextNodes(Map<String, Object> node) {
-        List<Map<String, Object>> result = new ArrayList<>();
-        if ("TEXT".equalsIgnoreCase((String) node.get("type"))) {
-            result.add(node);
-        }
-        List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
-        if (children != null) {
-            for (Map<String, Object> child : children) {
-                result.addAll(flattenTextNodes(child));
-            }
-        }
-        return result;
-    }
-
-    // y좌표로 행 그룹핑
-    private static List<List<Map<String, Object>>> groupByRow(List<Map<String, Object>> nodes, double tolerance) {
-        List<List<Map<String, Object>>> rows = new ArrayList<>();
-        List<Double> rowYs = new ArrayList<>();
-        nodes.sort(Comparator.comparingDouble(ClxLayoutUtil::getY));
-        for (Map<String, Object> node : nodes) {
-            Double y = getY(node);
-            boolean placed = false;
-            for (int i = 0; i < rowYs.size(); i++) {
-                if (Math.abs(rowYs.get(i) - y) <= tolerance) {
-                    rows.get(i).add(node);
-                    placed = true;
-                    break;
+                if (!placed) {
+                    rowYs.add(y);
+                    List<Map<String, Object>> newRow = new ArrayList<>();
+                    newRow.add(item);
+                    rows.add(newRow);
                 }
             }
-            if (!placed) {
-                rowYs.add(y);
-                List<Map<String, Object>> newRow = new ArrayList<>();
-                newRow.add(node);
-                rows.add(newRow);
+            for (List<Map<String, Object>> row : rows) {
+                row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
             }
+            int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
+            // group + verticaldata + formlayout 구조
+            String groupId = "grp-" + genId();
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
+            if (name != null && !name.isEmpty()) {
+                sb.append(" class=\"").append(escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase())).append("\"");
+            }
+            sb.append(">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent)
+              .append("  <cl:verticaldata std:sid=\"v-data-")
+              .append(genId()).append("\"")
+              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
+              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
+              .append(" autosize=\"height\"/>")
+              .append("\n");
+            sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"8px\" vspace=\"8px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+            // 행/열 정보
+            for (int r = 0; r < rows.size(); r++) {
+                sb.append(indent).append("    <cl:rows length=\"26\" unit=\"PIXEL\"/>\n");
+            }
+            for (int c = 0; c < colCount; c++) {
+                sb.append(indent).append("    <cl:columns length=\"110\" unit=\"PIXEL\" autoSizing=\"true\" minlength=\"70\" syncminlength=\"false\"/>\n");
+            }
+            // 컨트롤 배치
+            for (int r = 0; r < rows.size(); r++) {
+                List<Map<String, Object>> row = rows.get(r);
+                for (int c = 0; c < row.size(); c++) {
+                    convertLeafWithFormdata(sb, row.get(c), depth + 2, r, c);
+                }
+            }
+            sb.append(indent).append("  </cl:formlayout>\n");
+            sb.append(indent).append("</cl:group>\n");
+            return;
         }
-        return rows;
-    }
 
-    // TEXT 노드 → <cl:output> 변환
-    private static void parseTextNode(StringBuilder sb, Map<String, Object> node, int row, int col) {
-        String nodeId = (String) node.get("id");
-        String value = (String) node.getOrDefault("characters", "");
-        String name = (String) node.getOrDefault("name", "");
-        String className = "label"; // 필요시 스타일/이름에 따라 동적으로
-        String indent = "    ";
-        sb.append(indent)
-          .append("<cl:output std:sid=\"output-").append(genId()).append("\"")
-          .append(" id=\"opt-").append(nodeId).append("\"")
-          .append(" class=\"").append(className).append("\"")
-          .append(" value=\"").append(escapeXml(value)).append("\">\n");
-        sb.append(indent)
-          .append("  <cl:formdata std:sid=\"f-data-").append(genId()).append("\" row=\"")
-          .append(row).append("\" col=\"").append(col).append("\"/>")
-          .append("\n");
-        sb.append(indent).append("</cl:output>\n");
+        // group(verticallayout) 구조: 컨트롤 직접 나열
+        if (isGroupType(type) && children != null && !children.isEmpty()) {
+            String groupId = "grp-" + genId();
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
+            if (name != null && !name.isEmpty()) {
+                sb.append(" class=\"").append(escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase())).append("\"");
+            }
+            sb.append(">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent)
+              .append("  <cl:verticaldata std:sid=\"v-data-")
+              .append(genId()).append("\"")
+              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
+              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
+              .append(" autosize=\"height\"/>")
+              .append("\n");
+            for (Map<String, Object> child : children) {
+                traverseFigmaNode(sb, child, depth + 1);
+            }
+            sb.append(indent).append("</cl:group>\n");
+            return;
+        }
+
+        // 컨트롤이 1개면 group으로 감싸기
+        if (children != null && children.size() == 1) {
+            String groupId = "grp-" + genId();
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"").append(groupId).append("\"");
+            if (name != null && !name.isEmpty()) {
+                sb.append(" class=\"").append(escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase())).append("\"");
+            }
+            sb.append(">\n");
+            Double height = getHeight(node);
+            Double width = getWidth(node);
+            sb.append(indent)
+              .append("  <cl:verticaldata std:sid=\"v-data-")
+              .append(genId()).append("\"")
+              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
+              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
+              .append(" autosize=\"height\"/>")
+              .append("\n");
+            traverseFigmaNode(sb, children.get(0), depth + 1);
+            sb.append(indent).append("</cl:group>\n");
+            return;
+        }
+        // leaf 컨트롤 처리
+        convertLeaf(sb, node, depth);
     }
 
     // 좌표 추출 유틸
@@ -167,6 +240,170 @@ public class ClxLayoutUtil {
         Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
         if (box != null && box.get("x") != null) return ((Number) box.get("x")).doubleValue();
         return 0.0;
+    }
+
+    // 높이/폭 추출 유틸
+    private static Double getHeight(Map<String, Object> node) {
+        Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
+        if (box != null && box.get("height") != null) return ((Number) box.get("height")).doubleValue();
+        return null;
+    }
+    private static Double getWidth(Map<String, Object> node) {
+        Map<String, Object> box = (Map<String, Object>) node.get("absoluteBoundingBox");
+        if (box != null && box.get("width") != null) return ((Number) box.get("width")).doubleValue();
+        return null;
+    }
+
+    // UDC 내부 property용: 첫 TEXT 찾기
+    private static String findFirstTextValue(Map<String, Object> node) {
+        String type = (String) node.get("type");
+        if ("TEXT".equalsIgnoreCase(type)) {
+            Object characters = node.get("characters");
+            return characters != null ? characters.toString() : null;
+        }
+        List<Map<String, Object>> children = (List<Map<String, Object>>) node.get("children");
+        if (children != null) {
+            for (Map<String, Object> child : children) {
+                String result = findFirstTextValue(child);
+                if (result != null && !result.isEmpty()) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+    // leaf 노드 변환 (formlayout 내부)
+    private static void convertLeafWithFormdata(StringBuilder sb, Map<String, Object> node, int depth, int row, int col) {
+        String type = (String) node.get("type");
+        String name = (String) node.getOrDefault("name", "");
+        String indent = "    ".repeat(depth);
+        String className = name != null && !name.isEmpty() ? " class=\"" + escapeXml(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()) + "\"" : "";
+        String value = node.getOrDefault("characters", "").toString();
+        String formdata = "<cl:formdata std:sid=\"f-data-" + genId() + "\" row=\"" + row + "\" col=\"" + col + "\"/>";
+        if ("TEXT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\"").append(className).append(" value=\"")
+              .append(escapeXml(value)).append("\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:output>\n");
+        } else if ("INPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\"").append(className).append(">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:inputbox>\n");
+        } else if ("DATEINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\"").append(className).append(" value=\"20241231\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:dateinput>\n");
+        } else if ("COMBOBOX".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\"").append(className).append(">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:combobox>\n");
+        } else if ("SEARCHINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\"").append(className).append(">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("</cl:searchinput>\n");
+        } else if ("RADIOBUTTON".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\"").append(className).append(" value=\"value1\">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"예\" value=\"value1\"/>\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아니오\" value=\"value2\"/>\n");
+            sb.append(indent).append("</cl:radiobutton>\n");
+        } else if ("CHECKBOXGROUP".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\"").append(className).append(">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아이템\" value=\"value1\"/>\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아이템\" value=\"value2\"/>\n");
+            sb.append(indent).append("  <cl:item std:sid=\"item-").append(genId()).append("\" label=\"아이템\" value=\"value3\"/>\n");
+            sb.append(indent).append("</cl:checkboxgroup>\n");
+        } else if ("GRID".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\"").append(className).append(">\n");
+            sb.append(indent).append("  ").append(formdata).append("\n");
+            sb.append(indent).append("  <cl:gridcolumn std:sid=\"g-column-").append(genId()).append("\"/>\n");
+            sb.append(indent).append("  <cl:gridcolumn std:sid=\"g-column-").append(genId()).append("\"/>\n");
+            sb.append(indent).append("  <cl:gridheader std:sid=\"gh-band-").append(genId()).append("\">\n");
+            sb.append(indent).append("    <cl:gridrow std:sid=\"g-row-").append(genId()).append("\" height=\"33px\"/>\n");
+            sb.append(indent).append("  </cl:gridheader>\n");
+            sb.append(indent).append("  <cl:griddetail std:sid=\"gd-band-").append(genId()).append("\">\n");
+            sb.append(indent).append("    <cl:gridrow std:sid=\"g-row-").append(genId()).append("\" height=\"33px\"/>\n");
+            sb.append(indent).append("  </cl:griddetail>\n");
+            sb.append(indent).append("</cl:grid>\n");
+        } else {
+            writeControlXml(sb, node, depth);
+        }
+    }
+
+    // leaf 노드 변환 (formlayout 외부)
+    private static void convertLeaf(StringBuilder sb, Map<String, Object> node, int depth) {
+        String type = (String) node.get("type");
+        String name = (String) node.getOrDefault("name", "");
+        String indent = "    ".repeat(depth);
+        if ("TEXT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" value=\"")
+              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>\n");
+        } else if ("INPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\"/>\n");
+        } else if ("DATEINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\"/>\n");
+        } else if ("COMBOBOX".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\"/>\n");
+        } else if ("SEARCHINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:searchinput std:sid=\"s-input-").append(genId()).append("\"/>\n");
+        } else if ("RADIOBUTTON".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:radiobutton std:sid=\"r-button-").append(genId()).append("\"/>\n");
+        } else if ("CHECKBOXGROUP".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:checkboxgroup std:sid=\"cb-group-").append(genId()).append("\"/>\n");
+        } else if ("GRID".equalsIgnoreCase(type)) {
+            sb.append(indent).append("<cl:grid std:sid=\"grid-").append(genId()).append("\"/>\n");
+        } else {
+            writeControlXml(sb, node, depth);
+        }
+    }
+
+    // 실제 컨트롤 XML만 출력 (formdata/verticaldata 없이)
+    private static void writeControlXml(StringBuilder sb, Map<String, Object> node, int depth) {
+        writeControlXml(sb, node, depth, (String) node.get("type"), (String) node.getOrDefault("name", ""));
+    }
+    private static void writeControlXml(StringBuilder sb, Map<String, Object> node, int depth, String type, String name) {
+        String indent = "    ".repeat(depth);
+        // INSTANCE 타입 매핑
+        if ("INSTANCE".equalsIgnoreCase(type)) {
+            String lowerName = name.toLowerCase();
+            if (lowerName.contains("button")) type = "BUTTON";
+            else if (lowerName.contains("input")) type = "INPUT";
+            else if (lowerName.contains("combobox")) type = "COMBOBOX";
+            else if (lowerName.contains("date")) type = "DATEINPUT";
+            else if (lowerName.contains("radio")) return;
+        }
+        if ("TEXT".equalsIgnoreCase(type)) {
+            sb.append(indent)
+              .append("<cl:output std:sid=\"output-").append(genId())
+              .append("\" id=\"opt-").append(genId())
+              .append("\" value=\"")
+              .append(escapeXml((String) node.getOrDefault("characters", "")))
+              .append("\"/>\n");
+        } else if ("INPUT".equalsIgnoreCase(type)) {
+            sb.append(indent)
+              .append("<cl:inputbox std:sid=\"i-box-").append(genId())
+              .append("\" id=\"ipb-").append(genId())
+              .append("\"/>\n");
+        } else if ("DATEINPUT".equalsIgnoreCase(type)) {
+            sb.append(indent)
+              .append("<cl:dateinput std:sid=\"d-input-").append(genId())
+              .append("\" id=\"dti-").append(genId())
+              .append("\"/>\n");
+        } else if ("COMBOBOX".equalsIgnoreCase(type)) {
+            sb.append(indent)
+              .append("<cl:combobox std:sid=\"c-box-").append(genId())
+              .append("\" id=\"cmb-").append(genId())
+              .append("\"/>\n");
+        } else if ("BUTTON".equalsIgnoreCase(type)) {
+            sb.append(indent)
+              .append("<cl:button std:sid=\"button-").append(genId())
+              .append("\" id=\"btn-").append(genId())
+              .append("\" value=\"")
+              .append(escapeXml(name))
+              .append("\"/>\n");
+        }
     }
 
     // 유틸: XML 이스케이프
@@ -187,17 +424,11 @@ public class ClxLayoutUtil {
         usedIds.add(uuid);
         return uuid;
     }
-    // txt 파일로 저장하는 메서드
-    public static void saveClxToTxtFile(String clxXml, String filePath) {
-        try {
-            java.nio.file.Files.createDirectories(java.nio.file.Paths.get(new java.io.File(filePath).getParent()));
-            try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
-                writer.write(clxXml);
-            }
-            System.out.println("[ClxLayoutUtil] XML length: " + (clxXml != null ? clxXml.length() : 0));
-        } catch (Exception e) {
-            System.err.println("[ClxLayoutUtil] Failed to save file: " + filePath);
-            e.printStackTrace();
+    // 외부 경로로 저장
+    public static void saveClxToFile(String clxXml, String filePath) throws IOException {
+        java.nio.file.Files.createDirectories(java.nio.file.Paths.get(new java.io.File(filePath).getParent()));
+        try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
+            writer.write(clxXml);
         }
     }
 } 
