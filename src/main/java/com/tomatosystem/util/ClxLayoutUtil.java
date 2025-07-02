@@ -264,22 +264,34 @@ public class ClxLayoutUtil {
         String indent = "    ".repeat(depth);
         // 예시: TEXT → output, INPUT → inputbox, BUTTON → button 등
         if ("TEXT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
-              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:output std:sid=\"output-").append(genId())
+              .append("\" id=\"opt-").append(genId())
+              .append("\" value=\"")
+              .append(escapeXml((String) node.getOrDefault("characters", "")))
+              .append("\"/>\n");
         } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:inputbox std:sid=\"i-box-").append(genId())
+              .append("\" id=\"ipb-").append(genId())
+              .append("\"/>\n");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:dateinput std:sid=\"d-input-").append(genId())
+              .append("\" id=\"dti-").append(genId())
+              .append("\"/>\n");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:combobox std:sid=\"c-box-").append(genId())
+              .append("\" id=\"cmb-").append(genId())
+              .append("\"/>\n");
         } else if ("BUTTON".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
-              .append(escapeXml(name)).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:button std:sid=\"button-").append(genId())
+              .append("\" id=\"btn-").append(genId())
+              .append("\" value=\"")
+              .append(escapeXml(name))
+              .append("\"/>\n");
         }
     }
 
