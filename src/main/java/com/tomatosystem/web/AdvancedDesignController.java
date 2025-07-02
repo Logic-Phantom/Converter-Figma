@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/design")
+@RequestMapping("/designForm")
 public class AdvancedDesignController {
     @Autowired
     private AdvancedFigmaToClxService advancedFigmaToClxService;
@@ -51,13 +51,21 @@ public class AdvancedDesignController {
     }
 
     @RequestMapping("/convertFigmaToFormClx.do")
-    public ResponseEntity<String> convertFigmaToFormClx(String token, String fileKey, String outputDir) {
+    public ResponseEntity<String> convertFigmaToFormClx() {
         try {
+            String token = "사용자 토큰";
+            String fileKey = "x5gR79q0HUZ567W3CjCuCJ";
+            
             String today = java.time.LocalDate.now().toString();
+            String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today + "\\form\\";
+            Files.createDirectories(Paths.get(outputDir));
+            
             String fileName = today + "_form_" + UUID.randomUUID().toString().replace("-", "").substring(0, 8);
             String clxPath = outputDir + fileName + ".clx";
             String jsPath = outputDir + fileName + ".js";
 
+            
+            
             // Figma API에서 JSON fetch
             String url = "https://api.figma.com/v1/files/" + fileKey;
             Map<String, Object> figmaJson = fetchFigmaData(url, token);

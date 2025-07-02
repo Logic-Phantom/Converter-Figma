@@ -28,7 +28,7 @@ public class AdvancedFigmaToClxService {
         String clxXml = ClxLayoutUtil.convertFigmaJsonToClxXml(figmaJson);
         // 3. 파일로 저장
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\clx-advanced\\" + today;
+        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today + "\\form\\";
         Files.createDirectories(Paths.get(outputDir));
         String randomStr = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
         String fileName = today + "_advanced_" + randomStr + ".clx";
