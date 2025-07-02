@@ -235,6 +235,16 @@ public class ClxLayoutUtil {
         Double height = getHeight(node);
         Double width = getWidth(node);
         boolean needsGroup = (height != null || width != null);
+        // INSTANCE 타입 매핑
+        if ("INSTANCE".equalsIgnoreCase(type)) {
+            String lowerName = name.toLowerCase();
+            if (lowerName.contains("button")) type = "BUTTON";
+            else if (lowerName.contains("input")) type = "INPUT";
+            else if (lowerName.contains("combobox")) type = "COMBOBOX";
+            else if (lowerName.contains("date")) type = "DATEINPUT";
+            else if (lowerName.contains("radio")) return; // 라디오는 그룹에서 처리
+            // else: 기타는 group/container로 처리(여기선 무시)
+        }
         if (needsGroup) {
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
             sb.append(indent).append("  ").append(formdata).append("\n");
@@ -244,7 +254,7 @@ public class ClxLayoutUtil {
             sb.append(" autosize=\"none\"/>");
             sb.append("\n");
             // 실제 컨트롤
-            writeControlXml(sb, node, depth + 1);
+            writeControlXml(sb, node, depth + 1, type, name);
             sb.append(indent).append("</cl:group>\n");
         } else {
             // 단순 컨트롤: formdata + 컨트롤
@@ -276,26 +286,48 @@ public class ClxLayoutUtil {
 
     // 실제 컨트롤 XML만 출력 (formdata/verticaldata 없이)
     private static void writeControlXml(StringBuilder sb, Map<String, Object> node, int depth) {
-        String type = (String) node.get("type");
-        String name = (String) node.getOrDefault("name", "");
+        writeControlXml(sb, node, depth, (String) node.get("type"), (String) node.getOrDefault("name", ""));
+    }
+    private static void writeControlXml(StringBuilder sb, Map<String, Object> node, int depth, String type, String name) {
         String indent = "    ".repeat(depth);
+        // INSTANCE 타입 매핑
+        if ("INSTANCE".equalsIgnoreCase(type)) {
+            String lowerName = name.toLowerCase();
+            if (lowerName.contains("button")) type = "BUTTON";
+            else if (lowerName.contains("input")) type = "INPUT";
+            else if (lowerName.contains("combobox")) type = "COMBOBOX";
+            else if (lowerName.contains("date")) type = "DATEINPUT";
+            else if (lowerName.contains("radio")) return;
+        }
         if ("TEXT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:output std:sid=\"output-").append(genId()).append("\" id=\"opt-").append(genId()).append("\" value=\"")
-              .append(escapeXml((String) node.getOrDefault("characters", ""))).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:output std:sid=\"output-").append(genId())
+              .append("\" id=\"opt-").append(genId())
+              .append("\" value=\"")
+              .append(escapeXml((String) node.getOrDefault("characters", "")))
+              .append("\"/>\n");
         } else if ("INPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:inputbox std:sid=\"i-box-").append(genId()).append("\" id=\"ipb-").append(genId()).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:inputbox std:sid=\"i-box-").append(genId())
+              .append("\" id=\"ipb-").append(genId())
+              .append("\"/>\n");
         } else if ("DATEINPUT".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:dateinput std:sid=\"d-input-").append(genId()).append("\" id=\"dti-").append(genId()).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:dateinput std:sid=\"d-input-").append(genId())
+              .append("\" id=\"dti-").append(genId())
+              .append("\"/>\n");
         } else if ("COMBOBOX".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:combobox std:sid=\"c-box-").append(genId()).append("\" id=\"cmb-").append(genId()).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:combobox std:sid=\"c-box-").append(genId())
+              .append("\" id=\"cmb-").append(genId())
+              .append("\"/>\n");
         } else if ("BUTTON".equalsIgnoreCase(type)) {
-            sb.append(indent).append("<cl:button std:sid=\"button-").append(genId()).append("\" id=\"btn-").append(genId()).append("\" value=\"")
-              .append(escapeXml(name)).append("\"/>
-");
+            sb.append(indent)
+              .append("<cl:button std:sid=\"button-").append(genId())
+              .append("\" id=\"btn-").append(genId())
+              .append("\" value=\"")
+              .append(escapeXml(name))
+              .append("\"/>\n");
         }
     }
 
@@ -304,7 +336,15 @@ public class ClxLayoutUtil {
         String type = (String) node.get("type");
         String name = (String) node.getOrDefault("name", "");
         String indent = "    ".repeat(depth);
-        // 예시: TEXT → output, INPUT → inputbox, BUTTON → button 등
+        // INSTANCE 타입 매핑
+        if ("INSTANCE".equalsIgnoreCase(type)) {
+            String lowerName = name.toLowerCase();
+            if (lowerName.contains("button")) type = "BUTTON";
+            else if (lowerName.contains("input")) type = "INPUT";
+            else if (lowerName.contains("combobox")) type = "COMBOBOX";
+            else if (lowerName.contains("date")) type = "DATEINPUT";
+            else if (lowerName.contains("radio")) return;
+        }
         if ("TEXT".equalsIgnoreCase(type)) {
             sb.append(indent)
               .append("<cl:output std:sid=\"output-").append(genId())
