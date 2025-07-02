@@ -68,8 +68,7 @@ public class ClxLayoutUtil {
             sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
             if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
             if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append(" autosize=\"none\"/>");
-            sb.append("\n");
+            sb.append("/>\n");
             // UDC 내부 property: 첫 TEXT 추출
             String titleText = findFirstTextValue(node);
             if (titleText != null && !titleText.isEmpty()) {
@@ -90,17 +89,16 @@ public class ClxLayoutUtil {
             // verticaldata
             Double height = getHeight(node);
             Double width = getWidth(node);
-            sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
-            if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
-            if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append("/>
-");
+            sb.append(indent)
+              .append("  <cl:verticaldata std:sid=\"v-data-")
+              .append(genId()).append("\"")
+              .append(width != null ? " width=\"" + width.intValue() + "px\"" : "")
+              .append(height != null ? " height=\"" + height.intValue() + "px\"" : "")
+              .append("/>\n");
             // attribute 예시: name에 'search' 포함시 search-box 등
             if (name.toLowerCase().contains("search")) {
-                sb.append(indent).append("  <cl:attribute name=\"mobile-column-count\" value=\"2\"/>
-");
-                sb.append(indent).append("  <cl:attribute name=\"tablet-column-count\" value=\"2\"/>
-");
+                sb.append(indent).append("  <cl:attribute name=\"mobile-column-count\" value=\"2\"/>\n");
+                sb.append(indent).append("  <cl:attribute name=\"tablet-column-count\" value=\"2\"/>\n");
             }
             // row/col 그룹핑 (formlayout 필요 여부 판단)
             int tolerance = 20; // px
