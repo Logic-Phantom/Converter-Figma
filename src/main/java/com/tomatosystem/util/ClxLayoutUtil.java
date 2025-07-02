@@ -109,7 +109,7 @@ public class ClxLayoutUtil {
             return;
         }
 
-        // 큰 섹션 단위로만 group 생성 (CANVAS/FRAME만)
+        // group은 CANVAS/FRAME만 생성
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
             sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\"");
             if (name != null && !name.isEmpty()) {
@@ -128,72 +128,80 @@ public class ClxLayoutUtil {
                 sb.append(indent).append("  <cl:attribute name=\"mobile-column-count\" value=\"2\"/>\n");
                 sb.append(indent).append("  <cl:attribute name=\"tablet-column-count\" value=\"2\"/>\n");
             }
-            // 섹션 내부는 formlayout 또는 하위 group/컨트롤로 재귀
+            // group 내부에 UDC가 있으면 1회만 생성
+            boolean udcCreated = false;
             for (Map<String, Object> child : children) {
-                traverseFigmaNode(sb, child, depth + 1);
+                String childType = (String) child.get("type");
+                String childName = (String) child.getOrDefault("name", "");
+                if (!udcCreated && "FRAME".equalsIgnoreCase(childType) && childName.toLowerCase().contains("title")) {
+                    traverseFigmaNode(sb, child, depth + 1);
+                    udcCreated = true;
+                } else if (!("FRAME".equalsIgnoreCase(childType) && childName.toLowerCase().contains("title"))) {
+                    traverseFigmaNode(sb, child, depth + 1);
+                }
             }
             sb.append(indent).append("</cl:group>\n");
             return;
         }
 
-        // row/col 그룹핑 (formlayout 필요 여부 판단)
+        // children이 모두 leaf(컨트롤)이고 2개 이상이면 formlayout 생성, 아니면 컨트롤만 나열
         if (children != null && !children.isEmpty()) {
-            int tolerance = 20; // px
-            List<List<Map<String, Object>>> rows = new ArrayList<>();
-            List<Double> rowYs = new ArrayList<>();
-            List<Map<String, Object>> all = new ArrayList<>(children);
-            all.sort(Comparator.comparingDouble(ClxLayoutUtil::getY));
-            for (Map<String, Object> item : all) {
-                Double y = getY(item);
-                boolean placed = false;
-                for (int i = 0; i < rowYs.size(); i++) {
-                    if (Math.abs(rowYs.get(i) - y) <= tolerance) {
-                        rows.get(i).add(item);
-                        placed = true;
-                        break;
+            boolean allLeaf = true;
+            for (Map<String, Object> child : children) {
+                if (child.get("children") != null) {
+                    allLeaf = false;
+                    break;
+                }
+            }
+            if (allLeaf && children.size() > 1) {
+                // formlayout 생성
+                int tolerance = 20; // px
+                List<List<Map<String, Object>>> rows = new ArrayList<>();
+                List<Double> rowYs = new ArrayList<>();
+                List<Map<String, Object>> all = new ArrayList<>(children);
+                all.sort(Comparator.comparingDouble(ClxLayoutUtil::getY));
+                for (Map<String, Object> item : all) {
+                    Double y = getY(item);
+                    boolean placed = false;
+                    for (int i = 0; i < rowYs.size(); i++) {
+                        if (Math.abs(rowYs.get(i) - y) <= tolerance) {
+                            rows.get(i).add(item);
+                            placed = true;
+                            break;
+                        }
+                    }
+                    if (!placed) {
+                        rowYs.add(y);
+                        List<Map<String, Object>> newRow = new ArrayList<>();
+                        newRow.add(item);
+                        rows.add(newRow);
                     }
                 }
-                if (!placed) {
-                    rowYs.add(y);
-                    List<Map<String, Object>> newRow = new ArrayList<>();
-                    newRow.add(item);
-                    rows.add(newRow);
-                }
-            }
-            for (List<Map<String, Object>> row : rows) {
-                row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
-            }
-            // 행/열별 크기 추정
-            List<Double> rowHeightsList = new ArrayList<>();
-            List<Double> colWidthsList = new ArrayList<>();
-            for (List<Map<String, Object>> row : rows) {
-                double maxH = 0;
-                for (Map<String, Object> item : row) {
-                    Double h = getHeight(item);
-                    if (h != null && h > maxH) maxH = h;
-                }
-                rowHeightsList.add(maxH);
-            }
-            int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
-            for (int c = 0; c < colCount; c++) {
-                double maxW = 0;
                 for (List<Map<String, Object>> row : rows) {
-                    if (c < row.size()) {
-                        Double w = getWidth(row.get(c));
-                        if (w != null && w > maxW) maxW = w;
+                    row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
+                }
+                // 행/열별 크기 추정
+                List<Double> rowHeightsList = new ArrayList<>();
+                List<Double> colWidthsList = new ArrayList<>();
+                for (List<Map<String, Object>> row : rows) {
+                    double maxH = 0;
+                    for (Map<String, Object> item : row) {
+                        Double h = getHeight(item);
+                        if (h != null && h > maxH) maxH = h;
                     }
+                    rowHeightsList.add(maxH);
                 }
-                colWidthsList.add(maxW);
-            }
-            // formlayout 필요 여부: 2개 이상 row/col이 있으면 생성
-            boolean needsFormlayout = (rows.size() > 1 || colCount > 1);
-            int leafCount = 0;
-            for (List<Map<String, Object>> row : rows) {
-                for (Map<String, Object> item : row) {
-                    if (item.get("children") == null) leafCount++;
+                int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
+                for (int c = 0; c < colCount; c++) {
+                    double maxW = 0;
+                    for (List<Map<String, Object>> row : rows) {
+                        if (c < row.size()) {
+                            Double w = getWidth(row.get(c));
+                            if (w != null && w > maxW) maxW = w;
+                        }
+                    }
+                    colWidthsList.add(maxW);
                 }
-            }
-            if (needsFormlayout && leafCount > 0) {
                 sb.append(indent).append("<cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
                 for (Double h : rowHeightsList) {
                     if (h != null && h >= 40) {
@@ -213,23 +221,22 @@ public class ClxLayoutUtil {
                     List<Map<String, Object>> row = rows.get(rowIdx);
                     for (int colIdx = 0; colIdx < row.size(); colIdx++) {
                         Map<String, Object> item = row.get(colIdx);
-                        if (item.get("children") == null) {
-                            convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
-                        }
+                        convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
                     }
                 }
                 sb.append(indent).append("</cl:formlayout>\n");
+                return;
             } else {
-                // formlayout 없이 컨트롤만 순서대로 출력 (group 없이)
-                for (List<Map<String, Object>> row : rows) {
-                    for (Map<String, Object> item : row) {
-                        if (item.get("children") == null) {
-                            convertLeaf(sb, item, depth + 1);
-                        }
+                // 컨트롤만 나열
+                for (Map<String, Object> child : children) {
+                    if (child.get("children") == null) {
+                        convertLeaf(sb, child, depth + 1);
+                    } else {
+                        traverseFigmaNode(sb, child, depth + 1);
                     }
                 }
+                return;
             }
-            return;
         }
         // leaf 컨트롤 처리 (formlayout 내부에서만 호출됨)
         convertLeaf(sb, node, depth);
