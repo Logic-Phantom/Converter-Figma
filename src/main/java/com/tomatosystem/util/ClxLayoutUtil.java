@@ -57,69 +57,75 @@ public class ClxLayoutUtil {
         String indent = "    ".repeat(depth);
         boolean isRoot = depth == 2; // body 바로 아래면 루트
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
-            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
             if (isRoot) {
+                sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
                 sb.append(indent).append("  <cl:verticallayout std:sid=\"v-layout-").append(genId()).append("\" spacing=\"12\"/>\n");
                 for (Map<String, Object> child : children) {
                     traverseFigmaNode(sb, child, depth + 2);
                 }
-            } else {
-                // leaf와 container 분리
-                List<Map<String, Object>> leafs = new ArrayList<>();
-                List<Map<String, Object>> containers = new ArrayList<>();
-                for (Map<String, Object> child : children) {
-                    if (child.get("children") == null) leafs.add(child);
-                    else containers.add(child);
+                sb.append(indent).append("</cl:group>\n");
+                return;
+            }
+            // 중첩 최소화: 자식이 1개면 group/formlayout 감싸지 않고 바로 출력
+            if (children.size() == 1 && children.get(0).get("children") == null) {
+                convertLeafWithFormdata(sb, children.get(0), depth, 0, 0);
+                return;
+            }
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+            // leaf와 container 분리
+            List<Map<String, Object>> leafs = new ArrayList<>();
+            List<Map<String, Object>> containers = new ArrayList<>();
+            for (Map<String, Object> child : children) {
+                if (child.get("children") == null) leafs.add(child);
+                else containers.add(child);
+            }
+            List<Map<String, Object>> all = new ArrayList<>();
+            all.addAll(leafs);
+            all.addAll(containers);
+            if (!all.isEmpty()) {
+                int tolerance = 10;
+                List<List<Map<String, Object>>> rows = new ArrayList<>();
+                List<Double> rowYs = new ArrayList<>();
+                for (Map<String, Object> item : all) {
+                    Double y = getY(item);
+                    boolean placed = false;
+                    for (int i = 0; i < rowYs.size(); i++) {
+                        if (Math.abs(rowYs.get(i) - y) <= tolerance) {
+                            rows.get(i).add(item);
+                            placed = true;
+                            break;
+                        }
+                    }
+                    if (!placed) {
+                        rowYs.add(y);
+                        List<Map<String, Object>> newRow = new ArrayList<>();
+                        newRow.add(item);
+                        rows.add(newRow);
+                    }
                 }
-                // leafs와 containers 모두 formlayout 하위에 배치, 각각 formdata 부여
-                List<Map<String, Object>> all = new ArrayList<>();
-                all.addAll(leafs);
-                all.addAll(containers);
-                if (!all.isEmpty()) {
-                    int tolerance = 10;
-                    List<List<Map<String, Object>>> rows = new ArrayList<>();
-                    List<Double> rowYs = new ArrayList<>();
-                    for (Map<String, Object> item : all) {
-                        Double y = getY(item);
-                        boolean placed = false;
-                        for (int i = 0; i < rowYs.size(); i++) {
-                            if (Math.abs(rowYs.get(i) - y) <= tolerance) {
-                                rows.get(i).add(item);
-                                placed = true;
-                                break;
-                            }
-                        }
-                        if (!placed) {
-                            rowYs.add(y);
-                            List<Map<String, Object>> newRow = new ArrayList<>();
-                            newRow.add(item);
-                            rows.add(newRow);
-                        }
-                    }
-                    for (List<Map<String, Object>> row : rows) {
-                        row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
-                    }
-                    int rowCount = rows.size();
-                    int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
-                    sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
-                    sb.append(indent).append("    <cl:rows length=\"").append(rowCount).append("\" unit=\"FRACTION\"/>\n");
-                    sb.append(indent).append("    <cl:columns length=\"").append(colCount).append("\" unit=\"FRACTION\"/>\n");
-                    sb.append(indent).append("  </cl:formlayout>\n");
-                    for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
-                        List<Map<String, Object>> row = rows.get(rowIdx);
-                        for (int colIdx = 0; colIdx < row.size(); colIdx++) {
-                            Map<String, Object> item = row.get(colIdx);
-                            if (item.get("children") == null) {
-                                convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
-                            } else {
-                                // 그룹/컨테이너: formdata 먼저, 그 다음 재귀
-                                String groupIndent = "    ".repeat(depth + 1);
-                                sb.append(groupIndent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-                                sb.append(groupIndent).append("  <cl:formdata std:sid=\"f-data-").append(genId()).append("\" row=\"").append(rowIdx).append("\" col=\"").append(colIdx).append("\"/>\n");
-                                // 컨테이너 내부 재귀
-                                traverseFigmaNode(sb, item, depth + 2);
-                                sb.append(groupIndent).append("</cl:group>\n");
-                            }
+                for (List<Map<String, Object>> row : rows) {
+                    row.sort(Comparator.comparingDouble(ClxLayoutUtil::getX));
+                }
+                int rowCount = rows.size();
+                int colCount = rows.stream().mapToInt(List::size).max().orElse(1);
+                sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+                sb.append(indent).append("    <cl:rows length=\"").append(rowCount).append("\" unit=\"FRACTION\"/>\n");
+                sb.append(indent).append("    <cl:columns length=\"").append(colCount).append("\" unit=\"FRACTION\"/>\n");
+                sb.append(indent).append("  </cl:formlayout>\n");
+                for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
+                    List<Map<String, Object>> row = rows.get(rowIdx);
+                    for (int colIdx = 0; colIdx < row.size(); colIdx++) {
+                        Map<String, Object> item = row.get(colIdx);
+                        if (item.get("children") == null) {
+                            convertLeafWithFormdata(sb, item, depth + 1, rowIdx, colIdx);
+                        } else if (((List<Map<String, Object>>)item.get("children")).size() == 1 && ((List<Map<String, Object>>)item.get("children")).get(0).get("children") == null) {
+                            convertLeafWithFormdata(sb, ((List<Map<String, Object>>)item.get("children")).get(0), depth + 1, rowIdx, colIdx);
+                        } else {
+                            String groupIndent = "    ".repeat(depth + 1);
+                            sb.append(groupIndent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
+                            sb.append(groupIndent).append("  <cl:formdata std:sid=\"f-data-").append(genId()).append("\" row=\"").append(rowIdx).append("\" col=\"").append(colIdx).append("\"/>\n");
+                            traverseFigmaNode(sb, item, depth + 2);
+                            sb.append(groupIndent).append("</cl:group>\n");
                         }
                     }
                 }
