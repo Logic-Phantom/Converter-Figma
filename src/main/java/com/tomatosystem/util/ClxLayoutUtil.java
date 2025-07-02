@@ -81,15 +81,28 @@ public class ClxLayoutUtil {
         // 그룹핑이 필요한 경우만 <cl:group>+<cl:formlayout> 생성
         if (("CANVAS".equalsIgnoreCase(type) || "FRAME".equalsIgnoreCase(type) || "GROUP".equalsIgnoreCase(type)) && children != null && !children.isEmpty()) {
             // <cl:group> 생성 (루트 또는 그룹핑 필요시)
-            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\">\n");
-            // verticaldata, etc.
+            sb.append(indent).append("<cl:group std:sid=\"group-").append(genId()).append("\" id=\"grp-").append(genId()).append("\");
+            // class/id 매핑
+            if (name != null && !name.isEmpty()) {
+                sb.append(" class=\"").append(name.replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase()).append("\"");
+            }
+            sb.append(">\n");
+            // verticaldata
             Double height = getHeight(node);
             Double width = getWidth(node);
             sb.append(indent).append("  <cl:verticaldata std:sid=\"v-data-").append(genId()).append("\"");
             if (width != null) sb.append(" width=\"").append(width.intValue()).append("px\"");
             if (height != null) sb.append(" height=\"").append(height.intValue()).append("px\"");
-            sb.append("/>\n");
-            // row/col 그룹핑
+            sb.append("/>
+");
+            // attribute 예시: name에 'search' 포함시 search-box 등
+            if (name.toLowerCase().contains("search")) {
+                sb.append(indent).append("  <cl:attribute name=\"mobile-column-count\" value=\"2\"/>
+");
+                sb.append(indent).append("  <cl:attribute name=\"tablet-column-count\" value=\"2\"/>
+");
+            }
+            // row/col 그룹핑 (formlayout 필요 여부 판단)
             int tolerance = 20; // px
             List<List<Map<String, Object>>> rows = new ArrayList<>();
             List<Double> rowYs = new ArrayList<>();
@@ -137,36 +150,42 @@ public class ClxLayoutUtil {
                 }
                 colWidthsList.add(maxW);
             }
-            // <cl:formlayout> 한 번만 생성, rows/columns/컨트롤만 내부에, 그룹은 바깥에
-            sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
-            for (Double h : rowHeightsList) {
-                if (h != null && h >= 40) {
-                    sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                } else {
-                    sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
-                }
-            }
-            for (Double w : colWidthsList) {
-                if (w != null && w >= 80) {
-                    sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
-                } else {
-                    sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
-                }
-            }
-            // 컨트롤 배치: <cl:formdata row=... col=...>는 leaf 컨트롤만, 그룹은 formlayout 바깥에
+            // formlayout 필요 여부: leaf 컨트롤이 하나라도 있으면 생성
+            boolean hasLeaf = false;
             List<Map<String, Object>> groupChildren = new ArrayList<>();
-            for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
-                List<Map<String, Object>> row = rows.get(rowIdx);
-                for (int colIdx = 0; colIdx < row.size(); colIdx++) {
-                    Map<String, Object> item = row.get(colIdx);
-                    if (item.get("children") == null) {
-                        convertLeafWithFormdata(sb, item, depth + 2, rowIdx, colIdx);
+            for (List<Map<String, Object>> row : rows) {
+                for (Map<String, Object> item : row) {
+                    if (item.get("children") == null) hasLeaf = true;
+                    else groupChildren.add(item);
+                }
+            }
+            if (hasLeaf) {
+                sb.append(indent).append("  <cl:formlayout std:sid=\"f-layout-").append(genId()).append("\" scrollable=\"false\" hspace=\"6px\" vspace=\"6px\" top-margin=\"0px\" right-margin=\"0px\" bottom-margin=\"0px\" left-margin=\"0px\">\n");
+                for (Double h : rowHeightsList) {
+                    if (h != null && h >= 40) {
+                        sb.append(indent).append("    <cl:rows length=\"").append(h.intValue()).append("\" unit=\"PIXEL\"/>\n");
                     } else {
-                        groupChildren.add(item); // 그룹은 formlayout 바깥에 따로 처리
+                        sb.append(indent).append("    <cl:rows length=\"1\" unit=\"FRACTION\"/>\n");
                     }
                 }
+                for (Double w : colWidthsList) {
+                    if (w != null && w >= 80) {
+                        sb.append(indent).append("    <cl:columns length=\"").append(w.intValue()).append("\" unit=\"PIXEL\"/>\n");
+                    } else {
+                        sb.append(indent).append("    <cl:columns length=\"1\" unit=\"FRACTION\"/>\n");
+                    }
+                }
+                for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
+                    List<Map<String, Object>> row = rows.get(rowIdx);
+                    for (int colIdx = 0; colIdx < row.size(); colIdx++) {
+                        Map<String, Object> item = row.get(colIdx);
+                        if (item.get("children") == null) {
+                            convertLeafWithFormdata(sb, item, depth + 2, rowIdx, colIdx);
+                        }
+                    }
+                }
+                sb.append(indent).append("  </cl:formlayout>\n");
             }
-            sb.append(indent).append("  </cl:formlayout>\n");
             // formlayout 바깥에 그룹들 생성
             for (Map<String, Object> groupChild : groupChildren) {
                 traverseFigmaNode(sb, groupChild, depth + 1);
