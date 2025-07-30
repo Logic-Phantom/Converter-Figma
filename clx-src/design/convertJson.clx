@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-b8d93917" version="1.0.5542">
+  <head std:sid="head-44717885">
+    <screen std:sid="screen-1ab3a371" id="default" name="default" width="1024px" height="768px"/>
+    <screen std:sid="screen-c492d93e" id="tablet" name="tablet" width="500px" height="667px"/>
+    <screen std:sid="screen-941063b3" id="mobile" name="mobile" width="350px" height="525px"/>
+    <cl:model std:sid="model-a2551599">
+      <cl:submission std:sid="submission-9c8f5d87" id="subFIle" action="../design/jsonConvert.do" mediatype="multipart/form-data"/>
+    </cl:model>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-9e68a5e4">
+    <cl:fileinput std:sid="f-input-8dea4a3c" id="fi1">
+      <cl:listener std:sid="listener-7df606b2" name="value-change" handler="onFi1ValueChange"/>
+      <cl:xylayoutdata std:sid="xyl-data-51d1b338" top="222px" left="312px" width="394px" height="93px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+    </cl:fileinput>
+    <cl:xylayout std:sid="xylayout-8d8fc46f"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
