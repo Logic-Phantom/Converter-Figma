@@ -41,6 +41,7 @@ import org.springframework.web.servlet.View;
 
 import com.cleopatra.protocol.data.DataRequest;
 import com.cleopatra.protocol.data.ParameterGroup;
+import com.cleopatra.protocol.data.UploadFile;
 import com.cleopatra.spring.JSONDataView;
 import com.tomatosystem.service.FigmaToClxService;
 import com.tomatosystem.service.FigmaToHtmlService;
@@ -134,7 +135,7 @@ public class DesignController {
     public ResponseEntity<String> convertAndSaveClxDirect() {
         String token = "사용자 토큰";
         //lR8UApS86cMUi3ExqkbPpK,x5gR79q0HUZ567W3CjCuCJ
-        String fileKey = "rXU0zhKF2HjzFsND9njYbq";
+        String fileKey = "x5gR79q0HUZ567W3CjCuCJ";
         String url = "https://api.figma.com/v1/files/" + fileKey;
 
         try {
@@ -468,4 +469,71 @@ public class DesignController {
 
 	    return filePath.toFile();
 	}
+	
+    @RequestMapping("/jsonConvert.do")
+    public ResponseEntity<String> jsonConvert(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) {
+
+
+        try {
+
+
+            // 업로드된 파일 처리 (JSON 파일)
+            Map<String, UploadFile[]> uploadFiles = dataRequest.getUploadFiles();
+            System.out.println("업로드 파일 == " + uploadFiles);
+            boolean hasJsonFile = false;
+
+            if (uploadFiles != null && !uploadFiles.isEmpty()) {
+                for (UploadFile[] uFiles : uploadFiles.values()) {
+                    for (UploadFile uFile : uFiles) {
+                        File file = uFile.getFile();
+                        System.out.println("파일 객체: " + file);
+                        if (file != null) {
+                            String uploadedFileName  = file.getName();
+                            System.out.println("파일 이름: " + uploadedFileName );
+                            if (uploadedFileName .toLowerCase().contains(".json")) {
+                                hasJsonFile = true;
+
+                                Map<String, Object> uploadedJsonData = readJsonFromFile(file);
+                                if (uploadedJsonData == null) {
+                                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업로드된 JSON 파일 읽기 실패");
+                                }
+                                // JSON 파일 저장 (기존 로직과 동일)
+                                saveJsonToFile(uploadedJsonData);
+                                
+                                // CLX 변환 (토큰과 fileKey 없이 진행)
+                                File clxFile = figmaToClxService.convertToClx(uploadedJsonData);
+                                
+                                if (clxFile == null || !clxFile.exists()) {
+                                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CLX file creation failed.");
+                                }
+                                System.out.println("업로드 json == " + uploadedJsonData);
+                                return ResponseEntity.ok("CLX file saved successfully at: " + clxFile.getAbsolutePath());
+                            
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            // JSON 파일이 아예 없었을 경우
+            if (!hasJsonFile) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("JSON 형식의 업로드 파일이 없습니다.");
+            }
+
+            return ResponseEntity.ok("Figma 데이터 분석 완료."); // 이건 사실상 도달하지 않음
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("요청 처리 중 오류 발생: " + e.getMessage());
+        }
+    }
+    
+    private Map<String, Object> readJsonFromFile(File file) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(file, Map.class); // JSON을 Map 형식으로 변환
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }
