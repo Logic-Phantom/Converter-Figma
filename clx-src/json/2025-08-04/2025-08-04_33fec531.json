@@ -1,0 +1,1490 @@
+{
+  "document" : {
+    "id" : "0:0",
+    "name" : "Document",
+    "type" : "DOCUMENT",
+    "scrollBehavior" : "SCROLLS",
+    "children" : [ {
+      "id" : "0:1",
+      "name" : "testFigma",
+      "type" : "CANVAS",
+      "scrollBehavior" : "SCROLLS",
+      "children" : [ {
+        "id" : "98:79582",
+        "name" : "Grid-1 (텍스트 입력)",
+        "type" : "FRAME",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 1.0,
+            "g" : 0.996078431372549,
+            "b" : 1.0,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 26.77335,
+          "y" : 331.10217,
+          "width" : 1563.12777,
+          "height" : 481.96984999999995
+        },
+        "absoluteRenderBounds" : {
+          "x" : 26.77335,
+          "y" : 331.10217,
+          "width" : 1563.12777,
+          "height" : 481.96984999999995
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "clipsContent" : false,
+        "background" : [ ],
+        "backgroundColor" : {
+          "r" : 1.0,
+          "g" : 0.996078431372549,
+          "b" : 1.0,
+          "a" : 1.0
+        },
+        "layoutMode" : "HORIZONTAL",
+        "counterAxisSizingMode" : "FIXED",
+        "primaryAxisSizingMode" : "FIXED",
+        "layoutWrap" : "NO_WRAP",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "effects" : [ ],
+        "interactions" : [ ],
+        "cornerRadius" : 0.0,
+        "cornerSmoothing" : 0.0
+      }, {
+        "id" : "62:29445",
+        "name" : "AppHeader-40 (텍스트 입력)",
+        "type" : "FRAME",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 0.996078431372549,
+            "b" : 0.996078431372549,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 0.0,
+          "y" : 268.30194,
+          "width" : 1156.94043,
+          "height" : 54.23822000000001
+        },
+        "absoluteRenderBounds" : {
+          "x" : 0.0,
+          "y" : 268.30194,
+          "width" : 1156.94043,
+          "height" : 54.23822000000001
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "clipsContent" : false,
+        "background" : [ ],
+        "backgroundColor" : {
+          "r" : 0.996078431372549,
+          "g" : 0.996078431372549,
+          "b" : 0.996078431372549,
+          "a" : 1.0
+        },
+        "layoutMode" : "HORIZONTAL",
+        "counterAxisSizingMode" : "FIXED",
+        "primaryAxisSizingMode" : "FIXED",
+        "layoutWrap" : "NO_WRAP",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "effects" : [ ],
+        "interactions" : [ ],
+        "cornerRadius" : 0.0,
+        "cornerSmoothing" : 0.0
+      }, {
+        "id" : "85:10103",
+        "name" : "Grid-45 (텍스트 입력)",
+        "type" : "FRAME",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 0.9490196078431372,
+            "b" : 0.803921568627451,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 231.56023,
+          "y" : 70.74997,
+          "width" : 1391.8231899999998,
+          "height" : 188.56284
+        },
+        "absoluteRenderBounds" : {
+          "x" : 231.56023,
+          "y" : 70.74997,
+          "width" : 1391.8231899999998,
+          "height" : 188.56284
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "clipsContent" : false,
+        "background" : [ ],
+        "backgroundColor" : {
+          "r" : 0.996078431372549,
+          "g" : 0.9490196078431372,
+          "b" : 0.803921568627451,
+          "a" : 1.0
+        },
+        "layoutMode" : "HORIZONTAL",
+        "counterAxisSizingMode" : "FIXED",
+        "primaryAxisSizingMode" : "FIXED",
+        "layoutWrap" : "NO_WRAP",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "effects" : [ ],
+        "interactions" : [ ],
+        "cornerRadius" : 0.0,
+        "cornerSmoothing" : 0.0
+      }, {
+        "id" : "27:93705",
+        "name" : "AppHeader-47 (텍스트 입력)",
+        "type" : "FRAME",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 0.996078431372549,
+            "b" : 0.996078431372549,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 38.77443,
+          "y" : 279.83801,
+          "width" : 1054.14244,
+          "height" : 51.83802000000003
+        },
+        "absoluteRenderBounds" : {
+          "x" : 38.77443,
+          "y" : 279.83801,
+          "width" : 1054.14244,
+          "height" : 51.83802000000003
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "clipsContent" : false,
+        "background" : [ ],
+        "backgroundColor" : {
+          "r" : 0.996078431372549,
+          "g" : 0.996078431372549,
+          "b" : 0.996078431372549,
+          "a" : 1.0
+        },
+        "layoutMode" : "HORIZONTAL",
+        "counterAxisSizingMode" : "FIXED",
+        "primaryAxisSizingMode" : "FIXED",
+        "layoutWrap" : "NO_WRAP",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "effects" : [ ],
+        "interactions" : [ ],
+        "cornerRadius" : 0.0,
+        "cornerSmoothing" : 0.0
+      }, {
+        "id" : "51:14589",
+        "name" : "AppHeader-49 (텍스트 입력)",
+        "type" : "FRAME",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 0.996078431372549,
+            "b" : 0.996078431372549,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 280.74542,
+          "y" : 4.23449,
+          "width" : 1200.89191,
+          "height" : 67.83568000000001
+        },
+        "absoluteRenderBounds" : {
+          "x" : 280.74542,
+          "y" : 4.23449,
+          "width" : 1200.89191,
+          "height" : 67.83568000000001
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "clipsContent" : false,
+        "background" : [ ],
+        "backgroundColor" : {
+          "r" : 0.996078431372549,
+          "g" : 0.996078431372549,
+          "b" : 0.996078431372549,
+          "a" : 1.0
+        },
+        "layoutMode" : "HORIZONTAL",
+        "counterAxisSizingMode" : "FIXED",
+        "primaryAxisSizingMode" : "FIXED",
+        "layoutWrap" : "NO_WRAP",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "effects" : [ ],
+        "interactions" : [ ],
+        "cornerRadius" : 0.0,
+        "cornerSmoothing" : 0.0
+      }, {
+        "id" : "2:38921",
+        "name" : "Group-4 (텍스트 입력)",
+        "type" : "GROUP",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 0.9490196078431372,
+            "b" : 0.803921568627451,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 39.93034,
+          "y" : 70.99837,
+          "width" : 1582.1425399999998,
+          "height" : 172.77028
+        },
+        "absoluteRenderBounds" : {
+          "x" : 39.93034,
+          "y" : 70.99837,
+          "width" : 1582.1425399999998,
+          "height" : 172.77028
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ {
+          "id" : "9:39616",
+          "name" : "InputBox-8",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 145.47438,
+            "y" : 141.93965,
+            "width" : 181.31288,
+            "height" : 42.328630000000004
+          },
+          "absoluteRenderBounds" : {
+            "x" : 145.47438,
+            "y" : 141.93965,
+            "width" : 181.31288,
+            "height" : 42.328630000000004
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4008",
+          "componentPropertyReferences" : {
+            "Text#2020:7" : {
+              "value" : "텍스트 입력",
+              "type" : "TEXT"
+            },
+            "SIze" : {
+              "value" : "Small",
+              "type" : "VARIANT",
+              "boundVariables" : { }
+            }
+          },
+          "overrides" : [ {
+            "id" : "9:39616",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "30:87571",
+          "name" : "Output-39",
+          "type" : "TEXT",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ {
+            "blendMode" : "NORMAL",
+            "type" : "SOLID",
+            "color" : {
+              "r" : 0.11764705882352941,
+              "g" : 0.11764705882352941,
+              "b" : 0.11372549019607843,
+              "a" : 1.0
+            }
+          } ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 47.86096,
+            "y" : 135.32304,
+            "width" : 79.39311000000001,
+            "height" : 58.13019
+          },
+          "absoluteRenderBounds" : {
+            "x" : 47.86096,
+            "y" : 135.32304,
+            "width" : 79.39311000000001,
+            "height" : 58.13019
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ "characters", "characterStyleOverrides", "inheritFillStyleId", "inheritTextStyleId", "layoutGrow", "lineIndentations", "lineTypes", "styleOverrideTable", "text", "textAutoResize" ],
+          "characters" : "버튼",
+          "characterStyleOverrides" : [ ],
+          "styleOverrideTable" : { },
+          "lineTypes" : [ "NONE" ],
+          "style" : {
+            "fontFamily" : "Pretendard",
+            "fontWeight" : 400,
+            "fontSize" : 29.0,
+            "textAlignHorizontal" : "LEFT",
+            "textAlignVertical" : "TOP",
+            "letterSpacing" : 0.0,
+            "lineHeightPx" : 46.400000000000006,
+            "lineHeightPercent" : 125.6955795288086,
+            "lineHeightPercentFontSize" : 150.0,
+            "lineHeightUnit" : "FONT_SIZE_%"
+          },
+          "layoutVersion" : 4,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "11:57312",
+          "name" : "Output-43",
+          "type" : "TEXT",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ {
+            "blendMode" : "NORMAL",
+            "type" : "SOLID",
+            "color" : {
+              "r" : 0.11764705882352941,
+              "g" : 0.11764705882352941,
+              "b" : 0.11372549019607843,
+              "a" : 1.0
+            }
+          } ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 55.4587,
+            "y" : 86.75798,
+            "width" : 80.1911,
+            "height" : 51.952560000000005
+          },
+          "absoluteRenderBounds" : {
+            "x" : 55.4587,
+            "y" : 86.75798,
+            "width" : 80.1911,
+            "height" : 51.952560000000005
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ "characters", "characterStyleOverrides", "inheritFillStyleId", "inheritTextStyleId", "layoutGrow", "lineIndentations", "lineTypes", "styleOverrideTable", "text", "textAutoResize" ],
+          "characters" : "버튼",
+          "characterStyleOverrides" : [ ],
+          "styleOverrideTable" : { },
+          "lineTypes" : [ "NONE" ],
+          "style" : {
+            "fontFamily" : "Pretendard",
+            "fontWeight" : 400,
+            "fontSize" : 26.0,
+            "textAlignHorizontal" : "LEFT",
+            "textAlignVertical" : "TOP",
+            "letterSpacing" : 0.0,
+            "lineHeightPx" : 41.6,
+            "lineHeightPercent" : 125.6955795288086,
+            "lineHeightPercentFontSize" : 150.0,
+            "lineHeightUnit" : "FONT_SIZE_%"
+          },
+          "layoutVersion" : 4,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "38:6669",
+          "name" : "InputBox-52",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 147.20477,
+            "y" : 99.27592,
+            "width" : 176.5011,
+            "height" : 35.41467999999999
+          },
+          "absoluteRenderBounds" : {
+            "x" : 147.20477,
+            "y" : 99.27592,
+            "width" : 176.5011,
+            "height" : 35.41467999999999
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4052",
+          "componentPropertyReferences" : {
+            "Text#2020:7" : {
+              "value" : "텍스트 입력",
+              "type" : "TEXT"
+            },
+            "SIze" : {
+              "value" : "Small",
+              "type" : "VARIANT",
+              "boundVariables" : { }
+            }
+          },
+          "overrides" : [ {
+            "id" : "38:6669",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        } ],
+        "overriddenFields" : [ ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "48:7686",
+        "name" : "Group-12 (텍스트 입력)",
+        "type" : "GROUP",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 1.0,
+            "b" : 1.0,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 55.82557,
+          "y" : 327.39923,
+          "width" : 1555.27367,
+          "height" : 465.54059000000007
+        },
+        "absoluteRenderBounds" : {
+          "x" : 55.82557,
+          "y" : 327.39923,
+          "width" : 1555.27367,
+          "height" : 465.54059000000007
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ {
+          "id" : "6:68232",
+          "name" : "Button-6",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 1527.41418,
+            "y" : 375.8591,
+            "width" : 71.89747000000011,
+            "height" : 32.44176999999996
+          },
+          "absoluteRenderBounds" : {
+            "x" : 1527.41418,
+            "y" : 375.8591,
+            "width" : 71.89747000000011,
+            "height" : 32.44176999999996
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4006",
+          "componentPropertyReferences" : {
+            "Button name#67:81" : {
+              "value" : "버튼",
+              "type" : "TEXT"
+            },
+            "right-Icon#67:215" : {
+              "value" : true,
+              "type" : "BOOLEAN"
+            }
+          },
+          "overrides" : [ {
+            "id" : "6:68232",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "45:24759",
+          "name" : "Button-7",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 1524.24048,
+            "y" : 728.70483,
+            "width" : 75.52209000000016,
+            "height" : 33.998719999999935
+          },
+          "absoluteRenderBounds" : {
+            "x" : 1524.24048,
+            "y" : 728.70483,
+            "width" : 75.52209000000016,
+            "height" : 33.998719999999935
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4007",
+          "componentPropertyReferences" : {
+            "Button name#67:81" : {
+              "value" : "버튼",
+              "type" : "TEXT"
+            },
+            "right-Icon#67:215" : {
+              "value" : true,
+              "type" : "BOOLEAN"
+            }
+          },
+          "overrides" : [ {
+            "id" : "45:24759",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "5:44706",
+          "name" : "Button-16",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 1527.29626,
+            "y" : 416.34653,
+            "width" : 73.09497999999985,
+            "height" : 31.820100000000025
+          },
+          "absoluteRenderBounds" : {
+            "x" : 1527.29626,
+            "y" : 416.34653,
+            "width" : 73.09497999999985,
+            "height" : 31.820100000000025
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4016",
+          "componentPropertyReferences" : {
+            "Button name#67:81" : {
+              "value" : "버튼",
+              "type" : "TEXT"
+            },
+            "right-Icon#67:215" : {
+              "value" : true,
+              "type" : "BOOLEAN"
+            }
+          },
+          "overrides" : [ {
+            "id" : "5:44706",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "23:44278",
+          "name" : "Button-50",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 1524.84021,
+            "y" : 689.92706,
+            "width" : 75.20800999999983,
+            "height" : 31.50434000000007
+          },
+          "absoluteRenderBounds" : {
+            "x" : 1524.84021,
+            "y" : 689.92706,
+            "width" : 75.20800999999983,
+            "height" : 31.50434000000007
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4050",
+          "componentPropertyReferences" : {
+            "Button name#67:81" : {
+              "value" : "버튼",
+              "type" : "TEXT"
+            },
+            "right-Icon#67:215" : {
+              "value" : true,
+              "type" : "BOOLEAN"
+            }
+          },
+          "overrides" : [ {
+            "id" : "23:44278",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "89:80481",
+          "name" : "Button-59",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 1528.1239,
+            "y" : 455.75613,
+            "width" : 72.10937999999987,
+            "height" : 32.38265999999999
+          },
+          "absoluteRenderBounds" : {
+            "x" : 1528.1239,
+            "y" : 455.75613,
+            "width" : 72.10937999999987,
+            "height" : 32.38265999999999
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4059",
+          "componentPropertyReferences" : {
+            "Button name#67:81" : {
+              "value" : "버튼",
+              "type" : "TEXT"
+            },
+            "right-Icon#67:215" : {
+              "value" : true,
+              "type" : "BOOLEAN"
+            }
+          },
+          "overrides" : [ {
+            "id" : "89:80481",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        } ],
+        "overriddenFields" : [ ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "80:54724",
+        "name" : "Group-28 (텍스트 입력)",
+        "type" : "GROUP",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 0.996078431372549,
+            "b" : 0.996078431372549,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 589.04108,
+          "y" : 826.98047,
+          "width" : 1040.0429000000001,
+          "height" : 80.17596000000003
+        },
+        "absoluteRenderBounds" : {
+          "x" : 589.04108,
+          "y" : 826.98047,
+          "width" : 1040.0429000000001,
+          "height" : 80.17596000000003
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ {
+          "id" : "45:37114",
+          "name" : "DateInput-5",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 1135.41821,
+            "y" : 848.68634,
+            "width" : 234.81519000000003,
+            "height" : 42.70294000000001
+          },
+          "absoluteRenderBounds" : {
+            "x" : 1135.41821,
+            "y" : 848.68634,
+            "width" : 234.81519000000003,
+            "height" : 42.70294000000001
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4005",
+          "componentPropertyReferences" : {
+            "Text#2020:7" : {
+              "value" : "텍스트 입력",
+              "type" : "TEXT"
+            },
+            "SIze" : {
+              "value" : "Small",
+              "type" : "VARIANT",
+              "boundVariables" : { }
+            }
+          },
+          "overrides" : [ {
+            "id" : "45:37114",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "23:21535",
+          "name" : "DateInput-9",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 1384.06836,
+            "y" : 849.1651,
+            "width" : 235.4335900000001,
+            "height" : 40.39916999999991
+          },
+          "absoluteRenderBounds" : {
+            "x" : 1384.06836,
+            "y" : 849.1651,
+            "width" : 235.4335900000001,
+            "height" : 40.39916999999991
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4009",
+          "componentPropertyReferences" : {
+            "Text#2020:7" : {
+              "value" : "텍스트 입력",
+              "type" : "TEXT"
+            },
+            "SIze" : {
+              "value" : "Small",
+              "type" : "VARIANT",
+              "boundVariables" : { }
+            }
+          },
+          "overrides" : [ {
+            "id" : "23:21535",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "9:34378",
+          "name" : "DateInput-11",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 888.36389,
+            "y" : 848.96307,
+            "width" : 233.77197000000012,
+            "height" : 40.51220999999998
+          },
+          "absoluteRenderBounds" : {
+            "x" : 888.36389,
+            "y" : 848.96307,
+            "width" : 233.77197000000012,
+            "height" : 40.51220999999998
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4011",
+          "componentPropertyReferences" : {
+            "Text#2020:7" : {
+              "value" : "텍스트 입력",
+              "type" : "TEXT"
+            },
+            "SIze" : {
+              "value" : "Small",
+              "type" : "VARIANT",
+              "boundVariables" : { }
+            }
+          },
+          "overrides" : [ {
+            "id" : "9:34378",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        }, {
+          "id" : "30:95631",
+          "name" : "DateInput-15",
+          "type" : "INSTANCE",
+          "scrollBehavior" : "SCROLLS",
+          "blendMode" : "PASS_THROUGH",
+          "fills" : [ ],
+          "strokes" : [ ],
+          "strokeWeight" : 1.0,
+          "strokeAlign" : "OUTSIDE",
+          "absoluteBoundingBox" : {
+            "x" : 639.7489,
+            "y" : 848.85144,
+            "width" : 234.15325999999993,
+            "height" : 41.31366000000003
+          },
+          "absoluteRenderBounds" : {
+            "x" : 639.7489,
+            "y" : 848.85144,
+            "width" : 234.15325999999993,
+            "height" : 41.31366000000003
+          },
+          "constraints" : {
+            "vertical" : "TOP",
+            "horizontal" : "LEFT"
+          },
+          "children" : [ ],
+          "overriddenFields" : [ ],
+          "componentId" : "1:4015",
+          "componentPropertyReferences" : {
+            "Text#2020:7" : {
+              "value" : "텍스트 입력",
+              "type" : "TEXT"
+            },
+            "SIze" : {
+              "value" : "Small",
+              "type" : "VARIANT",
+              "boundVariables" : { }
+            }
+          },
+          "overrides" : [ {
+            "id" : "30:95631",
+            "overriddenFields" : [ "height", "width" ]
+          } ],
+          "layoutSizingHorizontal" : "FIXED",
+          "layoutSizingVertical" : "FIXED",
+          "layoutAlign" : "INHERIT",
+          "layoutGrow" : 0.0,
+          "effects" : [ ],
+          "interactions" : [ ]
+        } ],
+        "overriddenFields" : [ ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "89:36189",
+        "name" : "Group-31 (텍스트 입력)",
+        "type" : "GROUP",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ {
+          "blendMode" : "NORMAL",
+          "type" : "SOLID",
+          "color" : {
+            "r" : 0.996078431372549,
+            "g" : 0.996078431372549,
+            "b" : 0.996078431372549,
+            "a" : 1.0
+          }
+        } ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 1331.79297,
+          "y" : 367.9223,
+          "width" : 312.4881600000001,
+          "height" : 397.98711999999995
+        },
+        "absoluteRenderBounds" : {
+          "x" : 1331.79297,
+          "y" : 367.9223,
+          "width" : 312.4881600000001,
+          "height" : 397.98711999999995
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "66:41522",
+        "name" : "Button-10",
+        "type" : "INSTANCE",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 1505.17908,
+          "y" : 292.45926,
+          "width" : 116.94908999999984,
+          "height" : 32.52121000000005
+        },
+        "absoluteRenderBounds" : {
+          "x" : 1505.17908,
+          "y" : 292.45926,
+          "width" : 116.94908999999984,
+          "height" : 32.52121000000005
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "componentId" : "1:4010",
+        "componentPropertyReferences" : {
+          "Button name#67:81" : {
+            "value" : "텍스트 입력",
+            "type" : "TEXT"
+          },
+          "right-Icon#67:215" : {
+            "value" : true,
+            "type" : "BOOLEAN"
+          }
+        },
+        "overrides" : [ {
+          "id" : "66:41522",
+          "overriddenFields" : [ "height", "width" ]
+        } ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "9:16636",
+        "name" : "Button-22",
+        "type" : "INSTANCE",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 569.77795,
+          "y" : 787.26312,
+          "width" : 39.66413,
+          "height" : 37.25562000000002
+        },
+        "absoluteRenderBounds" : {
+          "x" : 569.77795,
+          "y" : 787.26312,
+          "width" : 39.66413,
+          "height" : 37.25562000000002
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "componentId" : "1:4022",
+        "componentPropertyReferences" : {
+          "Button name#67:81" : {
+            "value" : "버튼",
+            "type" : "TEXT"
+          },
+          "right-Icon#67:215" : {
+            "value" : true,
+            "type" : "BOOLEAN"
+          }
+        },
+        "overrides" : [ {
+          "id" : "9:16636",
+          "overriddenFields" : [ "height", "width" ]
+        } ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "57:91580",
+        "name" : "Button-27",
+        "type" : "INSTANCE",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 1346.89636,
+          "y" : 292.09659,
+          "width" : 138.33655,
+          "height" : 40.150570000000016
+        },
+        "absoluteRenderBounds" : {
+          "x" : 1346.89636,
+          "y" : 292.09659,
+          "width" : 138.33655,
+          "height" : 40.150570000000016
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "componentId" : "1:4027",
+        "componentPropertyReferences" : {
+          "Button name#67:81" : {
+            "value" : "텍스트 입력",
+            "type" : "TEXT"
+          },
+          "right-Icon#67:215" : {
+            "value" : true,
+            "type" : "BOOLEAN"
+          }
+        },
+        "overrides" : [ {
+          "id" : "57:91580",
+          "overriddenFields" : [ "height", "width" ]
+        } ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "30:13485",
+        "name" : "Button-48",
+        "type" : "INSTANCE",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 1183.41663,
+          "y" : 292.2627,
+          "width" : 138.18553999999995,
+          "height" : 37.63073000000003
+        },
+        "absoluteRenderBounds" : {
+          "x" : 1183.41663,
+          "y" : 292.2627,
+          "width" : 138.18553999999995,
+          "height" : 37.63073000000003
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "componentId" : "1:4048",
+        "componentPropertyReferences" : {
+          "Button name#67:81" : {
+            "value" : "텍스트 입력",
+            "type" : "TEXT"
+          },
+          "right-Icon#67:215" : {
+            "value" : true,
+            "type" : "BOOLEAN"
+          }
+        },
+        "overrides" : [ {
+          "id" : "30:13485",
+          "overriddenFields" : [ "height", "width" ]
+        } ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "42:94788",
+        "name" : "Button-53",
+        "type" : "INSTANCE",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 501.75363,
+          "y" : 789.85406,
+          "width" : 60.55814000000004,
+          "height" : 35.44965000000002
+        },
+        "absoluteRenderBounds" : {
+          "x" : 501.75363,
+          "y" : 789.85406,
+          "width" : 60.55814000000004,
+          "height" : 35.44965000000002
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "componentId" : "1:4053",
+        "componentPropertyReferences" : {
+          "Button name#67:81" : {
+            "value" : "버튼",
+            "type" : "TEXT"
+          },
+          "right-Icon#67:215" : {
+            "value" : true,
+            "type" : "BOOLEAN"
+          }
+        },
+        "overrides" : [ {
+          "id" : "42:94788",
+          "overriddenFields" : [ "height", "width" ]
+        } ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "58:91910",
+        "name" : "Button-54",
+        "type" : "INSTANCE",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 621.89752,
+          "y" : 793.81299,
+          "width" : 23.689579999999978,
+          "height" : 24.00201000000004
+        },
+        "absoluteRenderBounds" : {
+          "x" : 621.89752,
+          "y" : 793.81299,
+          "width" : 23.689579999999978,
+          "height" : 24.00201000000004
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "componentId" : "1:4054",
+        "componentPropertyReferences" : {
+          "Button name#67:81" : {
+            "value" : "버튼",
+            "type" : "TEXT"
+          },
+          "right-Icon#67:215" : {
+            "value" : true,
+            "type" : "BOOLEAN"
+          }
+        },
+        "overrides" : [ {
+          "id" : "58:91910",
+          "overriddenFields" : [ "height", "width" ]
+        } ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      }, {
+        "id" : "59:42901",
+        "name" : "DateInput-55",
+        "type" : "INSTANCE",
+        "scrollBehavior" : "SCROLLS",
+        "blendMode" : "PASS_THROUGH",
+        "fills" : [ ],
+        "strokes" : [ ],
+        "strokeWeight" : 1.0,
+        "strokeAlign" : "OUTSIDE",
+        "absoluteBoundingBox" : {
+          "x" : 1345.66858,
+          "y" : 291.80518,
+          "width" : 140.63660000000004,
+          "height" : 40.786310000000014
+        },
+        "absoluteRenderBounds" : {
+          "x" : 1345.66858,
+          "y" : 291.80518,
+          "width" : 140.63660000000004,
+          "height" : 40.786310000000014
+        },
+        "constraints" : {
+          "vertical" : "TOP",
+          "horizontal" : "LEFT"
+        },
+        "children" : [ ],
+        "overriddenFields" : [ ],
+        "componentId" : "1:4055",
+        "componentPropertyReferences" : {
+          "Text#2020:7" : {
+            "value" : "텍스트 입력",
+            "type" : "TEXT"
+          },
+          "SIze" : {
+            "value" : "Small",
+            "type" : "VARIANT",
+            "boundVariables" : { }
+          }
+        },
+        "overrides" : [ {
+          "id" : "59:42901",
+          "overriddenFields" : [ "height", "width" ]
+        } ],
+        "layoutSizingHorizontal" : "FIXED",
+        "layoutSizingVertical" : "FIXED",
+        "layoutAlign" : "INHERIT",
+        "layoutGrow" : 0.0,
+        "effects" : [ ],
+        "interactions" : [ ]
+      } ],
+      "backgroundColor" : {
+        "r" : 1.0,
+        "g" : 1.0,
+        "b" : 1.0,
+        "a" : 1.0
+      }
+    } ]
+  },
+  "components" : { },
+  "componentSets" : { },
+  "schemaVersion" : 0,
+  "styles" : { },
+  "name" : "testFigma",
+  "lastModified" : "2025-08-04T16:00:51.120870",
+  "thumbnailUrl" : "",
+  "version" : "0b4db191-1b77-4fee-891d-f9b32a9d2c91",
+  "role" : "owner",
+  "editorType" : "figma",
+  "linkAccess" : "view"
+}

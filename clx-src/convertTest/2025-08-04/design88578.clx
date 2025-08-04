@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-d07d0ca8" version="1.0.5538">
+  <head std:sid="head-6862b277">
+    <screen std:sid="screen-71fbc648" id="default" name="default" width="1924px" height="768px"/>
+    <cl:model std:sid="model-7cae7507"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-80fcab28">
+            <cl:group std:sid="group-d1e505c04b624dd6b96473ebac8e5a6f" id="group_38fc8b4f1cb440d9968ca624a475b4fb" style="background-color: #FFFEFF; ">
+                <cl:xylayoutdata top="331px" left="26px" width="1563px" height="481px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-92167409b1314a2b9b4c1c1de3768b50" id="group_1459752b3e4a440b8c08cf88c8fe3ed8" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="268px" left="0px" width="1156px" height="54px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-d4af3f6e0c6c4f299ea8500c2d372c8b" id="group_877966946bb24066b3b60caf7b7dca54" style="background-color: #FEF2CD; ">
+                <cl:xylayoutdata top="70px" left="231px" width="1391px" height="188px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-84225fa7c2794ed18704aef45b461f73" id="group_7df2989f7ae5490fae23fcf7d39e72d1" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="279px" left="38px" width="1054px" height="51px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-ab9d8101b43e4942b39c536bb6448381" id="group_e0a29611282e42f8a043a500ae8b2ab6" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="4px" left="280px" width="1200px" height="67px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-1cda4335f507472b8a3ed02efdc30d53" id="group_c9e4b617e55b4de29e0b52d476a5a69d" style="background-color: #FEF2CD; ">
+                <cl:xylayoutdata top="70px" left="39px" width="1582px" height="172px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:inputbox std:sid="inputbox-c64b18af44164a61aeb48857c2404d3c" id="instance_fc660512e0da4cdf9f10b560f9e5f00a" style="">
+                    <cl:xylayoutdata top="70px" left="105px" width="181px" height="42px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:output std:sid="output-a94c13442e7b479aafea80a4f232daac" id="output_f204baa266de4be8817d5e237f5a4138" value="버튼" style="">
+                    <cl:xylayoutdata top="64px" left="7px" width="79px" height="58px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-b6808520852241988f73e0d212b9aba7" id="output_297eeee9e9de459db16d07f3f61dcbb6" value="버튼" style="">
+                    <cl:xylayoutdata top="15px" left="15px" width="80px" height="51px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:inputbox std:sid="inputbox-24a8fd042d8b40f5a5e8116ca55c48a9" id="instance_3da593e35a25406b90a996e95a959c08" style="">
+                    <cl:xylayoutdata top="28px" left="107px" width="176px" height="35px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+            </cl:group>
+            <cl:group std:sid="group-99585dfeea3348d1985962d8972d890e" id="group_6dbc231d32da4246aa4b7df0828e97a2" style="background-color: #FEFFFF; ">
+                <cl:xylayoutdata top="327px" left="55px" width="1555px" height="465px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:button std:sid="button-7545e6fa84ef407d961cfb4f154b4f36" id="instance_6c79c8be8f3041628abb3a0039f03c3c" value="Button" style="">
+                    <cl:xylayoutdata top="48px" left="1471px" width="71px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-f5cce899cae943409e76cabd3bafdfc2" id="instance_2711e55a2e804e10bef69f8d998219a1" value="Button" style="">
+                    <cl:xylayoutdata top="401px" left="1468px" width="75px" height="33px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-9b0746f455aa4758ad7c27c13a6c8730" id="instance_e258b41f7e6840a58fa81f283b26f216" value="Button" style="">
+                    <cl:xylayoutdata top="88px" left="1471px" width="73px" height="31px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-6b77a47420e646aea6cb134cc8630443" id="instance_c78c52d0e01d443eaff30b8fdd2feeee" value="Button" style="">
+                    <cl:xylayoutdata top="362px" left="1469px" width="75px" height="31px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-5779d6d942bd4f3f8bbd3802835c9893" id="instance_e1fcf7c06aee463d91c1c857d034d4f5" value="Button" style="">
+                    <cl:xylayoutdata top="128px" left="1472px" width="72px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+            </cl:group>
+            <cl:group std:sid="group-ee7dd3cc1a6549f5b6aa65be22e804f5" id="group_a3304c579b534926aeedebda41b65e0f" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="826px" left="589px" width="1040px" height="80px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:inputbox std:sid="inputbox-3a86428af82a4d4bb3705e4319c0e405" id="instance_a31816e7f6264c5792ff3fdd449083f1" style="">
+                    <cl:xylayoutdata top="21px" left="546px" width="234px" height="42px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:inputbox std:sid="inputbox-ef48bed183f0493e81f0ccafee626d7d" id="instance_067dff6ad5ae4b339e692f4456da7689" style="">
+                    <cl:xylayoutdata top="22px" left="795px" width="235px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:inputbox std:sid="inputbox-c5cf1e70c8764c748a7699644ed64a10" id="instance_55b9be2edef74a22994ec3d185e07120" style="">
+                    <cl:xylayoutdata top="21px" left="299px" width="233px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:inputbox std:sid="inputbox-771428861d5641529934a2d5897de471" id="instance_0318db790a0940f583b173b331a61ad4" style="">
+                    <cl:xylayoutdata top="21px" left="50px" width="234px" height="41px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+            </cl:group>
+            <cl:group std:sid="group-17d1f8a1befb48d0a807d31459747ecc" id="group_3dcef68d338c4ed883293300a7175ee1" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="367px" left="1331px" width="312px" height="397px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:button std:sid="button-a0291768047b4036b4588d5f0b0e979e" id="instance_24c1ee029678469aabdf28e26f080f67" value="Button" style="">
+                <cl:xylayoutdata top="292px" left="1505px" width="116px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-11020672ab8448cc889ab43c3165e9d9" id="instance_88967200b39a46c48c974ad594379b46" value="Button" style="">
+                <cl:xylayoutdata top="787px" left="569px" width="39px" height="37px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-70c3a28c4da7490e82dd5d2d87d865ec" id="instance_b8864944e555446ab9c9b9ebb36092cd" value="Button" style="">
+                <cl:xylayoutdata top="292px" left="1346px" width="138px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-bb771f0e99364a508338e87ee9790bb9" id="instance_7778390db8db4f688d02ea28bf8b73b5" value="Button" style="">
+                <cl:xylayoutdata top="292px" left="1183px" width="138px" height="37px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-640842d5dc2645829d127ad0f19a45dd" id="instance_10c58eca5d1d4c4db06bdb7d254bd663" value="Button" style="">
+                <cl:xylayoutdata top="789px" left="501px" width="60px" height="35px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-e00126487c104abf8088e83015cb2dfa" id="instance_a3330c2ce1ff4000a1ff4fab66553840" value="Button" style="">
+                <cl:xylayoutdata top="793px" left="621px" width="23px" height="24px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:inputbox std:sid="inputbox-49c5483125904ad3aa806d8965574deb" id="instance_4899191c26f244b8ac120e9de9516bdf" style="">
+                <cl:xylayoutdata top="291px" left="1345px" width="140px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:inputbox>
+    <cl:xylayout std:sid="xylayout-c8a123c3"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
