@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-f8c05a9d" version="1.0.5538">
+  <head std:sid="head-2a949dc1">
+    <screen std:sid="screen-3a4d1761" id="default" name="default" width="1924px" height="768px"/>
+    <cl:model std:sid="model-a1192613"/>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-d4f760ab">
+            <cl:group std:sid="group-4552ef245d964d2295cc7869ee12843e" id="group_eb609c99490b496f902c5424a805b8b0" style="background-color: #FFFEFF; ">
+                <cl:xylayoutdata top="331px" left="26px" width="1563px" height="481px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-6bd1d3fc553b40cda724020c3a663804" id="group_20ddece44e3f4a5c9fe12ea496f2ba61" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="268px" left="0px" width="1156px" height="54px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-11eb91dfc4e548f9b7db451e773591dc" id="group_b3ec3dbf5f0046b588ff71bbc9dc55d0" style="background-color: #FEF2CD; ">
+                <cl:xylayoutdata top="70px" left="231px" width="1391px" height="188px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-443ea672a5ec409b968eab6844ad6e87" id="group_9c8c349bc40744eca7a2953fd86c0c5d" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="279px" left="38px" width="1054px" height="51px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-a039cea5f3734fd58a9113e11b77135a" id="group_dcbad9d8e27242a79d7f224ea9797176" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="4px" left="280px" width="1200px" height="67px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:group std:sid="group-31f77b88765343969bd010924eebf9a6" id="group_c95d26a7c9ce44c5b9af7c6322129f83" style="background-color: #FEF2CD; ">
+                <cl:xylayoutdata top="70px" left="39px" width="1582px" height="172px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:inputbox std:sid="inputbox-e94a652fe9094fc48304c0f4f07223af" id="instance_d5a097ceb8c740b28edb0c4faa057ebd" style="">
+                    <cl:xylayoutdata top="70px" left="105px" width="181px" height="42px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:output std:sid="output-0794ad3acbad4b58a876fe66f4bba86a" id="output_ba376290afe8433499dc3d4514dbe16f" value="버튼" style="">
+                    <cl:xylayoutdata top="64px" left="7px" width="79px" height="58px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:output std:sid="output-ab01b20f881a45ab97770dadfb87dfc2" id="output_10196ae2b0b2479ca2b2439728b9c77b" value="버튼" style="">
+                    <cl:xylayoutdata top="15px" left="15px" width="80px" height="51px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:output>
+                <cl:inputbox std:sid="inputbox-030302d8e6f640af9bff5753a75906e6" id="instance_da4e785115eb43119c10fe3a2da46e0f" style="">
+                    <cl:xylayoutdata top="28px" left="107px" width="176px" height="35px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+            </cl:group>
+            <cl:group std:sid="group-5f55c20c808d47eaae4d02c0accc0532" id="group_7dfc36133cea4f3bbd01afcfb381874b" style="background-color: #FEFFFF; ">
+                <cl:xylayoutdata top="327px" left="55px" width="1555px" height="465px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:button std:sid="button-67ff3511f4644c69b665236d42bf6729" id="instance_3236c8348ae0423981b434aaf7ec85ad" value="버튼" style="">
+                    <cl:xylayoutdata top="48px" left="1471px" width="71px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-3c51055ebdbc436ab0ae514d9e061188" id="instance_23cc4db053ab4895a703d54926ee1dda" value="버튼" style="">
+                    <cl:xylayoutdata top="401px" left="1468px" width="75px" height="33px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-3f45b9eb71df4d8a9d7518ed865bb304" id="instance_fd525cb6ff034e5b8f5fe85083de755b" value="버튼" style="">
+                    <cl:xylayoutdata top="88px" left="1471px" width="73px" height="31px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-dd815348c7894778aa3bd9e01f752baf" id="instance_7cc754cae598457bb93267d8b79c0116" value="버튼" style="">
+                    <cl:xylayoutdata top="362px" left="1469px" width="75px" height="31px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+                <cl:button std:sid="button-06d4b940dac24ffb8fd888a0843a566c" id="instance_5fa54286ec4d40ed8f75ef4d04b0f01c" value="버튼" style="">
+                    <cl:xylayoutdata top="128px" left="1472px" width="72px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:button>
+            </cl:group>
+            <cl:group std:sid="group-08ae6faf511a427fb1312693e00e89c5" id="group_b6219d5e080f47f49b2f9044b640c2e4" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="826px" left="589px" width="1040px" height="80px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                <cl:inputbox std:sid="inputbox-303bcf861c1541f89840d9703649e4bb" id="instance_595b7017444249ab8ed1a8bbee458d1f" style="">
+                    <cl:xylayoutdata top="21px" left="546px" width="234px" height="42px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:inputbox std:sid="inputbox-a142bad102ed435f98fa918b4598db76" id="instance_01878425f61b42d1b4a147318b4a0ce0" style="">
+                    <cl:xylayoutdata top="22px" left="795px" width="235px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:inputbox std:sid="inputbox-7ed3e16e05684d9fbc6d9518348119e9" id="instance_b6ab1d7bb3984f65a84b0424106d3126" style="">
+                    <cl:xylayoutdata top="21px" left="299px" width="233px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+                <cl:inputbox std:sid="inputbox-7937e7e6fe6d45038c12afc4e9ecbdb1" id="instance_bf2c2d2b35a1498dabb29aa5804cf515" style="">
+                    <cl:xylayoutdata top="21px" left="50px" width="234px" height="41px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+                </cl:inputbox>
+            </cl:group>
+            <cl:group std:sid="group-8320da506f1c4f4a8a1caa8e8483eb3f" id="group_50cd315bfadd41beabbde8c6d844b4f7" style="background-color: #FEFEFE; ">
+                <cl:xylayoutdata top="367px" left="1331px" width="312px" height="397px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:group>
+            <cl:button std:sid="button-7eb8bab2c46e4a1aab696a755df5a379" id="instance_21571d2148f442d6a1d9e904564e0f26" value="텍스트 입력" style="">
+                <cl:xylayoutdata top="292px" left="1505px" width="116px" height="32px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-ea416abf7deb4b5d8ea42d1d7c0da618" id="instance_5a1838b474ef45e782236fd51a54af5b" value="버튼" style="">
+                <cl:xylayoutdata top="787px" left="569px" width="39px" height="37px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-ae39e09b41b94ebf991246a068239a5e" id="instance_e17b3ba3b7c54d5b8f3427bf811ace56" value="텍스트 입력" style="">
+                <cl:xylayoutdata top="292px" left="1346px" width="138px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-81f342e7c97c45e9b31156f9ee94aaf8" id="instance_038fa4ea9e1d4076bbe9c757b4b9bcda" value="텍스트 입력" style="">
+                <cl:xylayoutdata top="292px" left="1183px" width="138px" height="37px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-b12be5c789db41b3b6a8a39ba2629c94" id="instance_2209bb6c455a4d11be1d3a9f36710edc" value="버튼" style="">
+                <cl:xylayoutdata top="789px" left="501px" width="60px" height="35px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:button std:sid="button-d51f85431c224ad0965461db2fdd0f87" id="instance_03b3fa836c9f450a95840db1d3931004" value="버튼" style="">
+                <cl:xylayoutdata top="793px" left="621px" width="23px" height="24px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:button>
+            <cl:inputbox std:sid="inputbox-06ae720e766649adb384f010c1a9f515" id="instance_fcdb5219572c4029a445e99107d528e2" style="">
+                <cl:xylayoutdata top="291px" left="1345px" width="140px" height="40px" horizontalAnchor="LEFT" verticalAnchor="TOP"/>
+            </cl:inputbox>
+    <cl:xylayout std:sid="xylayout-267957a3"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
