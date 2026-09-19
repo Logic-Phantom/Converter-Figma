@@ -32,7 +32,7 @@ public class FigmaToClxService {
 	        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	        
 	        //String outputDir = "C:\\eb6-work\\workspace\\convertTestXml\\clx-src\\" + today;
-	        String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today;
+	        String outputDir = com.tomatosystem.figma.FigmaPaths.clxSrc("convertTest", today).getAbsolutePath();
 	        Files.createDirectories(Paths.get(outputDir));
 
 	        int randomNumber = 10000 + new Random().nextInt(90000);
@@ -92,7 +92,7 @@ public class FigmaToClxService {
 		    this.fileKey = fileKey;
 
 		    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		    String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today;
+		    String outputDir = com.tomatosystem.figma.FigmaPaths.clxSrc("convertTest", today).getAbsolutePath();
 		    Files.createDirectories(Paths.get(outputDir));
 
 		    int randomNumber = 10000 + new Random().nextInt(90000);
@@ -111,8 +111,8 @@ public class FigmaToClxService {
 		    if (document != null) {
 		        Map<String, Object> bounds = findFirstFrameWithBounds(document);
 		        if (bounds != null) {
-		            double w = (double) bounds.getOrDefault("width", 1654.0);
-		            double h = (double) bounds.getOrDefault("height", 768.0);
+		            double w = ((Number) bounds.getOrDefault("width", 1654.0)).doubleValue();
+		            double h = ((Number) bounds.getOrDefault("height", 768.0)).doubleValue();
 		            screenWidth = (int) w + "px";
 		            screenHeight = (int) h + "px";
 		        }
@@ -184,10 +184,10 @@ public class FigmaToClxService {
 
 		    // 위치 및 크기 계산
 		    Map<String, Object> bbox = (Map<String, Object>) element.get("absoluteBoundingBox");
-		    double x = bbox != null ? (double) bbox.getOrDefault("x", 0) : 0;
-		    double y = bbox != null ? (double) bbox.getOrDefault("y", 0) : 0;
-		    double width = bbox != null ? (double) bbox.getOrDefault("width", 100) : 100;
-		    double height = bbox != null ? (double) bbox.getOrDefault("height", 50) : 50;
+		    double x = bbox != null ? ((Number) bbox.getOrDefault("x", 0)).doubleValue() : 0;
+		    double y = bbox != null ? ((Number) bbox.getOrDefault("y", 0)).doubleValue() : 0;
+		    double width = bbox != null ? ((Number) bbox.getOrDefault("width", 100)).doubleValue() : 100;
+		    double height = bbox != null ? ((Number) bbox.getOrDefault("height", 50)).doubleValue() : 50;
 		    
 		    // 스타일 가져오기
 		    String style = extractStyle(element);
@@ -336,7 +336,7 @@ public class FigmaToClxService {
 
 	      // 투명도
 	      if (element.containsKey("opacity")) {
-	          double opacity = (double) element.get("opacity");
+	          double opacity = ((Number) element.get("opacity")).doubleValue();
 	          style.append("opacity: ").append(opacity).append("; ");
 	      }
 
@@ -353,9 +353,9 @@ public class FigmaToClxService {
 	  
 	  // 🔹 RGB → HEX 변환 함수
 	  private String convertToHex(Map<String, Object> color) {
-	      int r = (int) ((double) color.get("r") * 255);
-	      int g = (int) ((double) color.get("g") * 255);
-	      int b = (int) ((double) color.get("b") * 255);
+	      int r = (int) (((Number) color.get("r")).doubleValue() * 255);
+	      int g = (int) (((Number) color.get("g")).doubleValue() * 255);
+	      int b = (int) (((Number) color.get("b")).doubleValue() * 255);
 	      return String.format("#%02X%02X%02X", r, g, b);
 	  }
 		

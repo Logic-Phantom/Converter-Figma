@@ -39,7 +39,7 @@ public class DesignTokenExtractorController {
 
     private final DesignTokenExtractorService designTokenExtractorService;
     private final ObjectMapper objectMapper;
-    private static final String BASE_PATH = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\design-tokens";
+    private static final String BASE_PATH = com.tomatosystem.figma.FigmaPaths.clxSrc("result", "design-tokens").getAbsolutePath();
 
     public DesignTokenExtractorController(DesignTokenExtractorService designTokenExtractorService) {
         this.designTokenExtractorService = designTokenExtractorService;
@@ -54,8 +54,8 @@ public class DesignTokenExtractorController {
 
     @RequestMapping("/extract.do")
     public ResponseEntity<String> extractDesignTokens(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) {
-        String token = "사용자 토큰"; // TODO: Implement proper token management
-        String fileKey = "rXU0zhKF2HjzFsND9njYbq"; // TODO: Make this configurable
+        String token = com.tomatosystem.figma.FigmaSettings.get("figma.direct.token", "");
+        String fileKey = com.tomatosystem.figma.FigmaSettings.get("figma.analysis.fileKey", "rXU0zhKF2HjzFsND9njYbq");
         String url = "https://api.figma.com/v1/files/" + fileKey;
 
         try {

@@ -39,7 +39,7 @@ public class AccessibilityAnalyzerController {
 
     private final AccessibilityAnalyzerService accessibilityAnalyzerService;
     private final ObjectMapper objectMapper;
-    private static final String BASE_PATH = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\webAccess";
+    private static final String BASE_PATH = com.tomatosystem.figma.FigmaPaths.clxSrc("result", "webAccess").getAbsolutePath();
 
     public AccessibilityAnalyzerController(AccessibilityAnalyzerService accessibilityAnalyzerService) {
         this.accessibilityAnalyzerService = accessibilityAnalyzerService;
@@ -54,8 +54,8 @@ public class AccessibilityAnalyzerController {
 
     @RequestMapping("/analyze.do")
     public ResponseEntity<String> analyzeAccessibility(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) {
-        String token = "사용자 토큰"; // TODO: Implement proper token management
-        String fileKey = "rXU0zhKF2HjzFsND9njYbq"; // TODO: Make this configurable
+        String token = com.tomatosystem.figma.FigmaSettings.get("figma.direct.token", "");
+        String fileKey = com.tomatosystem.figma.FigmaSettings.get("figma.analysis.fileKey", "rXU0zhKF2HjzFsND9njYbq");
         String url = "https://api.figma.com/v1/files/" + fileKey;
 
         try {

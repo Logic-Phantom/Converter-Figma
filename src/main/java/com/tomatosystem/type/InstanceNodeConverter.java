@@ -115,7 +115,7 @@ public class InstanceNodeConverter {
         }
 
         if (element.containsKey("opacity")) {
-            double opacity = (double) element.get("opacity");
+            double opacity = ((Number) element.get("opacity")).doubleValue();
             style.append("opacity: ").append(opacity).append("; ");
         }
 
@@ -127,9 +127,9 @@ public class InstanceNodeConverter {
     }
 
     private String convertToHex(Map<String, Object> color) {
-        int r = (int) ((double) color.get("r") * 255);
-        int g = (int) ((double) color.get("g") * 255);
-        int b = (int) ((double) color.get("b") * 255);
+        int r = (int) (((Number) color.get("r")).doubleValue() * 255);
+        int g = (int) (((Number) color.get("g")).doubleValue() * 255);
+        int b = (int) (((Number) color.get("b")).doubleValue() * 255);
         return String.format("#%02X%02X%02X", r, g, b);
     }
 

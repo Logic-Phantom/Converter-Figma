@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-fb6d9d89" version="1.0.4034">
+  <head std:sid="head-380fdd01">
+    <screen std:sid="screen-ff39b4e5" id="default" name="default" minwidth="1280px" width="1280px" height="760px" customHeight="600" customWidth="800"/>
+    <screen std:sid="screen-6217e4d8" id="tablet" name="tablet" minwidth="800px" maxwidth="1279px" width="800px" height="760px"/>
+    <screen std:sid="screen-b6ae89a4" id="mobile" name="mobile" maxwidth="799px" width="360px" height="760px"/>
+    <cl:model std:sid="model-9542880d"/>
+    <cl:appspec dev-description="앱 헤더">
+      <cl:property name="title" type="string" default="타이틀을 입력하세요" bindable="true" std:desc="[String] 타이틀"/>
+      <cl:property name="searchBoxId" type="string" default="grpSearch" bindable="true" std:desc="[String] 조회조건 그룹 ID (default: grpSearch)"/>
+      <cl:property name="groupBoxIds" type="string" default="grpData" bindable="true" std:desc="[String] 작업영역 그룹/탭 ID (default: grpData)"/>
+      <cl:property name="gridIds" type="string" bindable="true" std:desc="[String] 초기화 할 그리드 ID(기본값 : 전체 그리드)"/>
+      <cl:property name="freeformIds" type="string" bindable="true" std:desc="[String] 초기화 할 프리폼 ID"/>
+      <cl:property name="isGrpDataDisable" type="boolean" default="false" bindable="true" std:desc="[Boolean] 앱로드시 작업영역 비활성화 여부 (비활성화시 조회 활성화됨)"/>
+    </cl:appspec>
+  </head>
+  <body std:sid="body-b51e009b" style="top:0px; left:0px; width:800px; height:30px;" class="app-header">
+    <cl:listener std:sid="listener-4f8118b9" name="load" handler="onBodyLoad"/>
+    <cl:listener std:sid="listener-00651549" name="screen-change" handler="onBodyScreenChange"/>
+    <cl:output std:sid="output-8b0af175" id="optTit" class="h3" value="타이틀을 입력하세요">
+      <cl:listener std:sid="listener-c88d080a" name="dblclick" handler="onOptTitDblclick"/>
+      <cl:apppropbind property="value" app-property="title"/>
+      <cl:formdata std:sid="f-data-df6edba1" row="0" col="0" rowspan="1" colspan="1"/>
+    </cl:output>
+    <cl:group std:sid="group-7bb5f80a">
+      <cl:formdata std:sid="f-data-1024c056" row="0" col="1"/>
+      <cl:group std:sid="group-75eeb22e" id="grpBc" class="breadcrumbs">
+        <cl:formdata std:sid="f-data-07aa172b" row="0" col="1" rowspan="1" colspan="1"/>
+        <cl:output std:sid="output-d5368849" id="optMenuPath" class="breadcrumb-item">
+          <cl:flowlayoutdata std:sid="f-data-e136406b" width="199px" height="100%" autosize="width"/>
+        </cl:output>
+        <cl:flowlayout std:sid="f-layout-94b1e8f7" scrollable="false" hspacing="0" vspacing="0" linewrap="false"/>
+      </cl:group>
+      <cl:img std:sid="image-7da3b07e" src="../../theme/images/ext/cmn/ic_home.png">
+        <cl:formdata std:sid="f-data-e013710c" valign="CENTER" height="11" topSpacing="0" bottomSpacing="0" row="0" col="0"/>
+      </cl:img>
+      <cl:formlayout std:sid="f-layout-cb98c3d0" scrollable="false" top-margin="1fr" right-margin="0px" bottom-margin="1fr" left-margin="0px">
+        <cl:rows length="24" unit="PIXEL" shadetype="NONE" shadecolor="transparent"/>
+        <cl:columns length="13" unit="PIXEL"/>
+        <cl:columns length="1" unit="FRACTION"/>
+      </cl:formlayout>
+    </cl:group>
+    <cl:formlayout std:sid="f-layout-dd974236" scrollable="false" hspace="10px" vspace="6px" top-margin="0px" right-margin="0px" bottom-margin="0px" left-margin="0px">
+      <cl:rows length="1" unit="FRACTION" shadetype="NONE" shadecolor="transparent"/>
+      <cl:columns length="1" unit="FRACTION" shadetype="NONE" shadecolor="transparent"/>
+      <cl:columns length="220" unit="PIXEL" autoSizing="true" shadetype="NONE" shadecolor="transparent" syncminlength="false"/>
+    </cl:formlayout>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

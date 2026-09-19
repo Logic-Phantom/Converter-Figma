@@ -14,7 +14,8 @@ public class NodeConverterUtils {
         if (input == null) return "";
         return input.replace("&", "&amp;")
                     .replace("<", "&lt;")
-                    .replace(">", "&gt;");
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;");
     }
 
     public static void writeLayoutData(FileWriter writer, double x, double y, double width, double height,

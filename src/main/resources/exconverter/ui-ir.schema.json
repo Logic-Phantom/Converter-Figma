@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "eXConverter UI-IR",
+  "description": "Framework-independent screen description. Regions are listed in visual order (top to bottom).",
+  "type": "object",
+  "required": ["screen", "regions"],
+  "properties": {
+    "screen": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string", "description": "Optional hint, e.g. SEARCH_GRID, FORM, POPUP" },
+        "width": { "type": "integer", "minimum": 320, "default": 1440 },
+        "height": { "type": "integer", "minimum": 320, "default": 860 },
+        "sourceWidth": { "type": "integer", "description": "Width of the analysed image; column widths are relative to it" }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": { "enum": ["title", "description", "sectionTitle", "search", "form", "grid", "tabs", "tree", "buttons", "textarea"] },
+          "text": { "type": "string" },
+          "title": { "type": "string" },
+          "align": { "enum": ["left", "right", "center"] },
+          "side": { "enum": ["", "left", "right"], "description": "Pane of a screen split into left and right columns; empty or absent = full width" },
+          "inTab": { "type": "boolean", "description": "Drawn inside the selected tab panel of the preceding tabs region" },
+          "paging": { "type": "boolean", "description": "Grid only: a page-number bar (pageindexer) under the table" },
+          "excel": { "type": "boolean", "description": "Grid only: an Excel download button on the title row (udcComGridTitle showExportExcel). Omit when unknown" },
+          "columnsPerRow": { "type": "integer", "minimum": 1, "maximum": 6 },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label"],
+              "properties": {
+                "label": { "type": "string" },
+                "component": { "enum": ["inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "checkboxgroup", "radiobutton", "numbereditor", "maskeditor", "textarea", "output"] },
+                "value": { "type": "string" },
+                "options": { "type": "array", "items": { "type": "string" }, "description": "radiobutton / checkboxgroup option captions, left to right" },
+                "required": { "type": "boolean" }
+              }
+            }
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "type": "string" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "header": { "type": "string" },
+                    "editor": { "enum": ["output", "checkbox", "rowindex", "inputbox", "maskeditor", "numbereditor", "combobox", "dateinput", "button"] },
+                    "width": { "type": "integer", "minimum": 0 },
+                    "cellText": { "type": "string", "description": "Text in the first data cell; UPPER_SNAKE values become dataset column names" }
+                  }
+                }
+              ]
+            }
+          },
+          "buttons": { "type": "array", "items": { "type": "string" } },
+          "tabs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

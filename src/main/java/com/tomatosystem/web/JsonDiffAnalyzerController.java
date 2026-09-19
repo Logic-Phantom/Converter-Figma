@@ -37,8 +37,8 @@ public class JsonDiffAnalyzerController {
 
     @RequestMapping("/fetchAndAnalyzeFigmaData.do")
     public ResponseEntity<String> fetchAndAnalyzeFigmaData(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) {
-        String token = "사용자 토큰";
-        String fileKey = "rXU0zhKF2HjzFsND9njYbq";
+        String token = com.tomatosystem.figma.FigmaSettings.get("figma.direct.token", "");
+        String fileKey = com.tomatosystem.figma.FigmaSettings.get("figma.analysis.fileKey", "rXU0zhKF2HjzFsND9njYbq");
         String url = "https://api.figma.com/v1/files/" + fileKey;
 
         try {
@@ -122,8 +122,8 @@ public class JsonDiffAnalyzerController {
     //최신 버전과 직전버전의 차이
     @RequestMapping("/analyzeRecentVersions.do")
     public ResponseEntity<String> analyzeRecentFigmaVersions(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) {
-        String token = "사용자 토큰";
-        String fileKey = "rXU0zhKF2HjzFsND9njYbq";
+        String token = com.tomatosystem.figma.FigmaSettings.get("figma.direct.token", "");
+        String fileKey = com.tomatosystem.figma.FigmaSettings.get("figma.analysis.fileKey", "rXU0zhKF2HjzFsND9njYbq");
         try {
             // 1. 파일 버전 목록 가져오기
             List<Map<String, Object>> versions = fetchFileVersionsDiff(fileKey, token);

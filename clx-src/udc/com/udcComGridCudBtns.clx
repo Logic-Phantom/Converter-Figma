@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-8202915e" version="1.0.0.0">
+  <head std:sid="head-54f33681">
+    <title>gridbuttons</title>
+    <screen std:sid="screen-b7bb4072" id="EXB-FULL" name="EXB-FULL" width="1440px" height="860px" customHeight="600" customWidth="800" active="true"/>
+    <cl:model std:sid="model-13ed5523"/>
+    <cl:appspec dev-description="신규/삭제/취소/저장 액션을 위한 공통버튼">
+      <cl:property name="grid" type="control" std:desc="그리드"/>
+      <cl:property name="focusColumnName" type="string" std:desc="신규 후 최초 포커스(focus)할 컬럼명(ex: CD_NM)"/>
+      <cl:property name="forceDelete" type="boolean" default="false" std:desc="삭제 저장액션 여부(true인 경우 디폴트 삭제 액션 수행하지 않음) - 프리폼만 있는 경우의 삭제 처리시 ( default : false )"/>
+      <cl:property name="ignoreDefaultNewAction" type="boolean" default="false" std:desc="디폴트 신규 액션을 무시할지여부(default : false)"/>
+      <cl:property name="ignoreDefaultDeleteAction" type="boolean" default="false" std:desc="디폴트 삭제 액션을 무시할지여부(default : false)"/>
+      <cl:property name="ignoreDefaultRestoreAction" type="boolean" default="false" std:desc="디폴트 취소 액션을 무시할지여부(default : false)"/>
+      <cl:property name="buttonNewLabel" type="string" default="행추가" bindable="true" std:desc="신규 버튼 라벨"/>
+      <cl:property name="buttonDelLabel" type="string" default="행삭제" bindable="true" std:desc="삭제 버튼 라벨"/>
+      <cl:property name="buttonSaveLabel" type="string" default="저장" bindable="true" std:desc="저장 버튼 라벨"/>
+      <cl:property name="buttonRestoreLable" type="string" default="취소" bindable="true" std:desc="취소 버튼 라벨"/>
+      <cl:property name="visibleNewButton" type="boolean" default="true" bindable="true" std:desc="신규버튼 보이기 여부(default : true)"/>
+      <cl:property name="visibleDeleteButton" type="boolean" default="true" bindable="true" std:desc="삭제버튼 보이기 여부(default : true)"/>
+      <cl:property name="visibleRestoreButton" type="boolean" default="true" bindable="true" std:desc="취소버튼 보이기 여부(default : true)"/>
+      <cl:property name="visibleSaveButton" type="boolean" default="true" bindable="true" std:desc="저장버튼 보이기 여부(default : true)"/>
+      <cl:event name="insert" type="cpr.events.CUIEvent" std:desc="신규 클릭 이벤트"/>
+      <cl:event name="delete" type="cpr.events.CUIEvent" std:desc="삭제 클릭 이벤트"/>
+      <cl:event name="restore" type="cpr.events.CUIEvent" std:desc="취소 클릭 이벤트"/>
+      <cl:event name="save" type="cpr.events.CUIEvent" std:desc="저장 클릭 이벤트"/>
+      <cl:event name="beforeInsert" type="cpr.events.CUIEvent" std:desc="신규버튼 클릭전 호출 이벤트(신규 행 추가전에 체크할 비지니스 로직이 있는 경우 사용)"/>
+      <cl:event name="beforeDelete" type="cpr.events.CUIEvent" std:desc="삭제버튼 클릭전 호출 이벤트(행 삭제전에 체크할 비지니스 로직이 있는 경우 사용)"/>
+      <cl:event name="beforeRestore" type="cpr.events.CUIEvent" std:desc="취소버튼 클릭전 호출 이벤트(행 취소전에 체크할 비지니스 로직이 있는 경우 사용)"/>
+      <cl:event name="commonEvent" type="cpr.events.CUIEvent" std:desc="신규, 삭제, 취소 클릭 공통 이벤트(e.userData의 status로 확인 가능)"/>
+    </cl:appspec>
+  </head>
+  <body comment="grpCudBtns" std:sid="body-069f3a47" style="top:0px; left:0px; width:400px; height:24px;">
+    <cl:listener std:sid="listener-901ee3ab" name="property-change" handler="onBodyPropertyChange"/>
+    <cl:button std:sid="button-e6c5cb4d" id="btnNew" class="btn-secondary-03">
+      <cl:listener std:sid="listener-e7321d13" name="click" handler="onBtnInsertClick"/>
+      <cl:apppropbind property="value" category="PROPERTY" app-property="buttonNewLabel"/>
+      <cl:apppropbind property="visible" category="PROPERTY" app-property="visibleNewButton"/>
+      <cl:flowlayoutdata std:sid="f-data-6e0ec30a" width="60px" height="24px" autosize="width"/>
+    </cl:button>
+    <cl:button std:sid="button-34210bff" id="btnDelete" class="btn-secondary-03">
+      <cl:listener std:sid="listener-d3eadf3f" name="click" handler="onBtnDelClick"/>
+      <cl:apppropbind property="value" category="PROPERTY" app-property="buttonDelLabel"/>
+      <cl:apppropbind property="visible" category="PROPERTY" app-property="visibleDeleteButton"/>
+      <cl:flowlayoutdata std:sid="f-data-c66a32ea" width="60px" height="24px" autosize="width"/>
+    </cl:button>
+    <cl:button std:sid="button-024b1df6" id="btnRestore">
+      <cl:listener std:sid="listener-ffdd5adc" name="click" handler="onBtnRestoreClick"/>
+      <cl:apppropbind property="value" category="PROPERTY" app-property="buttonRestoreLable"/>
+      <cl:apppropbind property="visible" category="PROPERTY" app-property="visibleRestoreButton"/>
+      <cl:flowlayoutdata std:sid="f-data-905b3264" width="47px" height="24px" autosize="width"/>
+    </cl:button>
+    <cl:button std:sid="button-b2910a2a" id="btnSave" class="btn-primary-01">
+      <cl:listener std:sid="listener-c1b8e997" name="click" handler="onBtnSaveClick"/>
+      <cl:apppropbind property="value" category="PROPERTY" app-property="buttonSaveLabel"/>
+      <cl:apppropbind property="visible" category="PROPERTY" app-property="visibleSaveButton"/>
+      <cl:flowlayoutdata std:sid="f-data-2dc56749" width="47px" height="24px" autosize="width"/>
+    </cl:button>
+    <cl:flowlayout std:sid="f-layout-9ee663d4" scrollable="false" halign="right"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

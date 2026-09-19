@@ -1,103 +1,60 @@
 package com.tomatosystem.web;
 
-import com.tomatosystem.service.AdvancedFigmaToClxService;
+import com.cleopatra.protocol.data.DataRequest;
+import com.cleopatra.protocol.data.ParameterGroup;
+import com.tomatosystem.figma.FigmaApiClient;
+import com.tomatosystem.figma.FigmaConversionService;
+import com.tomatosystem.figma.FigmaSettings;
+import java.util.List;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.cleopatra.protocol.data.DataRequest;
-import com.cleopatra.protocol.data.ParameterGroup;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
-import java.util.UUID;
 
+/**
+ * Former form-layout experiment (ClxLayoutUtil). The template pipeline replaces it: the "form" look now comes from
+ * the most similar template (search-box / form-base formlayouts) instead of hand-written formlayout XML.
+ * The old /convertJsonToFormClx.do (arbitrary server file path in, arbitrary path out) was removed.
+ */
 @RestController
 @RequestMapping("/designForm")
 public class AdvancedDesignController {
-    @Autowired
-    private AdvancedFigmaToClxService advancedFigmaToClxService;
+	private static final MediaType TEXT = MediaType.valueOf("text/plain;charset=UTF-8");
 
-    @RequestMapping("/convertAdvanced.do")
-    public ResponseEntity<String> convertAdvancedClx(DataRequest dataRequest) {
-        ParameterGroup dm = dataRequest.getParameterGroup("dmParam");
-        String token = dm.getValue("token");
-        String fileKey = dm.getValue("fileKey");
-        try {
-            String resultPath = advancedFigmaToClxService.convertFigmaJsonToClx(token, fileKey);
-            return ResponseEntity.ok("Advanced CLX file saved at: " + resultPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
-        }
-    }
+	@Autowired
+	private FigmaConversionService figmaConversionService;
 
-    @RequestMapping("/convertJsonToFormClx.do")
-    public ResponseEntity<String> convertJsonToFormClx(String jsonFilePath, String outputPath) {
-        try {
-            // JSON 파일 읽기
-            byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> figmaJson = objectMapper.readValue(jsonData, Map.class);
-            // 변환
-            String clxXml = com.tomatosystem.util.ClxLayoutUtil.convertFigmaJsonToClxXml(figmaJson);
-            com.tomatosystem.util.ClxLayoutUtil.saveClxToFile(clxXml, outputPath);
-            return ResponseEntity.ok("변환 완료: " + outputPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("오류: " + e.getMessage());
-        }
-    }
+	/** dmParam: token (personal access token), fileKey or url, nodeId. */
+	@RequestMapping("/convertAdvanced.do")
+	public ResponseEntity<String> convertAdvancedClx(DataRequest dataRequest) {
+		ParameterGroup dm = dataRequest.getParameterGroup("dmParam");
+		String token = dm == null ? "" : nvl(dm.getValue("token"));
+		String file = dm == null ? "" : nvl(dm.getValue("url")).isEmpty() ? nvl(dm.getValue("fileKey")) : nvl(dm.getValue("url"));
+		return convert(token, file, dm == null ? null : dm.getValue("nodeId"));
+	}
 
-    @RequestMapping("/convertFigmaToFormClx.do")
-    public ResponseEntity<String> convertFigmaToFormClx() {
-        try {
-            String token = "사용자 토큰";
-            String fileKey = "x5gR79q0HUZ567W3CjCuCJ";
-            
-            String today = java.time.LocalDate.now().toString();
-            String outputDir = "C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\convertTest\\" + today + "\\form\\";
-            Files.createDirectories(Paths.get(outputDir));
-            
-            String fileName = today + "_form_" + UUID.randomUUID().toString().replace("-", "").substring(0, 8);
-            String clxPath = outputDir + fileName + ".clx";
-            String jsPath = outputDir + fileName + ".js";
+	/** convertForm.clx "폼변환": the configured direct file (FIGMA_DIRECT_TOKEN / FIGMA_DIRECT_FILEKEY). */
+	@RequestMapping("/convertFigmaToFormClx.do")
+	public ResponseEntity<String> convertFigmaToFormClx() {
+		return convert(FigmaSettings.get("figma.direct.token", ""), FigmaSettings.get("figma.direct.fileKey", ""), null);
+	}
 
-            
-            
-            // Figma API에서 JSON fetch
-            String url = "https://api.figma.com/v1/files/" + fileKey;
-            Map<String, Object> figmaJson = fetchFigmaData(url, token);
-            // 변환
-            String clxXml = com.tomatosystem.util.ClxLayoutUtil.convertFigmaJsonToClxXml(figmaJson);
-            com.tomatosystem.util.ClxLayoutUtil.saveClxToFile(clxXml, clxPath);
-            // JS 파일(빈 내용) 생성
-            try (java.io.FileWriter jsWriter = new java.io.FileWriter(jsPath)) {
-                jsWriter.write("");
-            }
-            return ResponseEntity.ok("변환 완료: " + clxPath + ", " + jsPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("오류: " + e.getMessage());
-        }
-    }
+	private ResponseEntity<String> convert(String token, String file, String nodeId) {
+		try {
+			FigmaApiClient.FileRef ref = FigmaApiClient.parse(file, nodeId);
+			JSONObject json = FigmaApiClient.fetch(ref, token, FigmaApiClient.Auth.PERSONAL_TOKEN);
+			FigmaConversionService.saveRawJson(json, json.optString("name", ref.fileKey));
+			List<FigmaConversionService.Result> results = figmaConversionService.convert(json, ref.nodeIds);
+			return ResponseEntity.ok().contentType(TEXT).body(FigmaConversionService.describe(results));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(TEXT).body("변환 실패: " + e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(TEXT).body("변환 실패: " + e.getMessage());
+		}
+	}
 
-    // fetchFigmaData 재사용
-    private Map<String, Object> fetchFigmaData(String url, String token) {
-        org.apache.http.client.methods.HttpGet getRequest = new org.apache.http.client.methods.HttpGet(url);
-        getRequest.addHeader("X-Figma-Token", token);
-        try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault();
-             org.apache.http.client.methods.CloseableHttpResponse response = client.execute(getRequest)) {
-            if (response.getStatusLine().getStatusCode() == 200) {
-                String body = org.apache.http.util.EntityUtils.toString(response.getEntity());
-                com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                return objectMapper.readValue(body, Map.class);
-            } else {
-                throw new RuntimeException("Figma API 호출 실패: " + response.getStatusLine());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Figma 데이터 가져오기 실패", e);
-        }
-    }
-} 
+	private static String nvl(String value) { return value == null ? "" : value.trim(); }
+}

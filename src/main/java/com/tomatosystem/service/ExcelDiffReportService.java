@@ -26,7 +26,7 @@ public class ExcelDiffReportService {
             String today = dateFormat.format(new Date());
             
             // Excel 파일 저장 디렉토리 생성
-            File directory = new File("C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\excel\\" + today);
+            File directory = com.tomatosystem.figma.FigmaPaths.clxSrc("result", "excel", today);
             if (!directory.exists()) {
                 System.out.println("디렉토리 생성: " + directory.getAbsolutePath());
                 directory.mkdirs();

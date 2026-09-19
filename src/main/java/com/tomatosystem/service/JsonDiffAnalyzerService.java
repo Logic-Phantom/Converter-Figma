@@ -472,7 +472,7 @@ public class JsonDiffAnalyzerService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String today = dateFormat.format(new Date());
             
-            File directory = new File("C:\\Users\\LCM\\git\\Converter-Figma\\clx-src\\result\\txt\\" + today);
+            File directory = com.tomatosystem.figma.FigmaPaths.clxSrc("result", "txt", today);
             if (!directory.exists()) {
                 directory.mkdirs();
             }

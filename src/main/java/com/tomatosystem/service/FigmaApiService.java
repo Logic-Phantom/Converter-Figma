@@ -24,7 +24,7 @@ public class FigmaApiService {
 
 	    // Figma 파일의 메타데이터 및 lastModified 시간을 가져오는 메서드
 	    public JsonNode getFileMetadata(String fileId) throws IOException {
-	    	accessToken = "사용자 토큰";
+	    	accessToken = com.tomatosystem.figma.FigmaSettings.get("figma.direct.token", "");
 	        URL url = new URL(FIGMA_API_URL + fileId);
 	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 	        connection.setRequestMethod("GET");

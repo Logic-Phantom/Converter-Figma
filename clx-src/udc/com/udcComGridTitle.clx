@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-55323813" version="1.0.0.0">
+  <head std:sid="head-d7c81b75">
+    <title>Title2</title>
+    <screen std:sid="screen-a60b1093" id="EXB-FULL" name="EXB-FULL" width="1440px" height="860px" customHeight="600" customWidth="800" active="true"/>
+    <cl:model std:sid="model-6d7cc3ff"/>
+    <cl:appspec dev-description="그리드 타이틀(Title)" title="그리드 타이틀">
+      <cl:property name="ctrl" type="control" bindable="false" std:desc="그리드 컨트롤 객체"/>
+      <cl:property name="rowCount" type="string" default="0" bindable="true" std:desc=""/>
+      <cl:property name="title" type="string" default="제목없음" bindable="true"/>
+      <cl:property name="showExportExcel" type="boolean" default="true" bindable="true" std:desc="엑셀 파일 Export 버튼을 보여줄지 여부"/>
+      <cl:property name="exportExcelTitle" type="string" bindable="true" std:desc="출력 엑셀파일명(디폴트는 그리드 명칭임)"/>
+      <cl:property name="exportHiddenColumns" type="boolean" default="false" bindable="true" std:desc="숨긴 컬럼도 엑셀 출력에 포함할 경우에 true로 지정(디폴트: false임)"/>
+      <cl:property name="exportExcludePart" type="string" bindable="true" std:desc="엑셀 파일 Export시 출력제외 영역(footer, gfooter 등)"/>
+      <cl:property name="showExpandBtn" type="boolean" default="true" std:desc="확대 버튼을 보여줄지 여부"/>
+    </cl:appspec>
+  </head>
+  <body std:sid="body-87eeef7c" style="top:0px; left:0px; width:800px; height:24px;" class="grp-title">
+    <cl:listener std:sid="listener-7c142040" name="load" handler="onBodyLoad"/>
+    <cl:listener std:sid="listener-a24244a9" name="property-change" handler="onBodyPropertyChange"/>
+    <cl:output std:sid="output-582fb466" id="optTilte" class="table-tit">
+      <cl:apppropbind property="value" category="PROPERTY" app-property="title"/>
+      <cl:formdata std:sid="f-data-9956b2b1" row="0" col="0"/>
+    </cl:output>
+    <cl:output std:sid="output-ace14b8a" id="optRowCount" class="text-center fs-sm" displayexp="&quot;총건수 &quot; + sstr(text, [&quot;text-primary&quot;]) +&quot;건&quot;">
+      <cl:apppropbind property="value" category="PROPERTY" app-property="rowCount"/>
+      <cl:formdata std:sid="f-data-ab56539f" row="0" col="1"/>
+    </cl:output>
+    <cl:group std:sid="group-f1168d7c">
+      <cl:formdata std:sid="f-data-5f0d1618" height="20" row="0" col="2" rowspan="1" colspan="1"/>
+      <cl:button std:sid="button-e6ea7d4c" id="btnTools" class="btn-transparent" tooltip="필터/찾기 등" icon="../../theme/images/com/EXB01/ic_btn_setting.svg">
+        <cl:listener std:sid="listener-f6d6ee43" name="click" handler="onBtnToolsClick"/>
+        <cl:flowlayoutdata std:sid="f-data-c692d163" width="20px" height="20px"/>
+      </cl:button>
+      <cl:flowlayout std:sid="f-layout-3c749f36" scrollable="false" hspacing="6" vspacing="6" leftmargin="0" rightmargin="0" topmargin="2" bottommargin="0"/>
+    </cl:group>
+    <cl:button std:sid="button-923e8267" id="btnExcelExport" class="btn-i-excel-download" tooltip="엑셀 내려받기" value="엑셀다운로드" icon="../../theme/images/controls/button/ic_btn.png">
+      <cl:listener std:sid="listener-5166e6be" name="click" handler="onBtnExcelExportClick"/>
+      <cl:apppropbind property="visible" category="PROPERTY" app-property="showExportExcel"/>
+      <cl:formdata std:sid="f-data-45cb5247" row="0" col="3"/>
+    </cl:button>
+    <cl:formlayout std:sid="f-layout-c3310054" scrollable="false" hspace="10px" vspace="0px">
+      <cl:rows length="24" unit="PIXEL" autoSizing="true" shadetype="NONE" shadecolor="transparent"/>
+      <cl:columns length="200" unit="PIXEL" autoSizing="true" shadetype="NONE" shadecolor="transparent" syncminlength="false"/>
+      <cl:columns length="60" unit="PIXEL" autoSizing="true" shadetype="NONE" shadecolor="transparent" syncminlength="false"/>
+      <cl:columns length="1" unit="FRACTION"/>
+      <cl:columns length="100" unit="PIXEL" autoSizing="true" hidden="false"/>
+    </cl:formlayout>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>
