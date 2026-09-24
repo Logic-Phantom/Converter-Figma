@@ -3,16 +3,35 @@
   "title": "eXConverter UI-IR",
   "description": "Framework-independent screen description. Regions are listed in visual order (top to bottom).",
   "type": "object",
-  "required": ["screen", "regions"],
+  "required": [
+    "screen",
+    "regions"
+  ],
   "properties": {
     "screen": {
       "type": "object",
       "properties": {
-        "name": { "type": "string" },
-        "type": { "type": "string", "description": "Optional hint, e.g. SEARCH_GRID, FORM, POPUP" },
-        "width": { "type": "integer", "minimum": 320, "default": 1440 },
-        "height": { "type": "integer", "minimum": 320, "default": 860 },
-        "sourceWidth": { "type": "integer", "description": "Width of the analysed image; column widths are relative to it" }
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "Optional hint, e.g. SEARCH_GRID, FORM, POPUP"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 320,
+          "default": 1440
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 320,
+          "default": 860
+        },
+        "sourceWidth": {
+          "type": "integer",
+          "description": "Width of the analysed image; column widths are relative to it"
+        }
       }
     },
     "regions": {
@@ -20,28 +39,106 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["type"],
+        "required": [
+          "type"
+        ],
         "properties": {
-          "type": { "enum": ["title", "description", "sectionTitle", "search", "form", "grid", "tabs", "tree", "buttons", "textarea"] },
-          "text": { "type": "string" },
-          "title": { "type": "string" },
-          "align": { "enum": ["left", "right", "center"] },
-          "side": { "enum": ["", "left", "right"], "description": "Pane of a screen split into left and right columns; empty or absent = full width" },
-          "inTab": { "type": "boolean", "description": "Drawn inside the selected tab panel of the preceding tabs region" },
-          "paging": { "type": "boolean", "description": "Grid only: a page-number bar (pageindexer) under the table" },
-          "excel": { "type": "boolean", "description": "Grid only: an Excel download button on the title row (udcComGridTitle showExportExcel). Omit when unknown" },
-          "columnsPerRow": { "type": "integer", "minimum": 1, "maximum": 6 },
+          "type": {
+            "enum": [
+              "title",
+              "description",
+              "sectionTitle",
+              "search",
+              "form",
+              "grid",
+              "tabs",
+              "tree",
+              "buttons",
+              "textarea"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "align": {
+            "enum": [
+              "left",
+              "right",
+              "center"
+            ]
+          },
+          "side": {
+            "enum": [
+              "",
+              "left",
+              "right"
+            ],
+            "description": "Pane of a screen split into left and right columns; empty or absent = full width"
+          },
+          "inTab": {
+            "type": "boolean",
+            "description": "Drawn inside the selected tab panel of the preceding tabs region"
+          },
+          "paging": {
+            "type": "boolean",
+            "description": "Grid only: a page-number bar (pageindexer) under the table"
+          },
+          "excel": {
+            "type": "boolean",
+            "description": "Grid only: an Excel download button on the title row (udcComGridTitle showExportExcel). Omit when unknown"
+          },
+          "columnsPerRow": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6
+          },
           "fields": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["label"],
+              "required": [
+                "label"
+              ],
               "properties": {
-                "label": { "type": "string" },
-                "component": { "enum": ["inputbox", "dateinput", "daterange", "combobox", "searchinput", "checkbox", "checkboxgroup", "radiobutton", "numbereditor", "maskeditor", "textarea", "output"] },
-                "value": { "type": "string" },
-                "options": { "type": "array", "items": { "type": "string" }, "description": "radiobutton / checkboxgroup option captions, left to right" },
-                "required": { "type": "boolean" }
+                "label": {
+                  "type": "string"
+                },
+                "component": {
+                  "enum": [
+                    "inputbox",
+                    "dateinput",
+                    "daterange",
+                    "combobox",
+                    "searchinput",
+                    "checkbox",
+                    "checkboxgroup",
+                    "radiobutton",
+                    "numbereditor",
+                    "maskeditor",
+                    "textarea",
+                    "output"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "radiobutton / checkboxgroup option captions, left to right"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "DataMap column / DTO property bound to the control; a daterange carries \"from,to\" (v2.2)"
+                }
               }
             }
           },
@@ -49,21 +146,139 @@
             "type": "array",
             "items": {
               "oneOf": [
-                { "type": "string" },
+                {
+                  "type": "string"
+                },
                 {
                   "type": "object",
                   "properties": {
-                    "header": { "type": "string" },
-                    "editor": { "enum": ["output", "checkbox", "rowindex", "inputbox", "maskeditor", "numbereditor", "combobox", "dateinput", "button"] },
-                    "width": { "type": "integer", "minimum": 0 },
-                    "cellText": { "type": "string", "description": "Text in the first data cell; UPPER_SNAKE values become dataset column names" }
+                    "header": {
+                      "type": "string"
+                    },
+                    "editor": {
+                      "enum": [
+                        "output",
+                        "checkbox",
+                        "rowindex",
+                        "inputbox",
+                        "maskeditor",
+                        "numbereditor",
+                        "combobox",
+                        "dateinput",
+                        "button"
+                      ]
+                    },
+                    "width": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "cellText": {
+                      "type": "string",
+                      "description": "Text in the first data cell; UPPER_SNAKE values become dataset column names"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Explicit DataSet column name (DTO property) (v2.2)"
+                    },
+                    "dataType": {
+                      "enum": [
+                        "number",
+                        "date",
+                        "decimal"
+                      ],
+                      "description": "datacolumn datatype when the API type says so (v2.2)"
+                    }
                   }
                 }
               ]
             }
           },
-          "buttons": { "type": "array", "items": { "type": "string" } },
-          "tabs": { "type": "array", "items": { "type": "string" } }
+          "buttons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tabs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataId": {
+            "type": "string",
+            "description": "Grid: DataSet id; search/form: DataMap id the fields bind to (v2.2)"
+          }
+        }
+      }
+    },
+    "api": {
+      "type": "object",
+      "description": "Optional backend binding (v2.2, OpenAPI binder). Absent = no DataMap/Submission is generated.",
+      "properties": {
+        "spec": {
+          "type": "string",
+          "description": "OpenAPI title or URL the binding came from"
+        },
+        "submissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "action"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "cl:submission id (subList, subSave ...)"
+              },
+              "action": {
+                "type": "string"
+              },
+              "method": {
+                "enum": [
+                  "get",
+                  "post",
+                  "put",
+                  "delete",
+                  "patch"
+                ]
+              },
+              "role": {
+                "enum": [
+                  "search",
+                  "detail",
+                  "save",
+                  "delete",
+                  ""
+                ],
+                "description": "Decides the JS skeleton"
+              },
+              "caption": {
+                "type": "string",
+                "description": "Design button that triggers it"
+              },
+              "request": {
+                "type": "string",
+                "description": "DataMap/DataSet id sent"
+              },
+              "response": {
+                "type": "string",
+                "description": "DataSet/DataMap id filled"
+              },
+              "responsePath": {
+                "type": "string",
+                "description": "Dotted path of the row array inside a REST envelope, e.g. data.list"
+              },
+              "operationId": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     }

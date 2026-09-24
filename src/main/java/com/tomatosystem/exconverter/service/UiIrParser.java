@@ -38,7 +38,53 @@ public final class UiIrParser {
 			if (parsed != null) result.getRegions().add(parsed);
 		}
 		if (result.getRegions().isEmpty()) throw new IllegalArgumentException("UI-IR requires at least one region");
+		parseApi(root.optJSONObject("api"), result);
 		return UiIrNormalizer.normalize(result);
+	}
+
+	/** Backend binding written by the OpenAPI binder (v2.2): {"spec": "...", "submissions": [{id, action, method, role, caption, request, response, responsePath}]}. */
+	private static void parseApi(JSONObject api, UiIr result) {
+		if (api == null) return;
+		result.setApiSource(api.optString("spec", ""));
+		JSONArray submissions = api.optJSONArray("submissions");
+		if (submissions == null) return;
+		java.util.Set<String> ids = new java.util.HashSet<String>();
+		for (int i = 0; i < submissions.length(); i++) {
+			JSONObject s = submissions.optJSONObject(i);
+			if (s == null) continue;
+			String id = identifier(s.optString("id", ""));
+			if (id.isEmpty() || !ids.add(id)) continue;
+			UiIr.Submission submission = new UiIr.Submission(id);
+			submission.setAction(s.optString("action", ""));
+			submission.setMethod(s.optString("method", "get"));
+			submission.setRole(s.optString("role", ""));
+			submission.setCaption(s.optString("caption", ""));
+			submission.setRequestDataId(identifier(s.optString("request", s.optString("requestDataId", ""))));
+			submission.setResponseDataId(identifier(s.optString("response", s.optString("responseDataId", ""))));
+			submission.setResponsePath(s.optString("responsePath", ""));
+			submission.setOperationId(s.optString("operationId", ""));
+			submission.setSummary(s.optString("summary", ""));
+			if (submission.getAction().isEmpty()) continue;
+			result.getSubmissions().add(submission);
+		}
+	}
+
+	/** A CLX data control id / column name / DTO property; anything else is dropped rather than written into XML. */
+	static String identifier(String raw) {
+		String s = raw == null ? "" : raw.trim();
+		return s.matches("[A-Za-z_$][A-Za-z0-9_$]{0,63}") ? s : "";
+	}
+
+	/** "from,to" for a daterange, otherwise one identifier; "" when invalid. */
+	static String identifiers(String raw) {
+		StringBuilder out = new StringBuilder();
+		for (String part : (raw == null ? "" : raw).split(",")) {
+			String id = identifier(part);
+			if (id.isEmpty()) continue;
+			if (out.length() > 0) out.append(',');
+			out.append(id);
+		}
+		return out.toString();
 	}
 
 	private static UiIr.Region parseRegion(JSONObject json) {
@@ -51,6 +97,7 @@ public final class UiIrParser {
 		region.setColumnsPerRow(json.optInt("columnsPerRow", 0));
 		region.setSide(normalizeSide(json.optString("side", json.optString("pane", ""))));
 		region.setInTab(json.optBoolean("inTab", false));
+		region.setDataId(identifier(json.optString("dataId", "")));
 		region.setPaging(json.optBoolean("paging", json.optBoolean("pagination", false)));
 		if (json.has("excel")) region.setExcel(json.optBoolean("excel", false));
 		JSONArray fields = json.optJSONArray("fields");
@@ -61,6 +108,7 @@ public final class UiIrParser {
 				String label = f.optString("label", "").trim();
 				if (label.isEmpty()) continue;
 				UiIr.Field field = new UiIr.Field(label, normalizeComponent(f.optString("component", f.optString("type", ""))), f.optBoolean("required", false), f.optString("value", ""));
+				field.setName(identifiers(f.optString("name", "")));
 				JSONArray options = f.optJSONArray("options");
 				if (options != null) { for (int o = 0; o < options.length(); o++) { String option = String.valueOf(options.get(o)).trim(); if (!option.isEmpty()) field.getOptions().add(option); } }
 				region.getFields().add(field);
@@ -76,7 +124,10 @@ public final class UiIrParser {
 					String cellText = c.optString("cellText", "");
 					String editor = normalizeEditor(c.optString("editor", c.optString("component", "")));
 					if ("output".equals(editor) && isSequenceHeader(header) && cellText.matches("[#0-9]*")) editor = "rowindex";
-					region.getColumns().add(new UiIr.Column(header, editor, Math.max(0, c.optInt("width", 0)), cellText));
+					UiIr.Column column = new UiIr.Column(header, editor, Math.max(0, c.optInt("width", 0)), cellText);
+					column.setName(identifier(c.optString("name", "")));
+					column.setDataType(c.optString("dataType", c.optString("datatype", "")).trim().toLowerCase(Locale.ROOT).matches("number|date|decimal") ? c.optString("dataType", c.optString("datatype", "")).trim().toLowerCase(Locale.ROOT) : "");
+					region.getColumns().add(column);
 				} else {
 					String header = String.valueOf(item).trim();
 					if (!header.isEmpty()) region.getColumns().add(new UiIr.Column(header, isSequenceHeader(header) ? "rowindex" : "output", 0, ""));

@@ -124,8 +124,9 @@ AI 제공자는 교체 가능(`AiClient`):
 
 실제 Gemini 키로는 아직 호출하지 않았다(키 필요). `figma.ai.provider=gemini` + 키 설정 후 `/designAi/preview.do` 로 먼저 확인할 것.
 
-## 9. 다음 단계 후보
+## 9. 다음 단계 후보 (2026-09-24 갱신)
 
-- 이벤트 JS 초안 생성(조회/저장 버튼 → submission 스켈레톤). 규칙만으로 가능, AI 불필요.
-- 그리드 컬럼 코드 사전을 프로젝트 DB 스키마와 맞추기(AI 대신 실제 테이블 컬럼 사용).
-- Figma Variables(디자인 토큰) → 테마 LESS 변수 매핑.
+- ~~이벤트 JS 초안 생성(조회/저장 버튼 → submission 스켈레톤)~~ → v2.2 에서 OpenAPI 바인딩과 함께 구현(`EventScriptGenerator`, README §14.1). AI 는 라벨↔DTO 속성 매칭의 보조로만 쓴다(`ApiLabelMatcher`, 후보 목록 화이트리스트 + 캐시).
+- 그리드 컬럼 코드 사전을 프로젝트 DB 스키마와 맞추기(AI 대신 실제 테이블 컬럼 사용) — OpenAPI 스펙이 있으면 이미 DTO 속성명이 컬럼명이 된다.
+- ~~Figma Variables(디자인 토큰) → 테마 LESS 변수 매핑~~ → v2.2 `FigmaThemeSync` (README §14.2).
+- 시각 QA(v2.2 §14.3) 결과 이미지를 critic 의 입력으로 재사용해 "레이아웃이 다른 영역"만 patch 후보로 제시하기.

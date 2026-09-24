@@ -5,10 +5,13 @@ import com.tomatosystem.exconverter.service.GenerationService;
 import com.tomatosystem.exconverter.service.ProgressLog;
 import com.tomatosystem.exconverter.service.TemplateCatalog;
 import com.tomatosystem.exconverter.service.UiIrParser;
+import com.tomatosystem.figma.ConversionOptions;
 import com.tomatosystem.figma.FigmaApiClient;
+import com.tomatosystem.figma.FigmaConversionService;
 import com.tomatosystem.figma.FigmaDocument;
 import com.tomatosystem.figma.FigmaSettings;
 import com.tomatosystem.figma.FigmaUiIrExtractor;
+import com.tomatosystem.figma.api.ApiBinder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,21 +43,36 @@ public class FigmaAiConversionService {
 
 	/** Converts and saves; ai steps are skipped silently when figma.ai.provider=none. */
 	public List<Result> convert(JSONObject figmaJson, List<String> nodeIds, String fileKey, String token, FigmaApiClient.Auth auth) {
+		return convert(figmaJson, nodeIds, fileKey, token, auth, ConversionOptions.NONE);
+	}
+
+	/** @param options OpenAPI binding and/or visual QA (v2.2); {@link ConversionOptions#NONE} for the plain AI path */
+	public List<Result> convert(JSONObject figmaJson, List<String> nodeIds, String fileKey, String token, FigmaApiClient.Auth auth, ConversionOptions options) {
+		if (options == null) options = ConversionOptions.NONE;
 		List<Result> results = new ArrayList<Result>();
 		AiClient client = AiClients.create();
 		UiIrCritic critic = new UiIrCritic(client);
 		LabelCodeNamer namer = new LabelCodeNamer(client);
+		ApiBinder binder = options.spec == null ? null : new ApiBinder(options.spec, client);
 		FigmaDocument document = new FigmaDocument(figmaJson);
 		FigmaUiIrExtractor extractor = new FigmaUiIrExtractor(document);
 		Map<String, Integer> usedNames = new HashMap<String, Integer>();
 		List<JSONObject> screens = document.screens(nodeIds);
-		ProgressLog.step("===== Figma → CLX (AI 보조: {}) 화면 {}개 =====", client.describe(), screens.size());
+		ProgressLog.step("===== Figma → CLX (AI 보조: {}) 화면 {}개{}{} =====", client.describe(), screens.size(),
+			binder == null ? "" : ", OpenAPI " + options.spec.describe(), options.visualQa ? ", 시각 QA" : "");
 		for (JSONObject screen : screens) {
 			String label = screen.optString("name", "screen");
 			try {
 				Prepared prepared = prepare(extractor, screen, critic, namer, fileKey, token, auth);
+				if (binder != null) {
+					// Bind both copies so the fallback to the pre-AI UI-IR keeps the backend binding.
+					prepared.api = binder.bind(prepared.after).summary();
+					binder.bind(prepared.before);
+				}
 				String baseName = uniqueName(prepared.screenName, usedNames);
-				results.add(generate(prepared, baseName));
+				Result result = generate(prepared, baseName);
+				if (result.error == null && options.visualQa) result.qa = FigmaConversionService.visualQa(prepared.extracted, result.generated, options.fileKey.isEmpty() ? options.withKey(fileKey, token, auth) : options, baseName);
+				results.add(result);
 			} catch (RuntimeException e) {
 				ProgressLog.step("변환 실패 [{}]: {}", label, e.getMessage());
 				results.add(Result.failed(label, e.getMessage()));
@@ -108,6 +126,7 @@ public class FigmaAiConversionService {
 			String fileKey, String token, FigmaApiClient.Auth auth) {
 		FigmaUiIrExtractor.Screen extracted = extractor.extract(screen);
 		Prepared prepared = new Prepared();
+		prepared.extracted = extracted;
 		prepared.screenName = extracted.name;
 		prepared.before = new JSONObject(extracted.uiIr.toString());
 		JSONObject working = extracted.uiIr;
@@ -135,6 +154,8 @@ public class FigmaAiConversionService {
 				GenerationService.GenerationResult generated = generationService.generate(ir, baseName, audit(uiIr, prepared).toString(2));
 				Result result = new Result(prepared.screenName, generated.getTemplateId(), generated.getFile(), generated.getJsFile(),
 					UiIrCritic.summary(ir), prepared.applied, prepared.rejected, prepared.named, generated.getWarnings(), null);
+				result.generated = generated;
+				result.api = prepared.api;
 				return result;
 			} catch (IllegalStateException e) {
 				last = e;
@@ -181,7 +202,9 @@ public class FigmaAiConversionService {
 	}
 
 	private static final class Prepared {
+		FigmaUiIrExtractor.Screen extracted;
 		String screenName;
+		String api = "";
 		JSONObject before;
 		JSONObject after;
 		UiIrCritic critic;
@@ -204,6 +227,10 @@ public class FigmaAiConversionService {
 		public final List<String> named;
 		public final List<String> warnings;
 		public final String error;
+		/** ApiBinder summary ("" without a spec) and VisualQaService summary ("" without QA), v2.2. */
+		public String api = "";
+		public String qa = "";
+		GenerationService.GenerationResult generated;
 
 		Result(String screen, String templateId, File clx, File js, String regions, List<String> applied,
 				List<String> rejected, List<String> named, List<String> warnings, String error) {
@@ -221,6 +248,8 @@ public class FigmaAiConversionService {
 			if (!named.isEmpty()) s.append("\n    컬럼코드: ").append(named);
 			if (!applied.isEmpty()) s.append("\n    AI 보정: ").append(applied);
 			if (!rejected.isEmpty()) s.append("\n    AI 무시/실패: ").append(rejected);
+			if (!api.isEmpty()) s.append("\n    ").append(api);
+			if (!qa.isEmpty()) s.append("\n    ").append(qa);
 			if (!warnings.isEmpty()) s.append("\n    경고: ").append(warnings);
 			return s.append("\n    저장: ").append(clx.getAbsolutePath()).toString();
 		}

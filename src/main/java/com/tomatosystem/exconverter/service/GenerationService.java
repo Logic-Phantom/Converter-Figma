@@ -49,7 +49,8 @@ public class GenerationService {
 		byte[] clx = generator.generate(template.getFile(), ir);
 		List<String> errors = ClxValidator.validate(clx);
 		if (!errors.isEmpty()) throw new IllegalStateException("Generated CLX is invalid: " + errors);
-		ProgressLog.step("CLX 생성/검증 완료 ({} bytes){}", clx.length, ir.getWarnings().isEmpty() ? "" : " 경고: " + ir.getWarnings());
+		ProgressLog.step("CLX 생성/검증 완료 ({} bytes){}{}", clx.length, ir.getSubmissions().isEmpty() ? "" : " submission " + ir.getSubmissions().size() + "개, 핸들러 " + ir.getHandlers().size() + "개",
+			ir.getWarnings().isEmpty() ? "" : " 경고: " + ir.getWarnings());
 		try {
 			String id = UUID.randomUUID().toString();
 			String dateFolder = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -58,7 +59,7 @@ public class GenerationService {
 			File clxFile = new File(directory, baseName + ".clx");
 			File jsFile = new File(directory, baseName + ".js");
 			Files.write(clxFile.toPath(), clx, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-			Files.write(jsFile.toPath(), CompanionJsGenerator.generate(template.getFile(), baseName + ".js"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+			Files.write(jsFile.toPath(), CompanionJsGenerator.generate(template.getFile(), baseName + ".js", ir), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 			writeUiIr(baseName, rawUiIrJson);
 			ProgressLog.step("저장 완료: {} / {}", clxFile.getAbsolutePath(), jsFile.getName());
 			return new GenerationResult(id, clxFile, jsFile, template.getId(), new ArrayList<String>(ir.getWarnings()));
@@ -75,10 +76,6 @@ public class GenerationService {
 			Files.write(file.toPath(), rawUiIrJson.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 			LOGGER.info("Wrote UI-IR: {}", file.getAbsolutePath());
 		} catch (Exception e) { LOGGER.warn("Could not save UI-IR: {}", e.getMessage()); }
-	}
-
-	public File find(String id) {
-		throw new IllegalArgumentException("Download is no longer required; files are written to clx-src/result/{yyyy-MM-dd}");
 	}
 
 	static String sanitizeBaseName(String originalFileName) {

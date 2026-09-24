@@ -341,7 +341,10 @@ public final class UiIrNormalizer {
 		if (known < 2 || width > 40) return;
 		for (int i = 0; i < columns.size(); i++) {
 			UiIr.Column c = columns.get(i);
-			columns.set(i, new UiIr.Column(c.getHeader(), c.getEditor(), 0, c.getCellText()));
+			UiIr.Column reset = new UiIr.Column(c.getHeader(), c.getEditor(), 0, c.getCellText());
+			reset.setName(c.getName());
+			reset.setDataType(c.getDataType());
+			columns.set(i, reset);
 		}
 	}
 

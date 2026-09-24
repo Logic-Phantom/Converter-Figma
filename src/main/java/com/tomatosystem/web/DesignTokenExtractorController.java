@@ -3,14 +3,9 @@ package com.tomatosystem.web;
 import com.cleopatra.protocol.data.DataRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tomatosystem.figma.FigmaApiClient;
+import com.tomatosystem.figma.FigmaSettings;
 import com.tomatosystem.service.DesignTokenExtractorService;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,6 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * v1.x design-token export (CSS/SCSS/Tailwind/JSON of every colour/font/spacing seen in the file). The eXBuilder
+ * theme sync (v2.2) lives at /figma/theme/sync.do. Figma access goes through {@link FigmaApiClient} like every
+ * other endpoint (token from the request, else FIGMA_DIRECT_TOKEN).
+ */
 @RestController
 @RequestMapping("/figma/design-tokens")
 public class DesignTokenExtractorController {
@@ -52,33 +51,21 @@ public class DesignTokenExtractorController {
         return BASE_PATH + "/" + datePath;
     }
 
+    /** Parameters (optional): token, url | fileKey; defaults figma.direct.token / figma.analysis.fileKey. */
     @RequestMapping("/extract.do")
     public ResponseEntity<String> extractDesignTokens(HttpServletRequest request, HttpServletResponse response, DataRequest dataRequest) {
-        String token = com.tomatosystem.figma.FigmaSettings.get("figma.direct.token", "");
-        String fileKey = com.tomatosystem.figma.FigmaSettings.get("figma.analysis.fileKey", "rXU0zhKF2HjzFsND9njYbq");
-        String url = "https://api.figma.com/v1/files/" + fileKey;
-
         try {
-            // Fetch Figma data
-            Map<String, Object> figmaData = fetchFigmaData(url, token);
-            if (figmaData == null) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch Figma data");
-            }
+            String token = ConversionRequests.firstNonBlank(request.getParameter("token"), FigmaSettings.get("figma.direct.token", ""));
+            String file = ConversionRequests.firstNonBlank(request.getParameter("url"), request.getParameter("fileKey"), FigmaSettings.get("figma.analysis.fileKey", "rXU0zhKF2HjzFsND9njYbq"));
+            FigmaApiClient.FileRef ref = FigmaApiClient.parse(file, null);
+            JsonNode figmaJson = objectMapper.readTree(FigmaApiClient.get("/v1/files/" + ref.fileKey, token, FigmaApiClient.Auth.PERSONAL_TOKEN).toString());
 
-            // Convert Map to JsonNode
-            JsonNode figmaJson = objectMapper.valueToTree(figmaData);
-
-            // Create output directory with today's date
             String outputPath = getOutputPath();
             Files.createDirectories(Paths.get(outputPath));
-
-            // Extract design tokens
             designTokenExtractorService.extractDesignTokens(figmaJson, outputPath);
-
             return ResponseEntity.ok("Design tokens extracted successfully. Files saved in: " + outputPath);
-
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(e instanceof IllegalArgumentException ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error during design token extraction: " + e.getMessage());
         }
     }
@@ -93,10 +80,10 @@ public class DesignTokenExtractorController {
             }
 
             List<Map<String, String>> files = new ArrayList<>();
-            File[] tokenFiles = dir.listFiles((d, name) -> 
-                name.endsWith(".json") || 
-                name.endsWith(".scss") || 
-                name.endsWith(".css") || 
+            File[] tokenFiles = dir.listFiles((d, name) ->
+                name.endsWith(".json") ||
+                name.endsWith(".scss") ||
+                name.endsWith(".css") ||
                 name.endsWith(".js")
             );
 
@@ -120,8 +107,9 @@ public class DesignTokenExtractorController {
     @GetMapping("/view/{date}/{fileName:.+}")
     public ResponseEntity<String> viewFileContent(@PathVariable String date, @PathVariable String fileName) {
         try {
-            Path filePath = Paths.get(BASE_PATH, date, fileName);
-            if (!Files.exists(filePath)) {
+            Path base = Paths.get(BASE_PATH).toAbsolutePath().normalize();
+            Path filePath = base.resolve(date).resolve(fileName).normalize();
+            if (!filePath.startsWith(base) || !Files.exists(filePath)) {
                 return ResponseEntity.notFound().build();
             }
 
@@ -145,22 +133,4 @@ public class DesignTokenExtractorController {
         }
         return "text/plain";
     }
-
-    private Map<String, Object> fetchFigmaData(String url, String token) {
-        HttpGet getRequest = new HttpGet(url);
-        getRequest.addHeader("X-Figma-Token", token);
-
-        try (CloseableHttpClient client = HttpClients.createDefault();
-             CloseableHttpResponse response = client.execute(getRequest)) {
-
-            if (response.getStatusLine().getStatusCode() == 200) {
-                String body = EntityUtils.toString(response.getEntity());
-                return objectMapper.readValue(body, Map.class);
-            } else {
-                throw new RuntimeException("Failed to call Figma API: " + response.getStatusLine());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch Figma data", e);
-        }
-    }
-} 
+}

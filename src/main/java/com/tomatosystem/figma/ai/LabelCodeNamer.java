@@ -1,8 +1,8 @@
 package com.tomatosystem.figma.ai;
 
 import com.tomatosystem.exconverter.service.ColumnNames;
+import com.tomatosystem.exconverter.service.ExConverterConfig;
 import com.tomatosystem.exconverter.service.ProgressLog;
-import com.tomatosystem.figma.FigmaSettings;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -36,7 +36,8 @@ public final class LabelCodeNamer {
 
 	public LabelCodeNamer(AiClient client) {
 		this.client = client;
-		this.cacheFile = new File(new File(FigmaSettings.get("exconverter.generated.root", "generated"), "ai-cache"), "label-codes.json");
+		// exconverter.generated.root lives in exconverter.properties (the same lookup GenerationService uses for ui-ir/).
+		this.cacheFile = new File(new File(ExConverterConfig.get("exconverter.generated.root", "generated"), "ai-cache"), "label-codes.json");
 		load();
 	}
 

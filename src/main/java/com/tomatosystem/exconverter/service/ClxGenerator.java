@@ -79,7 +79,8 @@ public class ClxGenerator {
 				{ "flowlayoutdata", "f-data" }, { "verticaldata", "v-data" }, { "formlayout", "f-layout" }, { "flowlayout", "f-layout" },
 				{ "verticallayout", "v-layout" }, { "udc", "ud-control" }, { "dataset", "d-set" }, { "datacolumn", "d-column" },
 				{ "textarea", "t-area" }, { "checkbox", "c-box" }, { "radiobutton", "r-button" }, { "numbereditor", "n-editor" },
-				{ "maskeditor", "m-editor" }, { "tabfolder", "t-folder" }, { "tabitem", "t-item" }, { "tree", "tree" }, { "pageindexer", "p-indexer" }, { "checkboxgroup", "cb-group" }, { "item", "item" } };
+				{ "maskeditor", "m-editor" }, { "tabfolder", "t-folder" }, { "tabitem", "t-item" }, { "tree", "tree" }, { "pageindexer", "p-indexer" }, { "checkboxgroup", "cb-group" }, { "item", "item" },
+				{ "listener", "listener" }, { "datamap", "d-map" }, { "submission", "submission" } };
 			for (String[] s : sids) SID_PREFIX.put(s[0], s[1]);
 			String[][] ids = { { "output", "opt" }, { "inputbox", "ipb" }, { "dateinput", "dti" }, { "combobox", "cmb" }, { "searchinput", "sipb" },
 				{ "button", "btn" }, { "grid", "grd" }, { "textarea", "txa" }, { "checkbox", "cbx" }, { "radiobutton", "rdb" },
@@ -101,10 +102,16 @@ public class ClxGenerator {
 		private final List<Element> divisionPrototypes = new ArrayList<Element>();
 		private Element treePrototype;
 		private Element bodySearchPrototype;
+		/** Backend binding (v2.2): DataMaps created for bound search/form regions and the handler names handed out. */
+		private final Map<UiIr.Region, String> dataMapIds = new HashMap<UiIr.Region, String>();
+		private final Map<String, Element> dataMapColumnLists = new LinkedHashMap<String, Element>();
+		private final Set<String> functionNames = new HashSet<String>();
+		private String searchDataMapId;
 
 		Compiler(Document doc, UiIr ir) { this.doc = doc; this.ir = ir; }
 
 		void compile() {
+			ir.getHandlers().clear();
 			stripWhitespace(doc.getDocumentElement());
 			Element body = firstByLocalName(doc.getDocumentElement(), "body");
 			if (body == null) throw new IllegalStateException("Template has no body");
@@ -155,6 +162,7 @@ public class ClxGenerator {
 				else footer.getParentNode().removeChild(footer);
 			}
 			if (header != null && childElements(header, true).isEmpty()) header.getParentNode().removeChild(header);
+			buildSubmissions(body);
 		}
 
 		// ------------------------------------------------------------------ skeleton handling
@@ -457,7 +465,9 @@ public class ClxGenerator {
 				int row = i / perRow;
 				int col = (i % perRow) * 2;
 				search.insertBefore(label(field, row, col, false), layout);
-				search.insertBefore(withFormData(fieldControl(field), row, col + 1), layout);
+				Element control = fieldControl(field);
+				bindField(control, region, field);
+				search.insertBefore(withFormData(control, row, col + 1), layout);
 			}
 			List<String> buttons = region.getButtons().isEmpty() && defaultButtons ? java.util.Arrays.asList("초기화", "조회") : region.getButtons();
 			if (!buttons.isEmpty()) {
@@ -547,6 +557,7 @@ public class ClxGenerator {
 			List<Element> grids = descendantsByLocalName(content, "grid");
 			for (int i = 1; i < grids.size(); i++) grids.get(i).getParentNode().removeChild(grids.get(i));
 			grid.setAttribute("id", grid.getAttribute("id").isEmpty() ? uniqueId("grd") : grid.getAttribute("id"));
+			region.setControlId(grid.getAttribute("id"));
 			for (Element udc : descendantsByLocalName(content, "udc")) {
 				if (!udc.getAttribute("type").endsWith("udcComGridTitle")) continue;
 				setUdcProperty(udc, "title", firstNonBlank(region.getTitle(), index == 1 ? ir.getScreenName() : "목록 " + index));
@@ -566,7 +577,7 @@ public class ClxGenerator {
 
 		private void fillGrid(Element grid, UiIr.Region region) {
 			List<UiIr.Column> columns = region.getColumns();
-			String datasetId = uniqueId("dsList");
+			String datasetId = hasText(region.getDataId()) ? exactId(region.getDataId()) : uniqueId("dsList");
 			Element dataset = element("dataset");
 			dataset.setAttribute("id", datasetId);
 			Element columnList = doc.createElementNS(CL, "cl:datacolumnlist");
@@ -607,7 +618,8 @@ public class ClxGenerator {
 				String name = columnName(column, i, usedNames);
 				Element dc = element("datacolumn");
 				dc.setAttribute("name", name);
-				if ("numbereditor".equals(editor)) dc.setAttribute("datatype", "number");
+				if (hasText(column.getDataType())) dc.setAttribute("datatype", column.getDataType());
+				else if ("numbereditor".equals(editor)) dc.setAttribute("datatype", "number");
 				columnList.appendChild(dc);
 				headerCell.setAttribute("targetcolumnname", name);
 				detailCell.setAttribute("columnname", name);
@@ -642,13 +654,17 @@ public class ClxGenerator {
 		}
 
 		private String columnName(UiIr.Column column, int index, Set<String> used) {
-			// Design-mode grids show the bound column name (e.g. "FNM", "ACNO_____"); sample data like "onBodyLoad" is not one.
-			String candidate = ColumnNames.codeOf(column.getCellText());
-			if (!candidate.matches("[A-Z][A-Z0-9_]{1,40}")) {
-				String header = column.getHeader().replace(" ", "");
-				candidate = ColumnNames.nameFor(header);
-				if (candidate.isEmpty() && header.matches("[A-Za-z][A-Za-z0-9_]*")) candidate = header.toUpperCase(Locale.ROOT);
-				if (candidate.isEmpty()) candidate = "COL" + (index + 1);
+			// An explicit binding name (OpenAPI DTO property, v2.2) wins over everything derived from the design.
+			String candidate = column.getName().matches("[A-Za-z_$][A-Za-z0-9_$]{0,63}") ? column.getName() : "";
+			if (candidate.isEmpty()) {
+				// Design-mode grids show the bound column name (e.g. "FNM", "ACNO_____"); sample data like "onBodyLoad" is not one.
+				candidate = ColumnNames.codeOf(column.getCellText());
+				if (!candidate.matches("[A-Z][A-Z0-9_]{1,40}")) {
+					String header = column.getHeader().replace(" ", "");
+					candidate = ColumnNames.nameFor(header);
+					if (candidate.isEmpty() && header.matches("[A-Za-z][A-Za-z0-9_]*")) candidate = header.toUpperCase(Locale.ROOT);
+					if (candidate.isEmpty()) candidate = "COL" + (index + 1);
+				}
 			}
 			String name = candidate;
 			for (int n = 2; !used.add(name); n++) name = candidate + n;
@@ -727,6 +743,7 @@ public class ClxGenerator {
 				int c = (i % perRow) * 2;
 				form.appendChild(label(fields.get(i), r, c, true));
 				Element control = withFormData(fieldControl(fields.get(i)), r, c + 1);
+				bindField(control, region, fields.get(i));
 				if (i == fields.size() - 1 && c + 1 < perRow * 2 - 1) firstChildByLocalName(control, "formdata").setAttribute("colspan", String.valueOf(perRow * 2 - c - 1));
 				form.appendChild(control);
 			}
@@ -911,7 +928,26 @@ public class ClxGenerator {
 				if (text != null) setUdcProperty(udc, p[1], text);
 				else setUdcProperty(udc, p[2], "false", "boolean");
 			}
+			wireCudButtons(udc, roles);
 			return udc;
+		}
+
+		/**
+		 * Backend binding for the UDC's own buttons (v2.2): the UDC dispatches "save" / "delete" events. A bound 저장
+		 * sends the save submission on "save"; a bound 삭제 turns off the UDC's default row removal
+		 * (ignoreDefaultDeleteAction) and sends the DELETE submission for the selected row on "delete".
+		 */
+		private void wireCudButtons(Element udc, Map<String, String> roles) {
+			String[][] events = { { "Save", "save" }, { "Delete", "delete" } };
+			for (String[] e : events) {
+				String caption = roles.get(e[0]);
+				UiIr.Submission submission = caption == null ? null : ir.submissionFor(caption);
+				if (submission == null) continue;
+				if ("delete".equals(e[1])) setUdcProperty(udc, "ignoreDefaultDeleteAction", "true", "boolean");
+				String function = uniqueFunction("on" + capitalize(udc.getAttribute("id")) + capitalize(e[1]));
+				addListener(udc, e[1], function);
+				ir.getHandlers().add(new UiIr.Handler(function, e[1], udc.getAttribute("id"), caption, submission.getId(), submission.getRole()));
+			}
 		}
 
 		/** Removes a child and its formlayout row: later rows move up and the row track goes away. */
@@ -1081,6 +1117,7 @@ public class ClxGenerator {
 			else cls = "btn-secondary-01";
 			button.setAttribute("class", cls);
 			button.setAttribute("value", text);
+			wireButton(button, text);
 			Element data = element("flowlayoutdata");
 			data.setAttribute("width", buttonWidth(text) + "px");
 			data.setAttribute("height", height + "px");
@@ -1088,6 +1125,133 @@ public class ClxGenerator {
 			button.appendChild(data);
 			return button;
 		}
+
+		// ------------------------------------------------------------------ backend binding (v2.2)
+
+		/** cl:datamapbind on the field's control when the binder named it; the DataMap is created in the model on first use. */
+		private void bindField(Element control, UiIr.Region region, UiIr.Field field) {
+			if (!hasText(region.getDataId()) || !hasText(field.getName())) return;
+			String dataId = dataMapId(region);
+			String[] names = field.getName().split(",");
+			if ("daterange".equals(field.getComponent())) {
+				List<Element> inputs = descendantsByLocalName(control, "dateinput");
+				for (int i = 0; i < inputs.size() && i < names.length; i++) bindControl(inputs.get(i), dataId, names[i].trim());
+				return;
+			}
+			bindControl(control, dataId, names[0].trim());
+		}
+
+		/** Compiles to control.bind("value").toDataMap(app.lookup(dataId), column) (checked with e6-compiler). */
+		private void bindControl(Element control, String dataId, String column) {
+			if (!hasText(column)) return;
+			Element bind = doc.createElementNS(CL, "cl:datamapbind");
+			bind.setAttribute("property", "value");
+			bind.setAttribute("datacontrolid", dataId);
+			bind.setAttribute("columnname", column);
+			control.insertBefore(bind, control.getFirstChild());
+			addDataMapColumn(dataId, column);
+		}
+
+		private String dataMapId(UiIr.Region region) {
+			String id = dataMapIds.get(region);
+			if (id != null) return id;
+			id = exactId(region.getDataId());
+			dataMapIds.put(region, id);
+			Element dataMap = element("datamap");
+			dataMap.setAttribute("id", id);
+			Element columnList = doc.createElementNS(CL, "cl:datacolumnlist");
+			dataMap.appendChild(columnList);
+			ensureModel().appendChild(dataMap);
+			dataMapColumnLists.put(id, columnList);
+			if (UiIr.SEARCH.equals(region.getType()) && searchDataMapId == null) searchDataMapId = id;
+			return id;
+		}
+
+		private void addDataMapColumn(String dataId, String column) {
+			Element columnList = dataMapColumnLists.get(dataId);
+			if (columnList == null) return;
+			for (Element existing : childElements(columnList, false)) { if (column.equals(existing.getAttribute("name"))) return; }
+			Element dc = element("datacolumn");
+			dc.setAttribute("name", column);
+			columnList.appendChild(dc);
+		}
+
+		/** The binder's id when it is still free (dsList, dmSearch …), else a numbered variant. */
+		private String exactId(String wanted) {
+			if (ids.add(wanted)) return wanted;
+			return uniqueId(wanted.replaceAll("\\d+$", ""));
+		}
+
+		/** Wires a design button to the submission its caption triggers, or to a reset of the search DataMap. */
+		private void wireButton(Element button, String caption) {
+			UiIr.Submission submission = ir.submissionFor(caption);
+			String role;
+			String submissionId = "";
+			if (submission != null) { role = submission.getRole(); submissionId = submission.getId(); }
+			else if (searchDataMapId != null && caption.replace(" ", "").toLowerCase(Locale.ROOT).matches("(초기화|리셋|reset|clear|지우기)")) role = "reset";
+			else return;
+			String base = role.isEmpty() ? submissionId.replaceFirst("^sub", "") : role;
+			String function = uniqueFunction("onBtn" + capitalize(base) + "Click");
+			addListener(button, "click", function);
+			ir.getHandlers().add(new UiIr.Handler(function, "click", button.getAttribute("id"), caption, submissionId, role));
+		}
+
+		private void addListener(Element control, String event, String function) {
+			Element listener = element("listener");
+			listener.setAttribute("name", event);
+			listener.setAttribute("handler", function);
+			control.insertBefore(listener, control.getFirstChild());
+		}
+
+		private String uniqueFunction(String base) {
+			if (functionNames.add(base)) return base;
+			for (int n = 2; ; n++) { if (functionNames.add(base + n)) return base + n; }
+		}
+
+		/**
+		 * cl:submission per bound backend call (request/response data only when that DataMap/DataSet exists in the
+		 * model), a submit-done listener each, a body load listener that runs the first list query, and a grid
+		 * selection-change listener that feeds the detail query. Nothing is added without submissions (v2.0 result).
+		 */
+		private void buildSubmissions(Element body) {
+			if (ir.getSubmissions().isEmpty()) return;
+			Element model = ensureModel();
+			Set<String> dataIds = new HashSet<String>();
+			for (Element child : childElements(model, false)) { if ("dataset".equals(child.getLocalName()) || "datamap".equals(child.getLocalName())) dataIds.add(child.getAttribute("id")); }
+			String listSubmission = null;
+			String detailSubmission = null;
+			for (UiIr.Submission submission : ir.getSubmissions()) {
+				Element s = element("submission");
+				s.setAttribute("id", exactId(submission.getId()));
+				s.setAttribute("action", submission.getAction());
+				s.setAttribute("method", submission.getMethod());
+				if (!"get".equals(submission.getMethod())) s.setAttribute("mediatype", "application/json");
+				String function = uniqueFunction("onSub" + capitalize(s.getAttribute("id").replaceFirst("^sub", "")) + "SubmitDone");
+				addListener(s, "submit-done", function);
+				if (dataIds.contains(submission.getRequestDataId())) { Element r = doc.createElementNS(CL, "cl:requestdata"); r.setAttribute("dataid", submission.getRequestDataId()); s.appendChild(r); }
+				if (dataIds.contains(submission.getResponseDataId())) { Element r = doc.createElementNS(CL, "cl:responsedata"); r.setAttribute("dataid", submission.getResponseDataId()); s.appendChild(r); }
+				model.appendChild(s);
+				ir.getHandlers().add(new UiIr.Handler(function, "submit-done", s.getAttribute("id"), "", submission.getId(), submission.getRole()));
+				if (listSubmission == null && UiIr.Submission.ROLE_SEARCH.equals(submission.getRole())) listSubmission = submission.getId();
+				if (detailSubmission == null && UiIr.Submission.ROLE_DETAIL.equals(submission.getRole())) detailSubmission = submission.getId();
+			}
+			if (listSubmission != null) {
+				String function = uniqueFunction("onBodyLoad");
+				addListener(body, "load", function);
+				ir.getHandlers().add(new UiIr.Handler(function, "load", "", "", listSubmission, UiIr.Submission.ROLE_SEARCH));
+			}
+			if (detailSubmission != null) {
+				List<Element> grids = descendantsByLocalName(body, "grid");
+				if (!grids.isEmpty()) {
+					Element grid = grids.get(0);
+					String function = uniqueFunction("on" + capitalize(grid.getAttribute("id")) + "SelectionChange");
+					addListener(grid, "selection-change", function);
+					ir.getHandlers().add(new UiIr.Handler(function, "selection-change", grid.getAttribute("id"), "", detailSubmission, UiIr.Submission.ROLE_DETAIL));
+				}
+			}
+		}
+
+		private static String capitalize(String s) { return s == null || s.isEmpty() ? "" : Character.toUpperCase(s.charAt(0)) + s.substring(1); }
 
 		// ------------------------------------------------------------------ node factories
 

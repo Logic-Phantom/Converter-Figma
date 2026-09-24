@@ -1,0 +1,60 @@
+{
+  "status": 200,
+  "error": false,
+  "meta": {
+    "variableCollections": {
+      "VariableCollectionId:1:100": {
+        "id": "VariableCollectionId:1:100",
+        "name": "Brand",
+        "key": "brand",
+        "modes": [ { "modeId": "1:0", "name": "Light" }, { "modeId": "1:1", "name": "Dark" } ],
+        "defaultModeId": "1:0",
+        "remote": false,
+        "hiddenFromPublishing": false,
+        "variableIds": [ "VariableID:1:201", "VariableID:1:202", "VariableID:1:203", "VariableID:1:204", "VariableID:1:205", "VariableID:1:206", "VariableID:1:207", "VariableID:1:208" ]
+      }
+    },
+    "variables": {
+      "VariableID:1:201": {
+        "id": "VariableID:1:201", "name": "color/primary/500", "key": "k201", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "COLOR", "scopes": [ "ALL_SCOPES" ],
+        "valuesByMode": { "1:0": { "r": 0.0745, "g": 0.4118, "b": 0.7725, "a": 1 }, "1:1": { "r": 0.3, "g": 0.6, "b": 0.9, "a": 1 } }
+      },
+      "VariableID:1:202": {
+        "id": "VariableID:1:202", "name": "color/primary/50", "key": "k202", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "COLOR", "scopes": [ "ALL_SCOPES" ],
+        "valuesByMode": { "1:0": { "r": 0.9098, "g": 0.9529, "b": 0.9922, "a": 1 }, "1:1": { "r": 0.1, "g": 0.2, "b": 0.3, "a": 1 } }
+      },
+      "VariableID:1:203": {
+        "id": "VariableID:1:203", "name": "color/text/primary", "key": "k203", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "COLOR", "scopes": [ "TEXT_FILL" ],
+        "valuesByMode": { "1:0": { "r": 0.2, "g": 0.2, "b": 0.2, "a": 1 }, "1:1": { "r": 0.95, "g": 0.95, "b": 0.95, "a": 1 } }
+      },
+      "VariableID:1:204": {
+        "id": "VariableID:1:204", "name": "color/border/default", "key": "k204", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "COLOR", "scopes": [ "STROKE_COLOR" ],
+        "valuesByMode": { "1:0": { "r": 0.733, "g": 0.733, "b": 0.733, "a": 1 }, "1:1": { "r": 0.4, "g": 0.4, "b": 0.4, "a": 1 } }
+      },
+      "VariableID:1:205": {
+        "id": "VariableID:1:205", "name": "color/focus", "key": "k205", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "COLOR", "scopes": [ "ALL_SCOPES" ],
+        "valuesByMode": { "1:0": { "type": "VARIABLE_ALIAS", "id": "VariableID:1:201" }, "1:1": { "type": "VARIABLE_ALIAS", "id": "VariableID:1:201" } }
+      },
+      "VariableID:1:206": {
+        "id": "VariableID:1:206", "name": "radius/md", "key": "k206", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "FLOAT", "scopes": [ "CORNER_RADIUS" ],
+        "valuesByMode": { "1:0": 6, "1:1": 6 }
+      },
+      "VariableID:1:207": {
+        "id": "VariableID:1:207", "name": "spacing/sm", "key": "k207", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "FLOAT", "scopes": [ "GAP" ],
+        "valuesByMode": { "1:0": 8, "1:1": 8 }
+      },
+      "VariableID:1:208": {
+        "id": "VariableID:1:208", "name": "font/family", "key": "k208", "variableCollectionId": "VariableCollectionId:1:100",
+        "resolvedType": "STRING", "scopes": [ "FONT_FAMILY" ],
+        "valuesByMode": { "1:0": "Pretendard", "1:1": "Pretendard" }
+      }
+    }
+  }
+}

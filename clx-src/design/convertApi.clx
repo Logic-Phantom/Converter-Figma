@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cl="http://tomatosystem.co.kr/cleopatra" xmlns:std="http://tomatosystem.co.kr/cleopatra/studio" std:sid="html-7c2a41f0" version="1.0.5542">
+  <head std:sid="head-2f9d6b31">
+    <screen std:sid="screen-5a1e8c02" id="default" name="default" width="1024px" height="768px"/>
+    <cl:model std:sid="model-9b4d1e77">
+      <cl:datamap std:sid="d-map-3e6f2a18" id="dmParam">
+        <cl:datacolumnlist>
+          <cl:datacolumn std:sid="d-column-1a2b3c4d" name="url"/>
+          <cl:datacolumn std:sid="d-column-2b3c4d5e" name="swagger"/>
+          <cl:datacolumn std:sid="d-column-3c4d5e6f" name="token"/>
+          <cl:datacolumn std:sid="d-column-4d5e6f70" name="nodeId"/>
+          <cl:datacolumn std:sid="d-column-5e6f7081" name="qa"/>
+        </cl:datacolumnlist>
+      </cl:datamap>
+      <cl:submission std:sid="submission-6f708192" id="subConvert" method="post" action="../design/convertApi.do">
+        <cl:listener std:sid="listener-708192a3" name="submit-done" handler="onSubConvertSubmitDone"/>
+        <cl:requestdata dataid="dmParam"/>
+      </cl:submission>
+    </cl:model>
+    <cl:appspec/>
+  </head>
+  <body std:sid="body-8192a3b4">
+    <cl:output std:sid="output-92a3b4c5" value="Figma → CLX 변환 (OpenAPI 바인딩 · 시각 QA)" style="font-size:18px;font-weight:bold;">
+      <cl:xylayoutdata std:sid="xyl-data-a3b4c5d6" top="24px" left="40px" width="600px" height="30px"/>
+    </cl:output>
+    <cl:output std:sid="output-b4c5d6e7" value="Figma 링크 (node-id 포함 가능)">
+      <cl:xylayoutdata std:sid="xyl-data-c5d6e7f8" top="70px" left="40px" width="220px" height="24px"/>
+    </cl:output>
+    <cl:inputbox std:sid="i-box-d6e7f809" id="ipbUrl" placeholder="https://www.figma.com/design/KEY/이름?node-id=12-34">
+      <cl:datamapbind property="value" datacontrolid="dmParam" columnname="url"/>
+      <cl:xylayoutdata std:sid="xyl-data-e7f8091a" top="70px" left="270px" width="600px" height="24px"/>
+    </cl:inputbox>
+    <cl:output std:sid="output-f8091a2b" value="Swagger / OpenAPI JSON URL (선택)">
+      <cl:xylayoutdata std:sid="xyl-data-091a2b3c" top="106px" left="40px" width="220px" height="24px"/>
+    </cl:output>
+    <cl:inputbox std:sid="i-box-1a2b3c4e" id="ipbSwagger" placeholder="http://localhost:8080/v3/api-docs">
+      <cl:datamapbind property="value" datacontrolid="dmParam" columnname="swagger"/>
+      <cl:xylayoutdata std:sid="xyl-data-2b3c4e5f" top="106px" left="270px" width="600px" height="24px"/>
+    </cl:inputbox>
+    <cl:output std:sid="output-3c4e5f60" value="Figma 개인 액세스 토큰 (비우면 FIGMA_DIRECT_TOKEN)">
+      <cl:xylayoutdata std:sid="xyl-data-4e5f6071" top="142px" left="40px" width="220px" height="24px"/>
+    </cl:output>
+    <cl:inputbox std:sid="i-box-5f607182" id="ipbToken" secret="true">
+      <cl:datamapbind property="value" datacontrolid="dmParam" columnname="token"/>
+      <cl:xylayoutdata std:sid="xyl-data-60718293" top="142px" left="270px" width="600px" height="24px"/>
+    </cl:inputbox>
+    <cl:output std:sid="output-718293a4" value="node-id (링크에 없을 때, 12:34 형식)">
+      <cl:xylayoutdata std:sid="xyl-data-8293a4b5" top="178px" left="40px" width="220px" height="24px"/>
+    </cl:output>
+    <cl:inputbox std:sid="i-box-93a4b5c6" id="ipbNodeId">
+      <cl:datamapbind property="value" datacontrolid="dmParam" columnname="nodeId"/>
+      <cl:xylayoutdata std:sid="xyl-data-a4b5c6d7" top="178px" left="270px" width="200px" height="24px"/>
+    </cl:inputbox>
+    <cl:checkbox std:sid="c-box-b5c6d7e8" id="cbxQa" text="시각 QA 실행 (Figma 렌더 vs CLX 렌더 픽셀 비교, 헤드리스 브라우저 필요)" truevalue="true" falsevalue="false">
+      <cl:datamapbind property="value" datacontrolid="dmParam" columnname="qa"/>
+      <cl:xylayoutdata std:sid="xyl-data-c6d7e8f9" top="214px" left="270px" width="600px" height="24px"/>
+    </cl:checkbox>
+    <cl:button std:sid="button-d7e8f90a" id="btnConvert" value="변환">
+      <cl:listener std:sid="listener-e8f90a1b" name="click" handler="onBtnConvertClick"/>
+      <cl:xylayoutdata std:sid="xyl-data-f90a1b2c" top="254px" left="270px" width="120px" height="32px"/>
+    </cl:button>
+    <cl:textarea std:sid="t-area-0a1b2c3d" id="txaResult" readonly="true">
+      <cl:xylayoutdata std:sid="xyl-data-1b2c3d4e" top="300px" left="40px" width="900px" height="400px"/>
+    </cl:textarea>
+    <cl:xylayout std:sid="xylayout-2c3d4e5f"/>
+  </body>
+  <std:studiosetting>
+    <std:hruler/>
+    <std:vruler/>
+  </std:studiosetting>
+</html>

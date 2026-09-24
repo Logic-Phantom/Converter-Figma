@@ -4,6 +4,7 @@ Figma REST API가 돌려주는 파일 JSON(`GET /v1/files/:key`, `GET /v1/files/
 
 - **v2.0** — 좌표를 그대로 옮기지 않고, `templates/` 의 표준 화면 뼈대 중 Figma 화면과 **가장 유사한 템플릿을 골라** 그 위에 내용을 채운다.
 - **v2.1(선택)** — 그 위에 **AI 보조**(무료: Gemini API 또는 사내 Ollama)를 얹어 애매한 판정과 컬럼 코드 이름 짓기를 보완한다. 기본값은 꺼짐이며, 꺼져 있으면 v2.0 과 결과가 같다.
+- **v2.2(선택)** — ① Swagger/OpenAPI 스펙으로 DataSet·DataMap·Submission 을 바인딩하고 조회/저장 JS 스켈레톤을 생성, ② Figma 디자인 토큰(Variables/Styles)을 테마 `.less` 로 동기화, ③ Figma 렌더 vs 생성 화면의 픽셀 비교 QA 리포트. 스펙/옵션이 없으면 v2.0/v2.1 과 결과가 같다. 검토·설계: [docs/v2.2-features.md](docs/v2.2-features.md), 사용법: §14.
 
 > 이 문서 하나로 목적, 동작 원리, 설정, 사용법, 검증, 작업 이력을 파악할 수 있도록 작성했다.
 > 코드를 고치기 전에 **§12 작업 규칙**을 먼저 확인할 것.
@@ -23,6 +24,7 @@ Figma REST API가 돌려주는 파일 JSON(`GET /v1/files/:key`, `GET /v1/files/
 11. [알려진 한계 / 다음 단계](#11-알려진-한계--다음-단계)
 12. [작업 규칙](#12-작업-규칙)
 13. [기타 기능 (v1.x)](#13-기타-기능-v1x)
+14. [v2.2 — OpenAPI 바인딩 · 테마 동기화 · 시각 QA](#14-v22--openapi-바인딩--테마-동기화--시각-qa)
 
 ---
 
@@ -263,9 +265,15 @@ setx FIGMA_AI_GEMINI_APIKEY "발급받은_키"      # 또는 사내: figma.ai.pr
 | `GET /designAi/preview.do` | 동일 | UI-IR before/after, patch, 선택될 템플릿을 JSON 으로. 파일 안 씀 |
 | `/designAi/jsonConvert.do` | 업로드 JSON | AI 보조 + 업로드 JSON |
 | `GET /designAi/status.do` | 없음 | provider/모델/키 설정 여부, 컬럼코드 캐시 크기 |
+| `/design/convertApi.do` | dmParam `url`, `swagger`, `token`, `nodeId`, `qa` (convertApi.clx) | PAT 변환 + OpenAPI 바인딩 (+시각 QA), §14 |
+| `GET /figma/theme/sync.do` | `url`/`fileKey`, `token`, `apply=true`, `variables=true` | Figma Variables/Styles → `clx-src/theme/figma/*.less` 동기화, §14.2 |
+| `/figma/theme/jsonSync.do` | 업로드 파일 JSON (+variables JSON), dmParam `apply` | 저장해 둔 JSON 으로 테마 동기화 |
+| `GET /figma/qa/compare.do` | `clx`(clx-src 기준), `url`/`fileKey`+`nodeId`, `token`, `width`, `height` | 기존 CLX 를 렌더해 Figma PNG 와 비교, §14.3 |
+| `GET /figma/qa/status.do`, `report.do?path=` | | 렌더러/컴파일러 상태, 리포트 파일 보기 |
 | `/oauth/login.do`, `/oauth/callback.do` | | Figma OAuth → `converterStart.clx` 로 토큰 전달 |
 
 `url` 에 Figma 링크(`https://www.figma.com/design/<KEY>/<이름>?node-id=12-34`)를 그대로 넣으면 해당 프레임만 `/nodes` API 로 받아 변환한다(응답이 작고 빠름). `file/design/proto/board` 링크 모두 인식.
+모든 변환 엔드포인트(`/design/*`, `/designAi/*`)는 v2.2 옵션 `swagger=<OpenAPI/Swagger JSON URL>` 과 `qa=true` 를 받는다(§14). 업로드 변환은 두 번째 `*.json`(`openapi`/`swagger` 키가 있는 문서)을 스펙으로 쓴다.
 
 응답 본문(text/plain, UTF-8) 예:
 ```
@@ -273,7 +281,7 @@ setx FIGMA_AI_GEMINI_APIKEY "발급받은_키"      # 또는 사내: figma.ai.pr
     영역: title → search(필드 6) → grid(컬럼 15) → buttons
     저장: C:\eclipse_AI\Converter-Figma\clx-src\convertTest\2026-09-19\main_content_area.clx
 ```
-AI 경로는 여기에 `컬럼코드: […]`, `AI 보정: […]`, `AI 무시/실패: […]` 줄이 더 붙는다.
+AI 경로는 여기에 `컬럼코드: […]`, `AI 보정: […]`, `AI 무시/실패: […]` 줄이 더 붙는다. `swagger`/`qa` 옵션을 주면 `API 바인딩: subList(GET /api/v1/…) · 컬럼 11/11 · 필드 6/6`, `시각 QA: 불일치 12.3% · 주요 영역 […] · 리포트 …` 줄이 붙는다.
 실패한 화면은 `❌ 화면명: 사유`. 한 화면이라도 성공하면 200, 전부 실패면 500, 입력 오류는 400.
 
 Eclipse 콘솔에는 `[eXConverter HH:mm:ss]` 로 진행 로그(영역 요약 → 템플릿 선택/점수 → 생성·검증 → 저장)가 찍힌다.
@@ -287,7 +295,8 @@ clx-src/
 generated/ui-ir/{프레임명}.ui-ir.json                 ← 추출된 UI-IR + AI 적용/거부 내역 (Tomcat 작업 디렉터리 기준)
 generated/ai-cache/label-codes.json                   ← 라벨 → 컬럼코드 캐시
 ```
-`.js` 는 선택된 템플릿의 짝 JS(주석 헤더)를 파일명/날짜만 바꿔 복사한다.
+`.js` 는 선택된 템플릿의 짝 JS(주석 헤더)를 파일명/날짜만 바꿔 복사한다. OpenAPI 바인딩이 있으면 그 뒤에 이벤트 핸들러 스켈레톤(`onBtnSearchClick`, `onSubListSubmitDone` …)이 붙는다(§14.1).
+시각 QA 결과는 `clx-src/result/visual-qa/{yyyy-MM-dd}/{화면명}/`(figma.png, clx.png, diff.png, report.html), 테마 동기화 결과는 `clx-src/theme/figma/`.
 
 ---
 
@@ -327,6 +336,17 @@ Eclipse Tomcat 에 환경변수/`-D` 를 줄 때는 Servers 뷰 → 서버 더�
 | `figma.ai.repair` | `true` | 검증 실패 시 수리 루프 |
 | `figma.ai.timeoutSeconds` / `.maxRetries` / `.maxOutputTokens` | `60` / `1` / `4096` | |
 
+### 5.3 v2.2 (OpenAPI 바인딩 · 시각 QA · 테마)
+
+| 키 | 기본값 | 설명 |
+|---|---|---|
+| `figma.api.baseUrl` | (빈값) | submission `action` 접두어. 비우면 스펙의 `servers[0].url`/`basePath` |
+| `figma.qa.browser` | (빈값) | 헤드리스 브라우저 실행 파일. 비우면 Chrome/Edge/Chromium 기본 설치 경로 탐색 |
+| `figma.qa.renderer` | `auto` | `playwright` 면 `npx playwright screenshot` 사용(Node 필요) |
+| `figma.qa.compiler` | (빈값) | e6-compiler.jar 경로. 비우면 `ci-lib/clx/e6-compiler.jar` |
+| `figma.qa.settleMillis` / `.browserTimeoutSeconds` / `.threshold` / `.keepWork` | `6000` / `90` / `0.1` / `false` | 렌더 대기(ms), 브라우저 최대 대기(초), pixelmatch 임계값(0~1), 컴파일 작업 폴더 보존 |
+| `figma.theme.map.<전역변수>` | (기본 규칙) | 예 `figma.theme.map.focus-border-color=(?i)^Brand/color/primary/500$` — 토큰 이름 정규식 |
+
 컴포넌트 키워드 확장: `src/main/resources/figma/component-keywords.properties` (예: 사내 디자인시스템의 `SelectField` 를 콤보로 → `component.combobox=combobox,combo,select,dropdown,selectfield`). 줄을 주석 해제하면 그 종류의 기본 키워드를 **대체**한다.
 
 ---
@@ -365,6 +385,14 @@ java -jar ci-lib\clx\e6-compiler.jar -s <임시프로젝트> -o <출력>
 # 3) AI 경로 (API 키 없이, 가짜 AI 서버로 7가지 시나리오)
 javac -encoding UTF-8 -d out -cp "out;$cp" tools\harness\FigmaAiHarness.java
 java -cp "out;$cp;src\main\resources" FigmaAiHarness templates out\ai clx-src\json\2025-08-04\2025-08-04_e69f5327.json
+
+# 4) v2.2: OpenAPI 바인딩 / 테마 동기화 / 시각 QA (샘플 스펙·Variables 는 tools\harness\samples)
+java -cp "out;$cp;src\main\resources" OpenApiHarness templates out\api clx-src\json\2025-08-04\2025-08-04_e69f5327.json tools\harness\samples\health-card.openapi.json tools\harness\samples\health-card.swagger2.json
+java -cp "out;$cp;src\main\resources" ThemeSyncHarness . out\theme clx-src\json\2025-08-04\2025-08-04_e69f5327.json tools\harness\samples\variables-local.sample.json
+java -cp "out;$cp;src\main\resources" VisualQaHarness . out\api\api.clx out\api\api.js out\qa     # 브라우저 없으면 렌더 검사 SKIP
+
+# 전부 한 번에 (컴파일 → 2~4 → e6-compiler → 테마 LESS 컴파일 → 시각 QA). 결과는 target\harness
+powershell -ExecutionPolicy Bypass -File tools\harness\run-all.ps1        # macOS/Linux: tools/harness/run-all.sh
 ```
 
 `FigmaHarness` 출력: 화면마다 `OK/FAIL 파일__번호 [프레임] → 템플릿 (점수)` 와 영역 요약, `out\figma` 에 `.clx`/`.js`/`.ui-ir.json`. 실패가 있으면 종료코드 1.
@@ -379,8 +407,12 @@ java -cp "out;$cp;src\main\resources" FigmaAiHarness templates out\ai clx-src\js
 | 서비스 계층 | `FigmaConversionService` → `GenerationService` → `ProjectRootResolver` 를 서버 없이 실행해 루트 탐색·저장 확인 |
 | AI 경로 | `FigmaAiHarness` **7/7 통과**(AI 끔 → 호출 0회 / 허용 patch 적용 / 금지 op 거부 / 깨진 응답 폴백 / 컬럼코드 캐시로 2회차 API 0회 / 보정 후 CLX 검증 / CLX 직접수정 거부). 보정된 CLX 도 e6-compiler BUILD SUCCESS(`cl:combobox` → `cpr.controls.ComboBox`) |
 | 회귀 | AI 추가 후에도 규칙 경로 46 OK 유지 |
+| v2.2 OpenAPI 바인딩 (2026-09-24) | `OpenApiHarness` **12/12**: 3.x/2.0 파싱, 라벨↔DTO 점수, 컬럼 11/11·필드 6/6 바인딩, ClxValidator, DataSet 컬럼=DTO, DataMap+datamapbind, submission, 리스너, JS 핸들러 정의, 스펙 없으면 v2.0 동일. 생성 CLX/JS e6-compiler **BUILD SUCCESS** (`toDataMap`, `addRequestData/addResponseData`, `submit-done`) |
+| v2.2 테마 동기화 | `ThemeSyncHarness` **7/7**(스타일 30개 → 토큰, Variables alias/모드, import 1회, apply=false 불변) + 생성 LESS e6-compiler **BUILD SUCCESS** |
+| v2.2 시각 QA | `VisualQaHarness` **5/5**(pixelmatch 포팅, e6 헤드리스 컴파일, Chrome 153 스크린샷 1654×940 실제 렌더, 리포트 생성, 자기 비교 0%) — Node/Playwright 없이 |
+| 회귀(v2.2 후) | 규칙 경로 46 OK / AI 7/7 유지. 스펙 없는 변환의 CLX/JS 는 이전과 동일 |
 
-미확인: 실제 Tomcat 기동 후 화면 호출, 실제 Figma API/OAuth 호출(토큰 필요), 실제 Gemini API 호출(키 필요).
+미확인: 실제 Tomcat 기동 후 화면 호출, 실제 Figma API/OAuth 호출(토큰 필요), 실제 Gemini API 호출(키 필요), 실제 백엔드에 대한 생성 JS 호출(서버 필요), Figma Variables API(Enterprise 플랜 필요).
 
 ---
 
@@ -396,6 +428,10 @@ src/main/java/com/tomatosystem/
 │   ├── FigmaConversionService  화면별 변환·저장, 원본 JSON 보관 (Spring @Service)
 │   ├── FigmaSettings           -D > 환경변수 > application.properties
 │   ├── FigmaPaths              clx-src 하위 경로 (하드코딩 경로 대체)
+│   ├── ConversionOptions       v2.2 옵션(OpenAPI 스펙, 시각 QA) · FigmaImages  /v1/images 렌더 PNG(공용)
+│   ├── api/               ← v2.2 ① OpenApiSpec(3.x/2.0 파서), ApiLabelMatcher(라벨↔DTO 규칙+AI), ApiBinder(UI-IR 에 바인딩 기록)
+│   ├── theme/             ← v2.2 ② FigmaThemeSync(Variables/Styles → theme/figma/*.less)
+│   ├── qa/                ← v2.2 ③ ClxCompiler(e6 헤드리스), HeadlessBrowser(Chrome/Edge/Playwright), PixelMatch(포팅), VisualQaService(리포트)
 │   └── ai/                ← v2.1 AI 보조 (선택)
 │       ├── AiClient / AiClients / GeminiAiClient / OllamaAiClient   제공자 추상화
 │       ├── UiIrPatch           허용 op 화이트리스트 + 검증 + 적용
@@ -406,9 +442,9 @@ src/main/java/com/tomatosystem/
 ├── exconverter/           ← 템플릿 엔진 (eXConverter-AI 에서 복사, §8.1 변경점)
 │   ├── model/UiIr               UI-IR 모델
 │   └── service/                 UiIrParser, UiIrNormalizer, ColumnNames, LayoutShape, TemplateReverse,
-│                                TemplateCatalog, ClxGenerator, ClxValidator, CompanionJsGenerator,
+│                                TemplateCatalog, ClxGenerator, ClxValidator, CompanionJsGenerator, EventScriptGenerator(v2.2 JS 스켈레톤),
 │                                GenerationService, ProjectRootResolver, ExConverterConfig, ProgressLog
-├── web/                   ← 컨트롤러 (Design, AdvancedDesign, FigmaAi, OAuth, 접근성/토큰/비교 분석)
+├── web/                   ← 컨트롤러 (Design, AdvancedDesign, FigmaAi, FigmaTheme, VisualQa, OAuth, 접근성/토큰/비교 분석), ConversionRequests(공통 파라미터/업로드/오류)
 ├── service/, type/, utill/← v1.x 좌표 변환기(FigmaToClxService, *NodeConverter) 와 분석 서비스
 src/main/resources/
 ├── application.properties            Figma + AI 설정
@@ -416,10 +452,14 @@ src/main/resources/
 └── figma/component-keywords.properties 컴포넌트 키워드 확장
 templates/                 ← 화면 패턴 뼈대 78개 (P0~P8, *_P = 팝업) — 읽기 전용, WEB-INF/classes/exconverter/templates 로도 배포
 clx-src/udc/com/           ← udcComAppHeader, udcComFormTitle, udcComGridTitle, udcComGridCudBtns
-docs/ai-architecture.md    ← AI 보조 설계 문서
-tools/harness/             ← 서버 없이 검증 (Eclipse 빌드 대상 아님)
-├── FigmaHarness.java          Figma JSON → CLX 일괄 변환/검증
-└── FigmaAiHarness.java        가짜 AI 서버로 AI 경로 시나리오 검사
+docs/ai-architecture.md    ← AI 보조 설계 문서 · docs/v2.2-features.md ← v2.2 검토·설계·검증
+clx-src/design/convertApi.clx  ← Figma 링크 + Swagger URL 입력 화면 (→ /design/convertApi.do)
+tools/harness/             ← 서버 없이 검증 (Eclipse 빌드 대상 아님). run-all.sh / run-all.ps1 로 일괄 실행
+├── FigmaHarness.java          Figma JSON → CLX 일괄 변환/검증 (--spec <openapi.json> 으로 바인딩 포함)
+├── FigmaAiHarness.java        가짜 AI 서버로 AI 경로 시나리오 검사
+├── OpenApiHarness.java        OpenAPI/Swagger → 바인딩 → CLX/JS 12개 검사 (samples/health-card.*.json)
+├── ThemeSyncHarness.java      Styles/Variables → LESS 7개 검사 (samples/variables-local.sample.json)
+└── VisualQaHarness.java       pixelmatch·헤드리스 렌더·리포트 5개 검사
 ```
 
 ### 8.1 eXConverter-AI 와의 차이 (동기화 시 주의)
@@ -427,6 +467,7 @@ tools/harness/             ← 서버 없이 검증 (Eclipse 빌드 대상 아�
 - `ProjectRootResolver`: 이 프로젝트(`Converter-Figma`/`eXCoverter-Figma`) 우선 탐색, 설정을 `ExConverterConfig` 로 읽음, `exconverter.clx.result.folder`.
 - `UiIr` / `UiIrParser` / `ui-ir.schema.json`: grid `excel`(Boolean, 모르면 null).
 - `ClxGenerator`: `udcComGridCudBtns` 생성, `udcComGridTitle.ctrl/showExportExcel`, 제목행 버튼 자리(`title-button-group`) 추가, `setUdcProperty` 타입(string/boolean/control) 지정.
+- v2.2 백엔드 바인딩(모두 UI-IR 에 값이 있을 때만 동작, 없으면 이전과 동일 출력): `UiIr` 에 `Region.dataId/controlId`, `Field.name`, `Column.name/dataType`, `Submission`, `Handler`; `UiIrParser` 가 `api.submissions`, `dataId`, `name`, `dataType` 을 읽음; `ClxGenerator` 가 dataset id/컬럼명을 바인딩 이름으로, `cl:datamap`+`cl:datamapbind`, `cl:submission`(requestdata/responsedata/submit-done), 버튼 click·body load·grid selection-change `cl:listener` 생성 후 `ir.getHandlers()` 에 기록; `CompanionJsGenerator.generate(template, name, ir)` + `EventScriptGenerator` 가 핸들러 함수 생성; `GenerationService.find()` 삭제.
 - 가져오지 않은 것: AI 이미지 분석기(Ollama/Gemini vision), TemplateWatcher/Inspector, 이미지 업로드 컨트롤러.
 - v2.1 의 `figma/ai` 는 이 프로젝트 고유(이미지→UI-IR 이 아니라 UI-IR 검토·보정).
 
@@ -496,11 +537,29 @@ tools/harness/             ← 서버 없이 검증 (Eclipse 빌드 대상 아�
 | `tools/harness/FigmaAiHarness.java` | 가짜 AI 서버로 7가지 시나리오 검증(키 불필요) |
 | `application.properties` | `figma.ai.*` 키 추가 (기본 `provider=none`) |
 
-### 9.3 확인이 필요한 사항
+### 9.3 v2.2 — OpenAPI 바인딩 · 테마 동기화 · 시각 QA (2026-09-24)
+
+세 기능의 실현 가능성을 먼저 검증(CLX 바인딩 문법 11종 e6-compiler 컴파일, 헤드리스 Chrome 에서 런타임 렌더 확인, Figma Variables API 플랜 제약)한 뒤 구현했다. 상세: [docs/v2.2-features.md](docs/v2.2-features.md).
+
+| 추가/변경 | 내용 |
+|---|---|
+| `figma/api/*` (3개), `figma/ConversionOptions`, `figma/FigmaImages` | OpenAPI 3.x/Swagger 2.0 파서, 라벨↔DTO 매칭(규칙 + 선택 AI + 캐시), UI-IR 바인딩 |
+| `exconverter` (UiIr, UiIrParser, UiIrNormalizer, ClxGenerator, CompanionJsGenerator, EventScriptGenerator, GenerationService), `ui-ir.schema.json` | §8.1 v2.2 항목 |
+| `figma/theme/FigmaThemeSync`, `web/FigmaThemeController` | Variables + Styles → `clx-src/theme/figma/*.less`, 전역 변수 매핑, import 자동 추가 |
+| `figma/qa/*` (4개), `web/VisualQaController` | e6 헤드리스 컴파일 → 로컬 서빙 → Chrome/Edge/Playwright 스크린샷 → pixelmatch(Java 포팅) → HTML 리포트 |
+| `web/ConversionRequests`, `DesignController`, `FigmaAiController`, `DesignTokenExtractorController` | 공통 파라미터/업로드/오류 처리 통합, `swagger`/`qa` 옵션, `/design/convertApi.do`, `test.do` 삭제, Figma 호출을 `FigmaApiClient` 로 |
+| `clx-src/design/convertApi.clx/.js` | 입력 화면 (e6-compiler 로 컴파일 확인) |
+| `tools/harness/{OpenApiHarness, ThemeSyncHarness, VisualQaHarness, run-all.sh, run-all.ps1, samples/*}` | 오프라인 검증 |
+| `application.properties`, `pom.xml`, `LabelCodeNamer` | v2.2 설정 키, 라이브러리 버전 정합, 캐시 경로 설정원 통일 |
+
+**리팩토링(같이 처리)**: 컨트롤러 공통 파라미터/업로드/오류 처리 통합(`ConversionRequests`), `DesignController.test.do`·`GenerationService.find()` 죽은 코드 삭제, `FigmaScreenshots` → 공용 `FigmaImages` 분리, `DesignTokenExtractorController` 의 자체 HTTP 호출을 `FigmaApiClient` 로 통일 + 파일 보기 경로 탈출 차단, `FigmaHarness` 가 실제 `CompanionJsGenerator` 를 쓰도록 수정. 검증 결과는 §7 표, 상세는 docs/v2.2-features.md §4.
+
+### 9.4 확인이 필요한 사항
 - **보안**: `application.properties` 의 `figma.client.secret` 이 git 에 커밋되어 있다. Figma 개발자 설정에서 재발급하고 환경변수 `FIGMA_CLIENT_SECRET` 로 옮길 것.
 - OAuth 앱 설정 화면에서 `file_content:read`, `projects:read` scope 활성화(projects 엔드포인트는 Figma 승인 필요할 수 있음).
 - 팀이 중첩 폴더를 쓰면 v2 folders API 로 교체.
 - **AI 를 켤 때**: Gemini 무료 등급은 입력이 Google 제품 개선에 사용된다. 기밀 디자인은 `figma.ai.provider=ollama`(사내 로컬).
+- **v2.2**: Figma Variables API 는 Enterprise 플랜 + `file_variables:read` scope 가 필요하다(없으면 Styles 만 사용). 시각 QA 는 서버 PC 에 Chrome/Edge(또는 Node + Playwright)가 있어야 한다. 생성 JS 의 백엔드 호출은 실제 서버로 확인할 것.
 
 ---
 
@@ -523,17 +582,24 @@ tools/harness/             ← 서버 없이 검증 (Eclipse 빌드 대상 아�
 | AI 가 동작하지 않음 | `/designAi/status.do` 의 `enabled` 확인(키·provider). `AI 응답 없음(설정/한도/타임아웃)` 이면 한도 소진이거나 키 오류 |
 | AI patch 가 전부 거부됨 | 응답의 `AI 무시/실패` 사유 확인. 인덱스 오류면 프롬프트에 준 UI-IR 과 모델 답이 어긋난 것 → `/designAi/preview.do` 로 재현 |
 | 컬럼 코드를 다시 짓고 싶음 | `generated/ai-cache/label-codes.json` 삭제 또는 해당 항목만 수정 |
+| `API 바인딩 없음 (그리드 …: 헤더와 맞는 목록 API 를 찾지 못함)` | 스펙의 응답이 배열(또는 `data.list` 봉투)인 operation 이 없거나 헤더와 DTO 속성이 하나도 안 맞음. 속성에 `description`(한글 라벨) 을 채우거나 AI 를 켜서 `/designAi/convert.do?swagger=` 사용 |
+| 라벨이 엉뚱한 속성에 매칭됨 | 응답의 `dsList ← … 컬럼 n/m: 라벨→속성` 줄 확인. `generated/ai-cache/api-labels.json` 의 항목 수정 또는 스펙 description 보강 |
+| `시각 QA 실패: 헤드리스 브라우저 … 찾지 못했습니다` | `figma.qa.browser` 에 chrome/msedge 실행 파일 경로, 또는 Node + `npx playwright install chromium` 후 `figma.qa.renderer=playwright` |
+| `시각 QA 실패: e6-compiler 오류` | `clx-src/result/visual-qa/…/compile.log` 확인. `figma.qa.keepWork=true` 로 작업 폴더를 남겨 `work/out/index.html` 을 브라우저로 열어 본다 |
+| `Variables API 사용 불가` | Enterprise 플랜이 아니거나 토큰에 `file_variables:read` 가 없음. Styles 로만 동기화되며 `variables=false` 로 시도를 끌 수 있음 |
 
 ---
 
 ## 11. 알려진 한계 / 다음 단계
 
 - 좌우 분할은 그리드가 나란히 있을 때만 인식. 폼|그리드 분할은 위→아래로 나열된다.
-- 이벤트/JS 는 템플릿 주석 헤더만 복사. 조회/저장 버튼 → submission 스켈레톤 생성은 규칙만으로 가능(다음 단계 후보).
+- 이벤트/JS 스켈레톤(v2.2)은 OpenAPI 스펙이 있을 때만 생성된다. 스펙 없이는 템플릿 주석 헤더만 복사.
+- 생성 JS 의 응답 적재 어댑터는 스펙의 배열 경로(`data.list`)를 믿는다. 백엔드가 eXBuilder 프로토콜(`{"dsList":[...]}`)로 답하면 어댑터는 건너뛴다.
 - 테마(`clx-src/theme`)는 이 프로젝트 것을 사용. 템플릿 클래스(`btn-primary-01`, `search-box` …)의 모양까지 맞추려면 eXConverter-AI 테마를 적용할 것.
 - `directFileID.clx` 화면에는 입력칸이 없어 설정값(`FIGMA_DIRECT_TOKEN`, `figma.direct.fileKey`)으로 동작한다. 화면에 토큰/URL 입력칸을 추가하면 파라미터로 전달된다.
 - 이미지/아이콘은 CLX 에 넣지 않는다(v1.x 도 비활성). 필요 시 `GET /v1/images/:key?ids=a,b,c` 한 번에 묶어 받아 저장하는 방식 권장(노드마다 호출하면 rate limit).
-- Figma Variables(디자인 토큰)·Grid auto-layout 속성은 아직 미사용.
+- Figma Variables 는 Enterprise 플랜에서만 읽힌다(그 외 Styles 만). Grid auto-layout 속성은 미사용.
+- 시각 QA 는 이 프로젝트 테마에 템플릿 클래스 모양이 없어 색·여백 차이가 불일치율에 잡히고, 폰트 렌더링 차이로 0% 가 되지 않는다. 영역 히트맵으로 레이아웃 어긋남을 보는 용도.
 - AI 컬럼 코드는 사내 DB 스키마를 모른다. 실제 테이블 컬럼 목록을 사전으로 주입하면 AI 없이도 정확해진다.
 
 ---
@@ -549,6 +615,7 @@ tools/harness/             ← 서버 없이 검증 (Eclipse 빌드 대상 아�
 6. `exconverter/` 를 고치면 §8.1 에 기록하고 eXConverter-AI 와 동기화 여부를 판단한다.
 7. Java 11 문법만 사용(Tomcat 은 21 로 실행). 새 jar 는 `WEB-INF/lib` 에 추가.
 8. 토큰/시크릿은 코드·properties 에 넣지 말고 환경변수로.
+9. v2.2 를 바꾸면 `tools/harness/run-all.sh`(Windows `run-all.ps1`) 를 돌린다: OpenApiHarness 12/12, ThemeSyncHarness 7/7, VisualQaHarness(브라우저 있으면 5/5), e6-compiler BUILD SUCCESS, 규칙 경로 46 OK. 스펙/옵션이 없을 때 결과가 이전과 같은지(OpenApiHarness 12번)도 본다.
 
 ---
 
@@ -557,3 +624,41 @@ tools/harness/             ← 서버 없이 검증 (Eclipse 빌드 대상 아�
 - 웹 접근성 분석(WCAG 2.1, Excel 리포트): `/figma/accessibility/analyze.do` → `clx-src/result/webAccess`
 - 디자인 토큰 추출(CSS/SCSS/Tailwind/JSON): `/figma/design-tokens/extract.do` → `clx-src/result/design-tokens`
 - JSON 버전 비교 리포트: `/figma/fetchAndAnalyzeFigmaData.do`, `/figma/analyzeRecentVersions.do` → `clx-src/result/txt`, `excel`
+
+---
+
+## 14. v2.2 — OpenAPI 바인딩 · 테마 동기화 · 시각 QA
+
+검토 근거·설계·한계는 [docs/v2.2-features.md](docs/v2.2-features.md). 여기서는 사용법만.
+
+### 14.1 Swagger/OpenAPI → DataSet · DataMap · Submission + JS 스켈레톤
+
+```
+GET /design/convertDirect.do?url=<Figma 프레임 링크>&swagger=http://localhost:8080/v3/api-docs
+GET /designAi/convert.do?url=…&swagger=…          # AI 를 켜면 라벨↔DTO 매칭도 AI 가 보완
+```
+또는 `clx-src/design/convertApi.clx` 화면(Figma 링크 · Swagger URL · 토큰 · 시각 QA 체크). 업로드 변환(convertJson.clx)은 Figma JSON 과 OpenAPI JSON 을 함께 올린다.
+
+결과 CLX: 그리드 DataSet 컬럼 = 응답 DTO 속성(`budgetYear`, `rrn` …), 조회영역 `dmSearch` DataMap + 컨트롤 `datamapbind`, `subList/subDetail/subSave/subDelete` submission(요청/응답 데이터, `submit-done`), 버튼 `click`·body `load`·그리드 `selection-change` 리스너.
+결과 JS: 각 리스너의 함수(`onBtnSearchClick` → `app.lookup("subList").send()`, `onSubListSubmitDone` → REST 봉투 `data.list` 를 `dsList.build()`, `onBtnResetClick` → `dmSearch.clear()`, 경로 파라미터 치환 등)와 `TODO` 주석.
+그리드 제목행의 행추가/삭제/저장이 `udcComGridCudBtns` 로 묶인 경우에는 UDC 의 `save`/`delete` 이벤트에 리스너가 붙는다(삭제는 `ignoreDefaultDeleteAction=true` 로 두고 선택 행을 DELETE 한 뒤 재조회).
+응답의 `API 바인딩: … 컬럼 11/11 · 필드 6/6` 과 `dsList ← GET … : 라벨→속성` 줄로 무엇이 어떻게 묶였는지 확인한다. 미매칭 라벨은 그대로 v2.0 규칙(사전/COLn)으로 남는다.
+
+### 14.2 Figma 디자인 토큰 → 테마
+
+```
+GET /figma/theme/sync.do?url=<Figma 파일 링크>&token=<PAT>            # apply=false 면 파일만 생성, variables=false 면 Styles 만
+```
+`clx-src/theme/figma/figma-tokens.part.less`(모든 토큰 `@figma-…`), `figma-theme.part.less`(`@default-text-color`, `@focus-border-color` … ← 토큰), `figma-tokens.json` 을 쓰고 `cleopatra-theme.less` 에 import 를 한 번 추가한다.
+Figma 토큰이 바뀌면 같은 호출을 다시 하면 된다(멱등). 전역 변수 매핑이 마음에 안 들면 `figma.theme.map.<변수>=<토큰 이름 정규식>`.
+
+### 14.3 시각 QA
+
+```
+GET /design/convertDirect.do?url=<Figma 프레임 링크>&qa=true                       # 변환 직후 비교
+GET /figma/qa/compare.do?clx=convertTest/2026-09-24/main_content_area.clx&url=<Figma 프레임 링크>&width=1654&height=940
+GET /figma/qa/status.do                                                            # 렌더러/컴파일러 확인
+```
+`clx-src/result/visual-qa/{날짜}/{화면}/report.html`(웹: `/figma/qa/report.do?path=2026-09-24/화면/report.html`) 에 Figma 렌더·CLX 렌더·diff(빨강 = 불일치, 노랑 = 안티앨리어싱)와 8×12 영역 불일치율 표가 남는다.
+Node/Playwright 없이 Chrome/Edge 로 동작하며, Node 가 있으면 `figma.qa.renderer=playwright` 로 Playwright 를 쓸 수 있다.
+
